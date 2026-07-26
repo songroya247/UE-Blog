@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "The Ultimate WAEC Result Checker Guide: Step-by-Step & Troubleshooting"
 category: "Education & Examinations"
 description: "Learn how to check your WASSCE results online via SMS or web portal, resolve common error messages, and verify your grades."
-date: "July 2026"
+date: "2026-07-18"
 ---
 
 ## Introduction: What You Need to Know Before Checking Your WAEC Result
