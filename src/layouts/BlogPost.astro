@@ -1,6 +1,7 @@
 ---
 const { frontmatter } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
+const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -169,7 +170,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info
     <h1>{frontmatter.title}</h1>
     <p class="lede">{frontmatter.description}</p>
     <div class="hero-meta">
-      <span>Reviewed <b>{frontmatter.date}</b></span>
+      <span>Reviewed <b>{displayDate}</b></span>
     </div>
   </div>
 </div>
