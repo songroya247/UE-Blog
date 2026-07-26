@@ -1,10 +1,17 @@
 ---
-const posts = await Astro.glob('./posts/*.md');
+const allPosts = await Astro.glob('./posts/*.md');
+const now = new Date();
+
+// Only show posts whose publish date is TODAY or in the PAST
+const posts = allPosts
+  .filter(post => new Date(post.frontmatter.date) <= now)
+  .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Education Blog</title>
   <style>
     body { font-family: sans-serif; background: #faf6ee; color: #1f2420; padding: 40px 20px; }
