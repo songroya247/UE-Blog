@@ -1,1 +1,29 @@
-
+---
+const posts = await Astro.glob('./posts/*.md');
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Education Blog</title>
+  <style>
+    body { font-family: sans-serif; background: #faf6ee; color: #1f2420; padding: 40px 20px; }
+    .container { max-width: 760px; margin: 0 auto; }
+    .card { background: white; padding: 20px; border: 1px solid #e2dccb; border-radius: 6px; margin-bottom: 16px; }
+    .card a { color: #0b3d2e; font-size: 1.3rem; font-weight: bold; text-decoration: none; }
+    .card p { color: #5f6660; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color: #0b3d2e;">Latest Articles</h1>
+    
+    {posts.map(post => (
+      <div class="card">
+        <a href={post.url}>{post.frontmatter.title}</a>
+        <p>{post.frontmatter.description}</p>
+      </div>
+    ))}
+  </div>
+</body>
+</html>
