@@ -1,58 +1,164 @@
-
 ---
 const { frontmatter } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO Meta Tags -->
 <title>{frontmatter.title}</title>
+<meta name="description" content={frontmatter.description || "Educational news, guides, and admission updates."} />
+<link rel="canonical" href={canonicalURL} />
+<meta name="robots" content="index, follow" />
+
+<!-- OpenGraph / Social Media (WhatsApp, Facebook, X) -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content={frontmatter.title} />
+<meta property="og:description" content={frontmatter.description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content="Ultimate Edge Blog" />
+
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<!-- CSS Styling -->
 <style>
   :root{
-    --ink:#1f2420; --paper:#faf6ee; --paper-raised:#ffffff;
-    --forest:#0b3d2e; --forest-dim:#12513d; --gold:#c9922e;
-    --gold-soft:#f3e3c2; --rust:#a8452c; --rust-soft:#f7e2da;
-    --line:#e2dccb; --muted:#5f6660;
+    --ink:#1f2420;
+    --paper:#faf6ee;
+    --paper-raised:#ffffff;
+    --forest:#0b3d2e;
+    --forest-dim:#12513d;
+    --gold:#c9922e;
+    --gold-soft:#f3e3c2;
+    --rust:#a8452c;
+    --rust-soft:#f7e2da;
+    --line:#e2dccb;
+    --muted:#5f6660;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Source Sans 3', sans-serif; line-height:1.65;}
-  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; color:var(--forest); line-height:1.15; margin:0 0 .4em 0;}
-  a{color:var(--forest-dim);} a:hover{color:var(--gold);}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--forest);
+    line-height:1.15;
+    margin:0 0 .4em 0;
+  }
+  a{color:var(--forest-dim);}
+  a:hover{color:var(--gold);}
 
-  /* Navbar */
-  header{background:var(--forest); padding:14px 24px; border-bottom:1px solid rgba(255,255,255,0.1);}
-  .nav-inner{max-width:760px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;}
-  .logo{color:#fbf7ec; font-family:'Fraunces', serif; font-weight:700; text-decoration:none; font-size:1.1rem;}
+  /* Header Nav */
+  header{
+    background:var(--forest);
+    padding:14px 24px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .nav-inner{
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .logo{
+    color:#fbf7ec;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    text-decoration:none;
+    font-size:1.1rem;
+  }
 
-  /* Hero */
+  /* Hero Section */
   .hero{
-    background: radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%), var(--forest);
-    color:#f4efe1; padding:64px 24px 56px; position:relative; overflow:hidden;
+    background:
+      radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%),
+      var(--forest);
+    color:#f4efe1;
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
   }
   .hero-inner{max-width:760px; margin:0 auto; position:relative;}
-  .eyebrow{font-family:'JetBrains Mono', monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:14px;}
-  .hero h1{color:#fbf7ec; font-size:clamp(2rem, 5vw, 3rem); max-width:18ch;}
-  .hero p.lede{font-size:1.08rem; max-width:56ch; color:#d9d3bf; margin-top:14px;}
-  .hero-meta{margin-top:28px; display:flex; gap:22px; font-family:'JetBrains Mono', monospace; font-size:.75rem; color:#b9d8c6;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:14px;
+  }
+  .hero h1{
+    color:#fbf7ec;
+    font-size:clamp(2rem, 5vw, 3rem);
+    max-width:18ch;
+  }
+  .hero p.lede{
+    font-size:1.08rem;
+    max-width:56ch;
+    color:#d9d3bf;
+    margin-top:14px;
+  }
+  .hero-meta{
+    margin-top:28px;
+    display:flex; gap:22px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.75rem;
+    color:#b9d8c6;
+  }
   .hero-meta span b{color:#fbf7ec; font-weight:500;}
 
-  /* Layout & Content */
+  /* Content Area */
   .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
   section{margin-bottom:52px;}
-  section h2{font-size:1.55rem; border-bottom:2px solid var(--gold-soft); padding-bottom:10px; margin-bottom:18px;}
-  
-  footer{text-align:center; padding:36px 24px 60px; font-size:.82rem; color:var(--muted); border-top:1px solid var(--line); margin-top:40px;}
+  section h2{
+    font-size:1.55rem;
+    border-bottom:2px solid var(--gold-soft);
+    padding-bottom:10px;
+    margin-bottom:18px;
+  }
+
+  /* Tables & Code */
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.92rem;}
+  thead th{background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 12px;}
+  tbody td{padding:10px 12px; border-bottom:1px solid var(--line);}
+  pre{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    padding:16px;
+    border-radius:6px;
+    overflow-x:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.85rem;
+  }
+
+  footer{
+    text-align:center;
+    padding:36px 24px 60px;
+    font-size:.82rem;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    margin-top:40px;
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div class="nav-inner">
-    <a href="/" class="logo">My Education Portal</a>
+    <a href="/" class="logo">Ultimate Edge Blog</a>
     <a href="/" style="color:#b9d8c6; text-decoration:none; font-size:0.9rem;">← All Articles</a>
   </div>
 </header>
@@ -69,12 +175,12 @@ const { frontmatter } = Astro.props;
 </div>
 
 <div class="wrap">
-  <!-- THIS SLOT AUTOMATICALLY RENDERS YOUR ARTICLE TEXT -->
+  <!-- Article Content Renders Here -->
   <slot /> 
 </div>
 
 <footer>
-  © 2026 My Blog — All rights reserved.
+  © 2026 Ultimate Edge Blog — All rights reserved.
 </footer>
 
 </body>
