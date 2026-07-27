@@ -134,8 +134,8 @@ meta:
   <p>This error occurs when there is a mismatch between the index number, examination year, and exam type. Double-check that a May/June exam is not set to "Private Candidate" in the dropdown selection.</p>
 
   <div class="callout warn">
-    <strong class="label">Technical Support Contact</strong>
-    If web scripts on the portal time out during high-traffic periods, contact the official technical portal support desk via email at <code>waecsupport@fleettechltd.com</code>.
+    <strong class="label">Only trust official channels</strong>
+    If web scripts on the portal time out during high-traffic periods, don't rely on random "WAEC support" emails or third-party domains found in search results — verify any support contact directly against the one listed on <code>waecdirect.org</code> itself before sending any personal details.
   </div>
 </section>
 
