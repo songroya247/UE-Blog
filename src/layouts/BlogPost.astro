@@ -2,7 +2,7 @@
 const { frontmatter } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
 
-// Safe date fallback
+// Safe date parser to prevent server crashes on missing/invalid dates
 const rawDate = frontmatter.date ? new Date(frontmatter.date) : new Date();
 const displayDate = !isNaN(rawDate.getTime())
   ? rawDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -20,7 +20,7 @@ const displayDate = !isNaN(rawDate.getTime())
 <link rel="canonical" href={canonicalURL} />
 <meta name="robots" content="index, follow" />
 
-<!-- OpenGraph / Social Media -->
+<!-- OpenGraph / Social Media (WhatsApp, Facebook, X) -->
 <meta property="og:type" content="article" />
 <meta property="og:title" content={frontmatter.title} />
 <meta property="og:description" content={frontmatter.description} />
@@ -31,7 +31,7 @@ const displayDate = !isNaN(rawDate.getTime())
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
-<!-- USE is:inline HERE -->
+<!-- CSS Styling (is:inline guarantees global slot styling & prevents Vite compiler crashes) -->
 <style is:inline>
   :root{
     --ink:#1f2420;
@@ -55,6 +55,7 @@ const displayDate = !isNaN(rawDate.getTime())
     font-family:'Source Sans 3', sans-serif;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden; /* Fixes mobile horizontal page bleed */
   }
   h1,h2,h3,h4{
     font-family:'Fraunces', serif;
@@ -86,7 +87,7 @@ const displayDate = !isNaN(rawDate.getTime())
     max-width:760px;
     margin:0 auto;
     display:flex;
-    justify-content:space-between;
+    justify-space:between;
     align-items:center;
   }
   .logo{
@@ -147,8 +148,10 @@ const displayDate = !isNaN(rawDate.getTime())
   /* Content Area */
   .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
 
-  /* Notice banner */
+  /* Notice banner (Stacking context fix) */
   .notice{
+    position:relative;
+    z-index:2; /* Sit ABOVE the hero background */
     margin:-28px auto 40px;
     max-width:712px;
     background:var(--paper-raised);
@@ -211,7 +214,7 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .callout.tip strong.label{color:var(--forest-dim);}
 
-  /* Status rail */
+  /* Status rail (admission-stage style timeline) */
   .status-rail{
     margin:24px 0 8px;
     display:flex;
@@ -246,11 +249,21 @@ const displayDate = !isNaN(rawDate.getTime())
   .status-step h4{margin:4px 0 6px; font-family:'Fraunces',serif; font-size:1.08rem; color:var(--ink); font-weight:600;}
   .status-step p{margin:0; font-size:.93rem; color:var(--muted);}
 
-  /* Tables & Code */
-  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.92rem;}
-  thead th{background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 12px; font-weight:600;}
-  tbody td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  /* Tables Fix (Mobile Horizontal Scrolling) */
+  table{
+    display:block;
+    width:100%;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+    border-collapse:collapse;
+    margin:18px 0;
+    font-size:.92rem;
+  }
+  thead th{background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 14px; font-weight:600;}
+  tbody td{padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
   tbody tr:nth-child(even){background:#f2ede0;}
+
   pre{
     background:var(--paper-raised);
     border:1px solid var(--line);
