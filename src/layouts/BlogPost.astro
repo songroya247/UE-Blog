@@ -2,7 +2,7 @@
 const { frontmatter } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
 
-// Safe date parser to prevent server crashes on missing/invalid dates
+// Safe date parser
 const rawDate = frontmatter.date ? new Date(frontmatter.date) : new Date();
 const displayDate = !isNaN(rawDate.getTime())
   ? rawDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -20,7 +20,7 @@ const displayDate = !isNaN(rawDate.getTime())
 <link rel="canonical" href={canonicalURL} />
 <meta name="robots" content="index, follow" />
 
-<!-- OpenGraph / Social Media (WhatsApp, Facebook, X) -->
+<!-- OpenGraph / Social Media -->
 <meta property="og:type" content="article" />
 <meta property="og:title" content={frontmatter.title} />
 <meta property="og:description" content={frontmatter.description} />
@@ -31,7 +31,6 @@ const displayDate = !isNaN(rawDate.getTime())
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
-<!-- CSS Styling (is:inline guarantees global slot styling & prevents Vite compiler crashes) -->
 <style is:inline>
   :root{
     --ink:#1f2420;
@@ -55,7 +54,7 @@ const displayDate = !isNaN(rawDate.getTime())
     font-family:'Source Sans 3', sans-serif;
     line-height:1.65;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden; /* Fixes mobile horizontal page bleed */
+    overflow-x:hidden;
   }
   h1,h2,h3,h4{
     font-family:'Fraunces', serif;
@@ -67,7 +66,6 @@ const displayDate = !isNaN(rawDate.getTime())
   a{color:var(--forest-dim);}
   a:hover{color:var(--gold);}
 
-  /* Reading progress bar */
   .progress-bar{
     position:fixed; top:0; left:0;
     height:3px;
@@ -77,7 +75,6 @@ const displayDate = !isNaN(rawDate.getTime())
     transition:width .1s ease-out;
   }
 
-  /* Header Nav */
   header{
     background:var(--forest);
     padding:14px 24px;
@@ -87,7 +84,7 @@ const displayDate = !isNaN(rawDate.getTime())
     max-width:760px;
     margin:0 auto;
     display:flex;
-    justify-space:between;
+    justify-content:space-between;
     align-items:center;
   }
   .logo{
@@ -98,7 +95,6 @@ const displayDate = !isNaN(rawDate.getTime())
     font-size:1.1rem;
   }
 
-  /* Hero Section */
   .hero{
     background:
       radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%),
@@ -145,13 +141,11 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .hero-meta span b{color:#fbf7ec; font-weight:500;}
 
-  /* Content Area */
   .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
 
-  /* Notice banner (Stacking context fix) */
   .notice{
     position:relative;
-    z-index:2; /* Sit ABOVE the hero background */
+    z-index:2;
     margin:-28px auto 40px;
     max-width:712px;
     background:var(--paper-raised);
@@ -164,7 +158,6 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .notice b{color:var(--forest);}
 
-  /* Table of contents */
   nav.toc{
     background:var(--paper-raised);
     border:1px solid var(--line);
@@ -197,7 +190,6 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   blockquote.def b{color:var(--forest);}
 
-  /* Callouts */
   .callout{
     padding:16px 20px;
     border-radius:4px;
@@ -214,7 +206,6 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .callout.tip strong.label{color:var(--forest-dim);}
 
-  /* Status rail (admission-stage style timeline) */
   .status-rail{
     margin:24px 0 8px;
     display:flex;
@@ -249,7 +240,6 @@ const displayDate = !isNaN(rawDate.getTime())
   .status-step h4{margin:4px 0 6px; font-family:'Fraunces',serif; font-size:1.08rem; color:var(--ink); font-weight:600;}
   .status-step p{margin:0; font-size:.93rem; color:var(--muted);}
 
-  /* Tables Fix (Mobile Horizontal Scrolling) */
   table{
     display:block;
     width:100%;
@@ -264,93 +254,6 @@ const displayDate = !isNaN(rawDate.getTime())
   tbody td{padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
   tbody tr:nth-child(even){background:#f2ede0;}
 
-  pre{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
-    padding:16px;
-    border-radius:6px;
-    overflow-x:auto;
-    font-family:'JetBrains Mono', monospace;
-    font-size:.85rem;
-  }
-  code{
-    font-family:'JetBrains Mono', monospace;
-    background:var(--gold-soft);
-    color:var(--forest);
-    padding:2px 6px;
-    border-radius:3px;
-    font-size:.88em;
-  }
-  pre code{background:none; padding:0; border-radius:0; color:inherit;}
-
-  /* Mock form */
-  .mock-form{
-    background:var(--paper-raised);
-    border:1px solid var(--line);
-    border-radius:8px;
-    overflow:hidden;
-    margin:20px 0;
-  }
-  .mock-form-title{
-    background:var(--forest);
-    color:#fbf7ec;
-    font-family:'JetBrains Mono', monospace;
-    font-size:.78rem;
-    letter-spacing:.04em;
-    padding:12px 16px;
-  }
-  .mock-form-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    flex-wrap:wrap;
-    gap:4px 12px;
-    padding:12px 16px;
-    border-bottom:1px solid var(--line);
-  }
-  .mock-form-row:last-of-type{border-bottom:none;}
-  .mock-form-label{font-size:.85rem; color:var(--muted);}
-  .mock-form-value{
-    font-family:'JetBrains Mono', monospace;
-    font-size:.9rem;
-    color:var(--ink);
-    font-weight:500;
-    word-break:break-word;
-  }
-  .mock-form-actions{
-    display:flex; gap:10px; flex-wrap:wrap;
-    padding:14px 16px;
-    background:#f2ede0;
-  }
-  .mock-btn{
-    font-family:'JetBrains Mono', monospace;
-    font-size:.78rem;
-    padding:8px 16px;
-    border-radius:4px;
-    border:1px solid var(--line);
-    color:var(--muted);
-  }
-  .mock-btn.primary{
-    background:var(--forest);
-    color:#fbf7ec;
-    border-color:var(--forest);
-  }
-
-  /* Deadline strip */
-  .deadline-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:14px; margin:20px 0;
-  }
-  .deadline-card{
-    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
-    padding:16px;
-  }
-  .deadline-card .date{
-    font-family:'JetBrains Mono', monospace; color:var(--rust); font-size:1.05rem; font-weight:500;
-  }
-  .deadline-card .who{font-size:.85rem; color:var(--muted); margin-top:4px;}
-
-  /* Numbered steps */
   ol.steps{padding-left:0; list-style:none; counter-reset:step;}
   ol.steps li{
     counter-increment:step;
@@ -371,7 +274,6 @@ const displayDate = !isNaN(rawDate.getTime())
     display:flex; align-items:center; justify-content:center;
   }
 
-  /* FAQ accordion */
   details.faq{
     background:var(--paper-raised);
     border:1px solid var(--line);
@@ -397,7 +299,6 @@ const displayDate = !isNaN(rawDate.getTime())
   details.faq[open] summary::after{content:"–";}
   details.faq p{padding-bottom:16px; margin:0; color:var(--muted); font-size:.94rem;}
 
-  /* Action plan closer */
   .action-plan{
     background:var(--forest);
     color:#f0ece0;
@@ -410,21 +311,76 @@ const displayDate = !isNaN(rawDate.getTime())
   .action-plan li{margin-bottom:12px; font-size:.95rem; color:#d9d3bf;}
   .action-plan li b{color:#fbf7ec;}
 
-  .correction-tag{
-    display:inline-block;
-    font-family:'JetBrains Mono', monospace;
-    font-size:.68rem;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    background:var(--forest-dim);
-    color:#dff0e7;
-    padding:2px 8px;
-    border-radius:10px;
-    margin-left:8px;
-    vertical-align:middle;
+  /* --- AUTHOR BIO & AI DISCLOSURE --- */
+  .author-box {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--forest);
+    border-radius: 6px;
+    padding: 24px;
+    margin: 48px 0 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .author-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--forest);
+    color: #fbf7ec;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .author-content {
+    flex-grow: 1;
+  }
+  .author-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .author-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    margin: 0 0 8px;
+    color: var(--forest);
+  }
+  .author-bio-text {
+    margin: 0 0 12px;
+    font-size: .92rem;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .ai-disclosure {
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: .84rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .ai-disclosure strong {
+    color: var(--forest-dim);
+    font-weight: 600;
   }
 
-  /* Back to top */
+  @media (max-width: 560px) {
+    .author-box {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
   .back-to-top{
     position:fixed;
     bottom:24px; right:24px;
@@ -483,6 +439,21 @@ const displayDate = !isNaN(rawDate.getTime())
 <div class="wrap">
   <!-- Article Content Renders Here -->
   <slot />
+
+  <!-- About the Author & AI Disclosure -->
+  <div class="author-box">
+    <div class="author-avatar">SO</div>
+    <div class="author-content">
+      <span class="author-label">About the Author</span>
+      <h4 class="author-name">Solomon Obafemi</h4>
+      <p class="author-bio-text">
+        Solomon Obafemi is an entrepreneur, educator, and content creator dedicated to making complex topics simple and practical. He publishes well-researched articles on education, technology, digital skills, and personal development to help readers make informed decisions.
+      </p>
+      <p class="ai-disclosure">
+        <strong>AI Disclosure:</strong> Some articles are created with the assistance of AI as a research and writing tool. Every piece is reviewed, fact-checked, edited, and approved by Solomon Obafemi before publication.
+      </p>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -492,7 +463,6 @@ const displayDate = !isNaN(rawDate.getTime())
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
-  // Reading progress bar
   const progressBar = document.getElementById('progressBar');
   function updateProgress() {
     const scrollTop = window.scrollY;
@@ -503,7 +473,6 @@ const displayDate = !isNaN(rawDate.getTime())
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
-  // Estimated reading time, computed from the rendered article text
   const articleEl = document.querySelector('.wrap');
   const readingTimeEl = document.getElementById('readingTime');
   if (articleEl && readingTimeEl) {
@@ -511,7 +480,6 @@ const displayDate = !isNaN(rawDate.getTime())
     readingTimeEl.textContent = Math.max(1, Math.round(wordCount / 225)) + ' min';
   }
 
-  // Scrollspy: highlight active section in TOC
   const tocLinks = document.querySelectorAll('nav.toc a[href^="#"]');
   const sections = document.querySelectorAll('section[id]');
   if (tocLinks.length && sections.length && 'IntersectionObserver' in window) {
@@ -530,7 +498,6 @@ const displayDate = !isNaN(rawDate.getTime())
     sections.forEach((section) => observer.observe(section));
   }
 
-  // Back-to-top button
   const backToTop = document.getElementById('backToTop');
   if (backToTop) {
     window.addEventListener('scroll', () => {
