@@ -61,6 +61,16 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
   a{color:var(--forest-dim);}
   a:hover{color:var(--gold);}
 
+  /* Reading progress bar */
+  .progress-bar{
+    position:fixed; top:0; left:0;
+    height:3px;
+    background:var(--gold);
+    width:0%;
+    z-index:1000;
+    transition:width .1s ease-out;
+  }
+
   /* Header Nav */
   header{
     background:var(--forest);
@@ -92,6 +102,12 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
     position:relative;
     overflow:hidden;
   }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(244,239,225,0.045) 0 1px, transparent 1px 88px);
+    pointer-events:none;
+  }
   .hero-inner{max-width:760px; margin:0 auto; position:relative;}
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
@@ -100,7 +116,9 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
     text-transform:uppercase;
     color:var(--gold);
     margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
   }
+  .eyebrow::before{content:"●"; font-size:.6rem; color:#7fb89a;}
   .hero h1{
     color:#fbf7ec;
     font-size:clamp(2rem, 5vw, 3rem);
@@ -114,7 +132,7 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
   }
   .hero-meta{
     margin-top:28px;
-    display:flex; gap:22px;
+    display:flex; gap:22px; flex-wrap:wrap;
     font-family:'JetBrains Mono', monospace;
     font-size:.75rem;
     color:#b9d8c6;
@@ -123,18 +141,111 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
 
   /* Content Area */
   .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
-  section{margin-bottom:52px;}
+
+  /* Notice banner */
+  .notice{
+    margin:-28px auto 40px;
+    max-width:712px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:4px solid var(--gold);
+    border-radius:3px;
+    padding:16px 20px;
+    font-size:.92rem;
+    box-shadow:0 8px 24px -18px rgba(11,61,46,0.4);
+  }
+  .notice b{color:var(--forest);}
+
+  /* Table of contents */
+  nav.toc{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:20px 24px;
+    margin:40px 0 48px;
+  }
+  nav.toc h2{font-size:1rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;}
+  nav.toc ol{margin:0; padding-left:1.1em; columns:2; column-gap:24px;}
+  nav.toc li{margin-bottom:8px; font-size:.94rem; break-inside:avoid;}
+  nav.toc a.active{color:var(--gold); font-weight:600;}
+  @media (max-width:560px){ nav.toc ol{columns:1;} }
+
+  section{margin-bottom:52px; scroll-margin-top:20px;}
   section h2{
     font-size:1.55rem;
     border-bottom:2px solid var(--gold-soft);
     padding-bottom:10px;
     margin-bottom:18px;
   }
+  section h3{font-size:1.15rem; margin-top:26px;}
+
+  blockquote.def{
+    margin:18px 0;
+    padding:18px 22px;
+    background:var(--gold-soft);
+    border-left:4px solid var(--gold);
+    border-radius:3px;
+    font-size:1rem;
+  }
+  blockquote.def b{color:var(--forest);}
+
+  /* Callouts */
+  .callout{
+    padding:16px 20px;
+    border-radius:4px;
+    margin:20px 0;
+    font-size:.94rem;
+    border:1px solid var(--line);
+  }
+  .callout.tip{background:#eef2ec; border-left:4px solid var(--forest-dim);}
+  .callout.warn{background:var(--rust-soft); border-left:4px solid var(--rust);}
+  .callout strong.label{
+    display:block; font-family:'JetBrains Mono', monospace;
+    font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    margin-bottom:6px; color:var(--rust);
+  }
+  .callout.tip strong.label{color:var(--forest-dim);}
+
+  /* Status rail (admission-stage style timeline) */
+  .status-rail{
+    margin:24px 0 8px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    border-left:2px solid var(--line);
+    padding-left:0;
+  }
+  .status-step{
+    position:relative;
+    padding:16px 0 16px 28px;
+    border-bottom:1px solid var(--line);
+  }
+  .status-step:last-child{border-bottom:none;}
+  .status-step::before{
+    content:"";
+    position:absolute; left:-7px; top:22px;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--forest-dim);
+  }
+  .status-step.final::before{background:var(--gold); border-color:var(--gold);}
+  .status-step.negative::before{background:var(--rust); border-color:var(--rust);}
+  .status-step .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.72rem;
+    letter-spacing:.05em;
+    color:var(--forest-dim);
+    text-transform:uppercase;
+  }
+  .status-step h4{margin:4px 0 6px; font-family:'Fraunces',serif; font-size:1.08rem; color:var(--ink); font-weight:600;}
+  .status-step p{margin:0; font-size:.93rem; color:var(--muted);}
 
   /* Tables & Code */
   table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.92rem;}
-  thead th{background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 12px;}
-  tbody td{padding:10px 12px; border-bottom:1px solid var(--line);}
+  thead th{background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 12px; font-weight:600;}
+  tbody td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tbody tr:nth-child(even){background:#f2ede0;}
   pre{
     background:var(--paper-raised);
     border:1px solid var(--line);
@@ -144,6 +255,114 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
     font-family:'JetBrains Mono', monospace;
     font-size:.85rem;
   }
+
+  /* Deadline strip */
+  .deadline-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px; margin:20px 0;
+  }
+  .deadline-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:16px;
+  }
+  .deadline-card .date{
+    font-family:'JetBrains Mono', monospace; color:var(--rust); font-size:1.05rem; font-weight:500;
+  }
+  .deadline-card .who{font-size:.85rem; color:var(--muted); margin-top:4px;}
+
+  /* Numbered steps */
+  ol.steps{padding-left:0; list-style:none; counter-reset:step;}
+  ol.steps li{
+    counter-increment:step;
+    padding:10px 0 10px 42px;
+    position:relative;
+    border-bottom:1px dashed var(--line);
+  }
+  ol.steps li:last-child{border-bottom:none;}
+  ol.steps li::before{
+    content:counter(step);
+    position:absolute; left:0; top:8px;
+    width:26px; height:26px;
+    background:var(--forest);
+    color:#fbf7ec;
+    border-radius:50%;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.8rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* FAQ accordion */
+  details.faq{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:2px 20px;
+    margin-bottom:10px;
+  }
+  details.faq summary{
+    cursor:pointer;
+    padding:14px 0;
+    font-weight:600;
+    color:var(--forest);
+    list-style:none;
+    display:flex; justify-content:space-between; align-items:center;
+    gap:12px;
+  }
+  details.faq summary::-webkit-details-marker{display:none;}
+  details.faq summary::after{
+    content:"+";
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.2rem; color:var(--gold); flex-shrink:0;
+  }
+  details.faq[open] summary::after{content:"–";}
+  details.faq p{padding-bottom:16px; margin:0; color:var(--muted); font-size:.94rem;}
+
+  /* Action plan closer */
+  .action-plan{
+    background:var(--forest);
+    color:#f0ece0;
+    border-radius:8px;
+    padding:28px 26px;
+    margin-top:8px;
+  }
+  .action-plan h3{color:#fbf7ec; margin-top:0;}
+  .action-plan ul{padding-left:1.2em; margin:14px 0 0;}
+  .action-plan li{margin-bottom:12px; font-size:.95rem; color:#d9d3bf;}
+  .action-plan li b{color:#fbf7ec;}
+
+  .correction-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.68rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--forest-dim);
+    color:#dff0e7;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+
+  /* Back to top */
+  .back-to-top{
+    position:fixed;
+    bottom:24px; right:24px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--forest);
+    color:#fbf7ec;
+    border:none;
+    font-size:1.2rem;
+    cursor:pointer;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, background .2s ease;
+    box-shadow:0 8px 20px -8px rgba(11,61,46,0.5);
+    z-index:999;
+  }
+  .back-to-top.visible{opacity:1; pointer-events:auto;}
+  .back-to-top:hover{background:var(--forest-dim);}
 
   footer{
     text-align:center;
@@ -156,6 +375,8 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
 </style>
 </head>
 <body>
+
+<div class="progress-bar" id="progressBar" aria-hidden="true"></div>
 
 <header>
   <div class="nav-inner">
@@ -171,18 +392,75 @@ const displayDate = new Date(frontmatter.date).toLocaleDateString('en-US', { yea
     <p class="lede">{frontmatter.description}</p>
     <div class="hero-meta">
       <span>Reviewed <b>{displayDate}</b></span>
+      <span>Read time <b id="readingTime">–</b></span>
+      {frontmatter.meta && frontmatter.meta.map((item) => (
+        <span>{item.label} <b>{item.value}</b></span>
+      ))}
     </div>
   </div>
 </div>
 
 <div class="wrap">
   <!-- Article Content Renders Here -->
-  <slot /> 
+  <slot />
 </div>
 
 <footer>
   © 2026 Ultimate Edge Blog — All rights reserved.
 </footer>
+
+<button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+  // Reading progress bar
+  const progressBar = document.getElementById('progressBar');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    if (progressBar) progressBar.style.width = progress + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Estimated reading time, computed from the rendered article text
+  const articleEl = document.querySelector('.wrap');
+  const readingTimeEl = document.getElementById('readingTime');
+  if (articleEl && readingTimeEl) {
+    const wordCount = (articleEl.innerText || '').trim().split(/\s+/).filter(Boolean).length;
+    readingTimeEl.textContent = Math.max(1, Math.round(wordCount / 225)) + ' min';
+  }
+
+  // Scrollspy: highlight the active section in the table of contents
+  const tocLinks = document.querySelectorAll('nav.toc a[href^="#"]');
+  const sections = document.querySelectorAll('section[id]');
+  if (tocLinks.length && sections.length && 'IntersectionObserver' in window) {
+    const tocMap = new Map();
+    tocLinks.forEach((link) => tocMap.set(link.getAttribute('href').slice(1), link));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const link = tocMap.get(entry.target.id);
+        if (link) {
+          tocLinks.forEach((l) => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  // Back-to-top button
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 600);
+    }, { passive: true });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
 
 </body>
 </html>
