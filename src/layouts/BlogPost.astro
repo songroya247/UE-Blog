@@ -7,6 +7,23 @@ const rawDate = frontmatter.date ? new Date(frontmatter.date) : new Date();
 const displayDate = !isNaN(rawDate.getTime())
   ? rawDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   : 'Recently updated';
+
+// --- DYNAMIC AUTHOR LOGIC (DEFAULT SOLOMON OBAFEMI vs GUEST AUTHOR) ---
+const isGuestPost = Boolean(frontmatter.author);
+const authorName = frontmatter.author || "Solomon Obafemi";
+const authorBio = frontmatter.authorBio || "Solomon Obafemi is an entrepreneur, educator, and content creator dedicated to making complex topics simple and practical. He publishes well-researched articles on education, technology, digital skills, and personal development to help readers make informed decisions.";
+
+// Compute avatar initials (e.g. "Solomon Obafemi" -> "SO", "Grace Adebayo" -> "GA")
+const authorAvatar = authorName
+  .split(' ')
+  .map(name => name[0])
+  .join('')
+  .toUpperCase()
+  .slice(0, 2);
+
+// Dynamic AI Disclosure
+const aiDisclosure = frontmatter.aiDisclosure || 
+  `Some articles are created with the assistance of AI as a research and writing tool. Every piece is reviewed, fact-checked, edited, and approved by ${authorName} before publication.`;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +83,7 @@ const displayDate = !isNaN(rawDate.getTime())
   a{color:var(--forest-dim);}
   a:hover{color:var(--gold);}
 
+  /* Reading progress bar */
   .progress-bar{
     position:fixed; top:0; left:0;
     height:3px;
@@ -75,6 +93,7 @@ const displayDate = !isNaN(rawDate.getTime())
     transition:width .1s ease-out;
   }
 
+  /* Header Nav */
   header{
     background:var(--forest);
     padding:14px 24px;
@@ -95,6 +114,7 @@ const displayDate = !isNaN(rawDate.getTime())
     font-size:1.1rem;
   }
 
+  /* Hero Section */
   .hero{
     background:
       radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%),
@@ -141,8 +161,10 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .hero-meta span b{color:#fbf7ec; font-weight:500;}
 
+  /* Content Area */
   .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
 
+  /* Notice banner - Layering fix */
   .notice{
     position:relative;
     z-index:2;
@@ -158,6 +180,7 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .notice b{color:var(--forest);}
 
+  /* Table of contents */
   nav.toc{
     background:var(--paper-raised);
     border:1px solid var(--line);
@@ -190,6 +213,7 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   blockquote.def b{color:var(--forest);}
 
+  /* Callouts */
   .callout{
     padding:16px 20px;
     border-radius:4px;
@@ -206,6 +230,7 @@ const displayDate = !isNaN(rawDate.getTime())
   }
   .callout.tip strong.label{color:var(--forest-dim);}
 
+  /* Status rail */
   .status-rail{
     margin:24px 0 8px;
     display:flex;
@@ -240,6 +265,7 @@ const displayDate = !isNaN(rawDate.getTime())
   .status-step h4{margin:4px 0 6px; font-family:'Fraunces',serif; font-size:1.08rem; color:var(--ink); font-weight:600;}
   .status-step p{margin:0; font-size:.93rem; color:var(--muted);}
 
+  /* Mobile-friendly table horizontal scroll */
   table{
     display:block;
     width:100%;
@@ -254,6 +280,7 @@ const displayDate = !isNaN(rawDate.getTime())
   tbody td{padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
   tbody tr:nth-child(even){background:#f2ede0;}
 
+  /* Numbered steps */
   ol.steps{padding-left:0; list-style:none; counter-reset:step;}
   ol.steps li{
     counter-increment:step;
@@ -274,6 +301,7 @@ const displayDate = !isNaN(rawDate.getTime())
     display:flex; align-items:center; justify-content:center;
   }
 
+  /* FAQ accordion */
   details.faq{
     background:var(--paper-raised);
     border:1px solid var(--line);
@@ -299,6 +327,7 @@ const displayDate = !isNaN(rawDate.getTime())
   details.faq[open] summary::after{content:"–";}
   details.faq p{padding-bottom:16px; margin:0; color:var(--muted); font-size:.94rem;}
 
+  /* Action plan closer */
   .action-plan{
     background:var(--forest);
     color:#f0ece0;
@@ -311,7 +340,7 @@ const displayDate = !isNaN(rawDate.getTime())
   .action-plan li{margin-bottom:12px; font-size:.95rem; color:#d9d3bf;}
   .action-plan li b{color:#fbf7ec;}
 
-  /* --- AUTHOR BIO & AI DISCLOSURE --- */
+  /* About the Author & AI Disclosure Box */
   .author-box {
     background: var(--paper-raised);
     border: 1px solid var(--line);
@@ -381,6 +410,7 @@ const displayDate = !isNaN(rawDate.getTime())
     }
   }
 
+  /* Back to top */
   .back-to-top{
     position:fixed;
     bottom:24px; right:24px;
@@ -442,15 +472,13 @@ const displayDate = !isNaN(rawDate.getTime())
 
   <!-- About the Author & AI Disclosure -->
   <div class="author-box">
-    <div class="author-avatar">SO</div>
+    <div class="author-avatar">{authorAvatar}</div>
     <div class="author-content">
-      <span class="author-label">About the Author</span>
-      <h4 class="author-name">Solomon Obafemi</h4>
-      <p class="author-bio-text">
-        Solomon Obafemi is an entrepreneur, educator, and content creator dedicated to making complex topics simple and practical. He publishes well-researched articles on education, technology, digital skills, and personal development to help readers make informed decisions.
-      </p>
+      <span class="author-label">{isGuestPost ? "Guest Author" : "About the Author"}</span>
+      <h4 class="author-name">{authorName}</h4>
+      <p class="author-bio-text">{authorBio}</p>
       <p class="ai-disclosure">
-        <strong>AI Disclosure:</strong> Some articles are created with the assistance of AI as a research and writing tool. Every piece is reviewed, fact-checked, edited, and approved by Solomon Obafemi before publication.
+        <strong>AI Disclosure:</strong> {aiDisclosure}
       </p>
     </div>
   </div>
@@ -463,6 +491,7 @@ const displayDate = !isNaN(rawDate.getTime())
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
+  // Reading progress bar
   const progressBar = document.getElementById('progressBar');
   function updateProgress() {
     const scrollTop = window.scrollY;
@@ -473,6 +502,7 @@ const displayDate = !isNaN(rawDate.getTime())
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
 
+  // Estimated reading time
   const articleEl = document.querySelector('.wrap');
   const readingTimeEl = document.getElementById('readingTime');
   if (articleEl && readingTimeEl) {
@@ -480,6 +510,7 @@ const displayDate = !isNaN(rawDate.getTime())
     readingTimeEl.textContent = Math.max(1, Math.round(wordCount / 225)) + ' min';
   }
 
+  // Scrollspy for Table of Contents
   const tocLinks = document.querySelectorAll('nav.toc a[href^="#"]');
   const sections = document.querySelectorAll('section[id]');
   if (tocLinks.length && sections.length && 'IntersectionObserver' in window) {
@@ -498,6 +529,7 @@ const displayDate = !isNaN(rawDate.getTime())
     sections.forEach((section) => observer.observe(section));
   }
 
+  // Back-to-top button
   const backToTop = document.getElementById('backToTop');
   if (backToTop) {
     window.addEventListener('scroll', () => {
