@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Welcome to Ultimate Edge Blog: Your Practical Guide to Admissions & Exams"
 category: "Announcement"
 description: "Discover practical, well-researched guides on JAMB, WAEC, Post-UTME, and Nigerian university admissions designed to give you a competitive edge."
-date: "TBD"
+date: "2026-07-28"
 meta:
   - label: "Platform"
     value: "blog.ultimateedge.info"
