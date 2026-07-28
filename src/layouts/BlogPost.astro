@@ -24,6 +24,25 @@ const authorAvatar = authorName
 // Dynamic AI Disclosure
 const aiDisclosure = frontmatter.aiDisclosure || 
   `Some articles are created with the assistance of AI as a research and writing tool. Every piece is reviewed, fact-checked, edited, and approved by ${authorName} before publication.`;
+
+// --- AUTOMATED RELATED ARTICLES FOR INTERNAL SEO ---
+const allPosts = await Astro.glob('../pages/posts/*.md');
+const now = new Date();
+
+// Filter: Only published posts, excluding current viewing page
+const publishedPosts = allPosts.filter(p => 
+  new Date(p.frontmatter.date) <= now && p.url !== Astro.url.pathname
+);
+
+// Find posts in same category first
+const relatedCategoryPosts = publishedPosts
+  .filter(p => p.frontmatter.category === frontmatter.category)
+  .slice(0, 3);
+
+// Fallback to latest published posts if category has less than 3
+const finalRelatedPosts = relatedCategoryPosts.length >= 3
+  ? relatedCategoryPosts
+  : [...relatedCategoryPosts, ...publishedPosts.filter(p => !relatedCategoryPosts.includes(p))].slice(0, 3);
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -340,6 +359,182 @@ const aiDisclosure = frontmatter.aiDisclosure ||
   .action-plan li{margin-bottom:12px; font-size:.95rem; color:#d9d3bf;}
   .action-plan li b{color:#fbf7ec;}
 
+  /* --- ARTICLE ENGAGEMENT: LIKES & SHARE BUTTONS --- */
+  .article-engagement {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin: 40px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .feedback-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .feedback-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--forest);
+  }
+  .feedback-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .reaction-btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .reaction-btn:hover {
+    border-color: var(--forest);
+    background: #ffffff;
+  }
+  .reaction-btn.voted {
+    background: var(--forest);
+    color: #fbf7ec;
+    border-color: var(--forest);
+  }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 2px 6px;
+    border-radius: 10px;
+  }
+  .reaction-btn.voted .badge {
+    background: var(--gold);
+    color: var(--forest);
+  }
+  .feedback-thanks {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--forest-dim);
+    font-weight: 600;
+  }
+
+  /* Share Box */
+  .share-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .share-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .share-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px;
+  }
+  .share-card {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .share-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+  }
+  .share-card.wa { background: #e7f7ed; color: #0d5c2e; border-color: #b8e6cf; }
+  .share-card.fb { background: #e8f0fe; color: #1877f2; border-color: #c3d9fc; }
+  .share-card.x  { background: #f1f3f4; color: #000000; border-color: #dadce0; }
+  .share-card.tg { background: #e3f2fd; color: #0088cc; border-color: #bbdefb; }
+
+  /* --- DYNAMIC RELATED ARTICLES STYLING --- */
+  .related-articles-box {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 30px 0 30px;
+  }
+  .related-articles-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    color: var(--forest);
+    margin: 0 0 16px;
+    border-bottom: 2px solid var(--gold-soft);
+    padding-bottom: 8px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .related-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--gold);
+  }
+  .related-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .related-card h4 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .related-read {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--forest-dim);
+    font-weight: 600;
+  }
+
   /* About the Author & AI Disclosure Box */
   .author-box {
     background: var(--paper-raised);
@@ -347,7 +542,7 @@ const aiDisclosure = frontmatter.aiDisclosure ||
     border-left: 4px solid var(--forest);
     border-radius: 6px;
     padding: 24px;
-    margin: 48px 0 32px;
+    margin: 30px 0;
     display: flex;
     align-items: flex-start;
     gap: 18px;
@@ -410,6 +605,26 @@ const aiDisclosure = frontmatter.aiDisclosure ||
     }
   }
 
+  /* Comments Section */
+  .comments-wrapper {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 30px 0 40px;
+  }
+  .comments-header h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--forest);
+    margin: 0 0 6px;
+  }
+  .comments-sub {
+    font-size: 0.92rem;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+
   /* Back to top */
   .back-to-top{
     position:fixed;
@@ -470,6 +685,65 @@ const aiDisclosure = frontmatter.aiDisclosure ||
   <!-- Article Content Renders Here -->
   <slot />
 
+  <!-- ARTICLE ENGAGEMENT: LIKES & SHARE BUTTONS -->
+  <div class="article-engagement">
+    
+    <!-- Like / Reaction Widget -->
+    <div class="feedback-box">
+      <span class="feedback-title">Was this guide helpful?</span>
+      <div class="feedback-buttons">
+        <button id="likeBtn" class="reaction-btn like-btn" aria-label="Helpful">
+          👍 <span id="likeText">Useful</span> <span id="likeCount" class="badge">12</span>
+        </button>
+        <button id="dislikeBtn" class="reaction-btn dislike-btn" aria-label="Not Helpful">
+          👎 Needs Update
+        </button>
+      </div>
+      <span id="feedbackThanks" class="feedback-thanks" style="display:none;">
+        Thanks for your feedback!
+      </span>
+    </div>
+
+    <!-- Social Share Bar (Tailored for Nigerian Audience) -->
+    <div class="share-box">
+      <span class="share-title">SHARE THIS GUIDE</span>
+      <div class="share-grid">
+        <a id="shareWA" href="#" target="_blank" rel="noopener" class="share-card wa">
+          <span>💬</span> WhatsApp
+        </a>
+        <a id="shareFB" href="#" target="_blank" rel="noopener" class="share-card fb">
+          <span>📘</span> Facebook
+        </a>
+        <a id="shareX" href="#" target="_blank" rel="noopener" class="share-card x">
+          <span>🖤</span> X / Twitter
+        </a>
+        <a id="shareTG" href="#" target="_blank" rel="noopener" class="share-card tg">
+          <span>✈️</span> Telegram
+        </a>
+        <button id="copyLinkBtn" class="share-card copy">
+          <span>📋</span> <span id="copyText">Copy Link</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DYNAMIC RELATED GUIDES (INTERNAL SEO) -->
+  {finalRelatedPosts.length > 0 && (
+    <div class="related-articles-box">
+      <h3>Related Admission Guides & Articles</h3>
+      <div class="related-grid">
+        {finalRelatedPosts.map(post => (
+          <a href={post.url} class="related-card">
+            <span class="related-category">{post.frontmatter.category}</span>
+            <h4>{post.frontmatter.title}</h4>
+            <span class="related-read">Read Guide →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
   <!-- About the Author & AI Disclosure -->
   <div class="author-box">
     <div class="author-avatar">{authorAvatar}</div>
@@ -482,6 +756,34 @@ const aiDisclosure = frontmatter.aiDisclosure ||
       </p>
     </div>
   </div>
+
+  <!-- COMMENTS SECTION (GISCUS) -->
+  <section class="comments-wrapper" id="discussion">
+    <div class="comments-header">
+      <h3>Questions & Discussion</h3>
+      <p>Have questions about your admission, cut-off mark, or screening? Leave a comment below.</p>
+    </div>
+
+    <!-- Giscus Comment Embed Container -->
+    <div class="giscus-box">
+      <script 
+        src="https://giscus.app/client.js"
+        data-repo="songroya247/UE-Blog"
+        data-repo-id="R_kgDOTjhrhw"
+        data-category="General"
+        data-category-id="DIC_kwDOTjhrh84DCLsO"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="light"
+        data-lang="en"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </div>
+  </section>
 </div>
 
 <footer>
@@ -537,6 +839,69 @@ const aiDisclosure = frontmatter.aiDisclosure ||
     }, { passive: true });
     backToTop.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // DYNAMIC SHARE BUTTONS
+  const pageUrl = window.location.href;
+  const pageTitle = document.title;
+
+  const waBtn = document.getElementById('shareWA');
+  const fbBtn = document.getElementById('shareFB');
+  const xBtn  = document.getElementById('shareX');
+  const tgBtn = document.getElementById('shareTG');
+  const copyBtn = document.getElementById('copyLinkBtn');
+  const copyText = document.getElementById('copyText');
+
+  if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(pageTitle + ' - ' + pageUrl)}`;
+  if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+  if (xBtn)  xBtn.href  = `https://twitter.com/intent/tweet?text=${encodeURIComponent(pageTitle)}&url=${encodeURIComponent(pageUrl)}`;
+  if (tgBtn) tgBtn.href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(pageUrl).then(() => {
+        if (copyText) copyText.textContent = "Copied! ✓";
+        setTimeout(() => { if (copyText) copyText.textContent = "Copy Link"; }, 2000);
+      });
+    });
+  }
+
+  // LIKE / REACTION WIDGET (LocalStorage)
+  const likeBtn = document.getElementById('likeBtn');
+  const dislikeBtn = document.getElementById('dislikeBtn');
+  const likeCountEl = document.getElementById('likeCount');
+  const thanksEl = document.getElementById('feedbackThanks');
+
+  const postKey = 'voted_' + window.location.pathname;
+  let currentLikes = parseInt(localStorage.getItem('likes_' + window.location.pathname) || '14', 10);
+
+  if (likeCountEl) likeCountEl.textContent = currentLikes;
+
+  if (localStorage.getItem(postKey)) {
+    if (likeBtn) likeBtn.classList.add('voted');
+    if (dislikeBtn) dislikeBtn.disabled = true;
+  }
+
+  if (likeBtn && !localStorage.getItem(postKey)) {
+    likeBtn.addEventListener('click', () => {
+      currentLikes += 1;
+      localStorage.setItem('likes_' + window.location.pathname, currentLikes);
+      localStorage.setItem(postKey, 'true');
+      
+      if (likeCountEl) likeCountEl.textContent = currentLikes;
+      likeBtn.classList.add('voted');
+      if (dislikeBtn) dislikeBtn.disabled = true;
+      if (thanksEl) thanksEl.style.display = 'inline';
+    });
+  }
+
+  if (dislikeBtn && !localStorage.getItem(postKey)) {
+    dislikeBtn.addEventListener('click', () => {
+      localStorage.setItem(postKey, 'true');
+      dislikeBtn.classList.add('voted');
+      if (likeBtn) likeBtn.disabled = true;
+      if (thanksEl) thanksEl.style.display = 'inline';
     });
   }
 </script>
