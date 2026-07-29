@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB CAPS Explained: 2026/2027 Admission Status & Guide"
 category: "Admissions"
 description: "Your status roadmap for the Central Admissions Processing System — how to read it, when to act, and what the four-week rule actually means this cycle."
-date: "TBD"
+date: "2026-07-29"
 meta:
   - label: "Registrar (from Aug 2026)"
     value: "Prof. Segun Aina"
