@@ -1,0 +1,56 @@
+# Ultimate Edge Blog
+
+> Practical, fact-checked guides on JAMB, WAEC, NECO, Post-UTME, and Nigerian university admissions — covering JAMB CAPS mechanics, result checking, aggregate score calculation, cut-off marks, and alternative admission pathways.
+
+## JAMB CAPS & Admission Status
+
+- [JAMB CAPS Explained](https://blog.ultimateedge.info/posts/jamb-caps-explained): What the Central Admissions Processing System is, how to navigate it, and the four-week acceptance rule.
+- [How to Check JAMB CAPS Admission Status](https://blog.ultimateedge.info/posts/how-to-check-jamb-caps-admission-status): Step-by-step guide to checking your admission status on CAPS.
+- [How to Accept Admission on JAMB CAPS](https://blog.ultimateedge.info/posts/how-to-accept-admission-on-jamb-caps): How to accept an admission offer via the portal or SMS.
+- [What to Do If JAMB CAPS Says Not Admitted](https://blog.ultimateedge.info/posts/what-to-do-if-jamb-caps-says-not-admitted): Troubleshooting steps when your status shows no offer yet.
+- [Admission in Progress Status Meaning](https://blog.ultimateedge.info/posts/admission-in-progress-status-meaning): What the AIP status means and what happens next.
+- [JAMB Change of Course Form](https://blog.ultimateedge.info/posts/jamb-change-of-course-form): How to change your registered course on JAMB.
+- [JAMB Change of Institution Portal](https://blog.ultimateedge.info/posts/jamb-change-of-institution-portal): How to change your registered institution.
+- [How to Retrieve JAMB Profile Code](https://blog.ultimateedge.info/posts/how-to-retrieve-jamb-profile-code): Recovering a lost JAMB profile code via SMS.
+- [How to Upload O'Level Result on JAMB Portal](https://blog.ultimateedge.info/posts/how-to-upload-olevel-result-jamb-portal): Uploading WAEC/NECO results to your JAMB profile.
+
+## WAEC & NECO Results
+
+- [WAEC Result Checker Guide](https://blog.ultimateedge.info/posts/waec-result-checker-guide): Complete guide to checking WASSCE results online, via SMS, and via app.
+- [How to Check WAEC Result on Phone](https://blog.ultimateedge.info/posts/how-to-check-waec-result-on-phone): Mobile-specific steps for checking WAEC results.
+- [NECO Result Checker Portal](https://blog.ultimateedge.info/posts/neco-result-checker-portal): How to check NECO results online.
+
+## Post-UTME
+
+- [JAMB vs Post-UTME Difference](https://blog.ultimateedge.info/posts/jamb-vs-post-utme-difference): How JAMB UTME and institutional Post-UTME screening differ.
+- [Post-UTME Past Questions Free Download](https://blog.ultimateedge.info/posts/post-utme-past-questions-free-download): Where to find legitimate past questions for Post-UTME prep.
+- [How to Calculate Post-UTME Screening Score](https://blog.ultimateedge.info/posts/how-to-calculate-post-utme-screening-score): Aggregate score formulas by institution (UNILAG, UI, and others).
+
+## Cut-Off Marks & Eligibility
+
+- [Top Nigerian Universities Cut-Off Marks](https://blog.ultimateedge.info/posts/top-nigerian-universities-cutoff): Federal, state, and private university cut-off marks and admission insights.
+- [JAMB Score and University Requirements](https://blog.ultimateedge.info/posts/jamb-score-university-requirement): How your UTME score fits into a university's overall requirements.
+- [JAMB Score Below 180 Options](https://blog.ultimateedge.info/posts/jamb-score-below-180-options): Admission options for candidates scoring below 180.
+- [Courses for Low JAMB Score in Nigeria](https://blog.ultimateedge.info/posts/courses-low-jamb-score-nigeria): Courses with more accessible cut-off requirements.
+- [Universities That Accept 150 JAMB Score](https://blog.ultimateedge.info/posts/universities-that-accept-150-jamb-score): Institutions with lower score requirements.
+- [State Universities Cut-Off Mark](https://blog.ultimateedge.info/posts/state-universities-cutoff-mark): Cut-off marks specific to Nigerian state universities.
+
+## Alternative Admission Pathways
+
+- [Failed JAMB — What to Do](https://blog.ultimateedge.info/posts/failed-jamb-what-to-do): Options after an unsuccessful JAMB attempt.
+- [Direct Entry Registration Guidelines Nigeria](https://blog.ultimateedge.info/posts/direct-entry-registration-guidelines-nigeria): How Direct Entry admission works and how to register.
+- [Private Universities Admitting Without JAMB UTME](https://blog.ultimateedge.info/posts/private-universities-admitting-without-jamb-utme): Institutions with alternative admission routes.
+- [NOUN Admission Guide](https://blog.ultimateedge.info/posts/noun-admission-guide): Complete guide to admission at the National Open University of Nigeria.
+
+## University-Specific Guides
+
+- [UI Post-UTME Cut-Off Mark](https://blog.ultimateedge.info/posts/ui-post-utme-cutoff-mark): University of Ibadan-specific cut-off marks and screening details.
+- [UNIBEN Post-UTME Screening Dates](https://blog.ultimateedge.info/posts/uniben-post-utme-screening-dates): University of Benin Post-UTME screening timeline.
+- [UNILAG Post-UTME Preparation](https://blog.ultimateedge.info/posts/unilag-post-utme-preparation): University of Lagos Post-UTME preparation guide.
+- [UNN Post-UTME Screening Guide](https://blog.ultimateedge.info/posts/unn-post-utme-screening-guide): University of Nigeria, Nsukka Post-UTME guide.
+- [LASU Admission List Checker](https://blog.ultimateedge.info/posts/lasu-admission-list-checker): Lagos State University admission list and LACACA clearance process.
+
+## About
+
+- [About Ultimate Edge Blog](https://blog.ultimateedge.info/about): Who publishes this site and our editorial approach.
+- [Contact](https://blog.ultimateedge.info/contact): How to reach us with corrections or questions.
