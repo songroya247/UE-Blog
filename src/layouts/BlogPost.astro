@@ -1,6 +1,7 @@
 ---
 const { frontmatter } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
+const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || 'unknown';
 
 // Safe date parser
 const rawDate = frontmatter.date ? new Date(frontmatter.date) : new Date();
@@ -359,122 +360,34 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   .action-plan li{margin-bottom:12px; font-size:.95rem; color:#d9d3bf;}
   .action-plan li b{color:#fbf7ec;}
 
-  /* --- ARTICLE ENGAGEMENT: LIKES & SHARE BUTTONS --- */
-  .article-engagement {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 22px 24px;
-    margin: 40px 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  /* Engagement: Share, Like, Comments */
+  .engagement{
+    margin-top:32px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
   }
-  .feedback-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-bottom: 18px;
-    border-bottom: 1px dashed var(--line);
+  .engagement-bar{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
+    margin-bottom:32px;
   }
-  .feedback-title {
-    font-family: 'Fraunces', serif;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--forest);
+  .like-btn{
+    display:flex; align-items:center; gap:8px;
+    background:var(--paper-raised); border:1.5px solid var(--gold-soft);
+    color:var(--forest); font-family:'Source Sans 3', sans-serif; font-weight:600; font-size:.92rem;
+    padding:9px 18px; border-radius:999px; cursor:pointer; transition:all .15s ease;
   }
-  .feedback-buttons {
-    display: flex;
-    gap: 10px;
+  .like-btn:hover{border-color:var(--gold); background:var(--gold-soft);}
+  .like-btn.liked{background:var(--rust-soft); border-color:var(--rust); color:var(--rust);}
+  .like-btn.liked #likeIcon{color:var(--rust);}
+  #likeIcon{font-size:1.1rem;}
+  .share-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .share-label{font-size:.85rem; color:var(--muted); margin-right:2px;}
+  .share-btn{
+    font-family:'Source Sans 3', sans-serif; font-size:.82rem; font-weight:600;
+    background:var(--paper-raised); border:1.5px solid var(--line); color:var(--forest-dim);
+    padding:7px 14px; border-radius:999px; cursor:pointer; text-decoration:none; transition:all .15s ease;
   }
-  .reaction-btn {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .reaction-btn:hover {
-    border-color: var(--forest);
-    background: #ffffff;
-  }
-  .reaction-btn.voted {
-    background: var(--forest);
-    color: #fbf7ec;
-    border-color: var(--forest);
-  }
-  .badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    background: rgba(0, 0, 0, 0.08);
-    padding: 2px 6px;
-    border-radius: 10px;
-  }
-  .reaction-btn.voted .badge {
-    background: var(--gold);
-    color: var(--forest);
-  }
-  .feedback-thanks {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: var(--forest-dim);
-    font-weight: 600;
-  }
-
-  /* Share Box */
-  .share-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .share-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    font-weight: 600;
-  }
-  .share-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 10px;
-  }
-  .share-card {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 10px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--line);
-    background: var(--paper);
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: transform 0.15s ease, border-color 0.15s ease;
-  }
-  .share-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--gold);
-  }
-  .share-card.wa { background: #e7f7ed; color: #0d5c2e; border-color: #b8e6cf; }
-  .share-card.fb { background: #e8f0fe; color: #1877f2; border-color: #c3d9fc; }
-  .share-card.x  { background: #f1f3f4; color: #000000; border-color: #dadce0; }
-  .share-card.tg { background: #e3f2fd; color: #0088cc; border-color: #bbdefb; }
+  .share-btn:hover{border-color:var(--forest-dim); background:var(--gold-soft); color:var(--forest);}
 
   /* --- DYNAMIC RELATED ARTICLES STYLING --- */
   .related-articles-box {
@@ -605,25 +518,45 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
     }
   }
 
-  /* Comments Section */
-  .comments-wrapper {
-    background: var(--paper-raised);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 28px 24px;
-    margin: 30px 0 40px;
+  .comments-section{margin-top:8px;}
+  .comments-heading{
+    font-family:'Fraunces', serif; font-size:1.5rem; color:var(--forest); margin-bottom:18px;
   }
-  .comments-header h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
-    color: var(--forest);
-    margin: 0 0 6px;
+  .comment-form{
+    display:flex; flex-direction:column; gap:10px; margin-bottom:32px;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:18px;
   }
-  .comments-sub {
-    font-size: 0.92rem;
-    color: var(--muted);
-    margin: 0 0 20px;
+  .comment-form input[type="text"], .comment-form textarea{
+    font-family:'Source Sans 3', sans-serif; font-size:.95rem; color:var(--ink);
+    border:1.5px solid var(--line); border-radius:8px; padding:10px 12px;
+    background:var(--paper); resize:vertical;
   }
+  .comment-form input[type="text"]:focus, .comment-form textarea:focus{
+    outline:none; border-color:var(--gold);
+  }
+  .comment-form textarea{min-height:90px;}
+  .honeypot{position:absolute; left:-9999px; width:1px; height:1px; opacity:0;}
+  .comment-submit{
+    align-self:flex-start;
+    font-family:'Source Sans 3', sans-serif; font-weight:600; font-size:.9rem;
+    background:var(--forest); color:#fbf7ec; border:none; border-radius:999px;
+    padding:10px 22px; cursor:pointer; transition:background .15s ease;
+  }
+  .comment-submit:hover{background:var(--forest-dim);}
+  .comment-submit:disabled{opacity:.6; cursor:not-allowed;}
+  .comment-status{font-size:.85rem; margin:0; min-height:1.2em;}
+  .comment-status.error{color:var(--rust);}
+  .comment-status.success{color:var(--forest-dim);}
+
+  .comments-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:16px;}
+  .comment-item{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:16px 18px;
+  }
+  .comment-item .comment-meta{display:flex; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .comment-item .comment-name{font-family:'Fraunces', serif; font-weight:600; color:var(--forest); font-size:.98rem;}
+  .comment-item .comment-date{font-size:.78rem; color:var(--muted);}
+  .comment-item .comment-body{font-size:.94rem; color:var(--ink); line-height:1.55; white-space:pre-wrap;}
+  .comments-loading, .comments-empty{color:var(--muted); font-size:.9rem; list-style:none;}
 
   /* Back to top */
   .back-to-top{
@@ -685,47 +618,22 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   <!-- Article Content Renders Here -->
   <slot />
 
-  <!-- ARTICLE ENGAGEMENT: LIKES & SHARE BUTTONS -->
-  <div class="article-engagement">
-    
-    <!-- Like / Reaction Widget -->
-    <div class="feedback-box">
-      <span class="feedback-title">Was this guide helpful?</span>
-      <div class="feedback-buttons">
-        <button id="likeBtn" class="reaction-btn like-btn" aria-label="Helpful">
-          👍 <span id="likeText">Useful</span> <span id="likeCount" class="badge">12</span>
-        </button>
-        <button id="dislikeBtn" class="reaction-btn dislike-btn" aria-label="Not Helpful">
-          👎 Needs Update
-        </button>
-      </div>
-      <span id="feedbackThanks" class="feedback-thanks" style="display:none;">
-        Thanks for your feedback!
-      </span>
-    </div>
+  <!-- Engagement: Share & Like -->
+  <div id="engagement" class="engagement" data-slug={postSlug} data-title={frontmatter.title}>
+    <div class="engagement-bar">
+      <button id="likeBtn" class="like-btn" type="button">
+        <span id="likeIcon">♡</span>
+        <span id="likeCount">0</span> Likes
+      </button>
 
-    <!-- Social Share Bar (Tailored for Nigerian Audience) -->
-    <div class="share-box">
-      <span class="share-title">SHARE THIS GUIDE</span>
-      <div class="share-grid">
-        <a id="shareWA" href="#" target="_blank" rel="noopener" class="share-card wa">
-          <span>💬</span> WhatsApp
-        </a>
-        <a id="shareFB" href="#" target="_blank" rel="noopener" class="share-card fb">
-          <span>📘</span> Facebook
-        </a>
-        <a id="shareX" href="#" target="_blank" rel="noopener" class="share-card x">
-          <span>🖤</span> X / Twitter
-        </a>
-        <a id="shareTG" href="#" target="_blank" rel="noopener" class="share-card tg">
-          <span>✈️</span> Telegram
-        </a>
-        <button id="copyLinkBtn" class="share-card copy">
-          <span>📋</span> <span id="copyText">Copy Link</span>
-        </button>
+      <div class="share-bar">
+        <span class="share-label">Share:</span>
+        <a id="shareWhatsapp" class="share-btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
+        <a id="shareX" class="share-btn" target="_blank" rel="noopener" aria-label="Share on X">X</a>
+        <a id="shareFacebook" class="share-btn" target="_blank" rel="noopener" aria-label="Share on Facebook">Facebook</a>
+        <button id="copyLinkBtn" class="share-btn" type="button">Copy Link</button>
       </div>
     </div>
-
   </div>
 
   <!-- DYNAMIC RELATED GUIDES (INTERNAL SEO) -->
@@ -757,32 +665,22 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
     </div>
   </div>
 
-  <!-- COMMENTS SECTION (GISCUS) -->
-  <section class="comments-wrapper" id="discussion">
-    <div class="comments-header">
-      <h3>Questions & Discussion</h3>
-      <p>Have questions about your admission, cut-off mark, or screening? Leave a comment below.</p>
-    </div>
+  <!-- Comments Section (native, no signup required) -->
+  <section class="comments-section" id="discussion">
+    <h2 class="comments-heading">Comments</h2>
 
-    <!-- Giscus Comment Embed Container -->
-    <div class="giscus-box">
-      <script 
-        src="https://giscus.app/client.js"
-        data-repo="songroya247/UE-Blog"
-        data-repo-id="R_kgDOTjhrhw"
-        data-category="General"
-        data-category-id="DIC_kwDOTjhrh84DCLsO"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="light"
-        data-lang="en"
-        crossorigin="anonymous"
-        async>
-      </script>
-    </div>
+    <form id="commentForm" class="comment-form">
+      <input type="text" id="commentName" name="name" placeholder="Your name" maxlength="60" required />
+      <textarea id="commentText" name="comment" placeholder="Join the discussion — no signup needed" maxlength="1000" required></textarea>
+      <!-- Honeypot field: hidden from real users via CSS, bots often fill it anyway -->
+      <input type="text" id="commentWebsite" name="website" class="honeypot" tabindex="-1" autocomplete="off" />
+      <button type="submit" class="comment-submit">Post Comment</button>
+      <p id="commentStatus" class="comment-status"></p>
+    </form>
+
+    <ul id="commentsList" class="comments-list">
+      <li class="comments-loading">Loading comments…</li>
+    </ul>
   </section>
 </div>
 
@@ -842,67 +740,163 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
     });
   }
 
-  // DYNAMIC SHARE BUTTONS
-  const pageUrl = window.location.href;
-  const pageTitle = document.title;
+  // --- Engagement: Share, Like, Comments ---
+  // Replace this with your deployed Worker's URL, e.g.
+  // "https://ue-blog-comments.yoursubdomain.workers.dev"
+  const API_BASE = "https://ue-blog-comments.YOUR-SUBDOMAIN.workers.dev";
 
-  const waBtn = document.getElementById('shareWA');
-  const fbBtn = document.getElementById('shareFB');
-  const xBtn  = document.getElementById('shareX');
-  const tgBtn = document.getElementById('shareTG');
-  const copyBtn = document.getElementById('copyLinkBtn');
-  const copyText = document.getElementById('copyText');
+  const engagementEl = document.getElementById('engagement');
+  if (engagementEl) {
+    const slug = engagementEl.dataset.slug;
+    const pageTitle = engagementEl.dataset.title || document.title;
+    const pageUrl = window.location.href;
 
-  if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(pageTitle + ' - ' + pageUrl)}`;
-  if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-  if (xBtn)  xBtn.href  = `https://twitter.com/intent/tweet?text=${encodeURIComponent(pageTitle)}&url=${encodeURIComponent(pageUrl)}`;
-  if (tgBtn) tgBtn.href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
+    // --- Share buttons ---
+    const shareText = encodeURIComponent(pageTitle);
+    const shareUrl = encodeURIComponent(pageUrl);
+    const wa = document.getElementById('shareWhatsapp');
+    const x = document.getElementById('shareX');
+    const fb = document.getElementById('shareFacebook');
+    if (wa) wa.href = `https://wa.me/?text=${shareText}%20${shareUrl}`;
+    if (x) x.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+    if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
 
-  if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(pageUrl).then(() => {
-        if (copyText) copyText.textContent = "Copied! ✓";
-        setTimeout(() => { if (copyText) copyText.textContent = "Copy Link"; }, 2000);
+    const copyBtn = document.getElementById('copyLinkBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(pageUrl);
+          const original = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = original; }, 1800);
+        } catch (e) {
+          // Clipboard API unavailable — silently ignore
+        }
       });
-    });
-  }
+    }
 
-  // LIKE / REACTION WIDGET (LocalStorage)
-  const likeBtn = document.getElementById('likeBtn');
-  const dislikeBtn = document.getElementById('dislikeBtn');
-  const likeCountEl = document.getElementById('likeCount');
-  const thanksEl = document.getElementById('feedbackThanks');
+    // --- Likes (real, shared count via D1 — not per-browser fake) ---
+    const likeBtn = document.getElementById('likeBtn');
+    const likeCountEl = document.getElementById('likeCount');
+    const likedKey = `liked:${slug}`;
 
-  const postKey = 'voted_' + window.location.pathname;
-  let currentLikes = parseInt(localStorage.getItem('likes_' + window.location.pathname) || '14', 10);
+    async function loadLikes() {
+      try {
+        const res = await fetch(`${API_BASE}/likes?slug=${encodeURIComponent(slug)}`);
+        const data = await res.json();
+        likeCountEl.textContent = data.count ?? 0;
+      } catch (e) {
+        likeCountEl.textContent = '0';
+      }
+    }
 
-  if (likeCountEl) likeCountEl.textContent = currentLikes;
+    if (localStorage.getItem(likedKey)) {
+      likeBtn.classList.add('liked');
+      document.getElementById('likeIcon').textContent = '♥';
+    }
 
-  if (localStorage.getItem(postKey)) {
-    if (likeBtn) likeBtn.classList.add('voted');
-    if (dislikeBtn) dislikeBtn.disabled = true;
-  }
+    if (likeBtn) {
+      likeBtn.addEventListener('click', async () => {
+        if (localStorage.getItem(likedKey)) return; // one like per browser
+        likeBtn.disabled = true;
+        try {
+          const res = await fetch(`${API_BASE}/likes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug }),
+          });
+          const data = await res.json();
+          likeCountEl.textContent = data.count ?? 0;
+          localStorage.setItem(likedKey, '1');
+          likeBtn.classList.add('liked');
+          document.getElementById('likeIcon').textContent = '♥';
+        } catch (e) {
+          // network error — leave button enabled for retry
+        }
+        likeBtn.disabled = false;
+      });
+    }
 
-  if (likeBtn && !localStorage.getItem(postKey)) {
-    likeBtn.addEventListener('click', () => {
-      currentLikes += 1;
-      localStorage.setItem('likes_' + window.location.pathname, currentLikes);
-      localStorage.setItem(postKey, 'true');
-      
-      if (likeCountEl) likeCountEl.textContent = currentLikes;
-      likeBtn.classList.add('voted');
-      if (dislikeBtn) dislikeBtn.disabled = true;
-      if (thanksEl) thanksEl.style.display = 'inline';
-    });
-  }
+    loadLikes();
 
-  if (dislikeBtn && !localStorage.getItem(postKey)) {
-    dislikeBtn.addEventListener('click', () => {
-      localStorage.setItem(postKey, 'true');
-      dislikeBtn.classList.add('voted');
-      if (likeBtn) likeBtn.disabled = true;
-      if (thanksEl) thanksEl.style.display = 'inline';
-    });
+    // --- Comments (native, no signup — real backend via D1) ---
+    const commentsList = document.getElementById('commentsList');
+    const commentForm = document.getElementById('commentForm');
+    const commentStatus = document.getElementById('commentStatus');
+
+    function renderComment(c) {
+      const li = document.createElement('li');
+      li.className = 'comment-item';
+      const date = new Date(c.created_at + 'Z');
+      const dateStr = isNaN(date.getTime()) ? '' : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      li.innerHTML = `
+        <div class="comment-meta">
+          <span class="comment-name"></span>
+          <span class="comment-date">${dateStr}</span>
+        </div>
+        <p class="comment-body"></p>
+      `;
+      li.querySelector('.comment-name').textContent = c.name;
+      li.querySelector('.comment-body').textContent = c.comment;
+      return li;
+    }
+
+    async function loadComments() {
+      try {
+        const res = await fetch(`${API_BASE}/comments?slug=${encodeURIComponent(slug)}`);
+        const data = await res.json();
+        commentsList.innerHTML = '';
+        if (!data.comments || data.comments.length === 0) {
+          const li = document.createElement('li');
+          li.className = 'comments-empty';
+          li.textContent = 'No comments yet — be the first to share your thoughts.';
+          commentsList.appendChild(li);
+          return;
+        }
+        data.comments.forEach((c) => commentsList.appendChild(renderComment(c)));
+      } catch (e) {
+        commentsList.innerHTML = '<li class="comments-empty">Comments are temporarily unavailable.</li>';
+      }
+    }
+
+    if (commentForm) {
+      commentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('commentName').value.trim();
+        const comment = document.getElementById('commentText').value.trim();
+        const website = document.getElementById('commentWebsite').value; // honeypot
+        const submitBtn = commentForm.querySelector('.comment-submit');
+
+        if (!name || !comment) return;
+
+        submitBtn.disabled = true;
+        commentStatus.textContent = '';
+        commentStatus.className = 'comment-status';
+
+        try {
+          const res = await fetch(`${API_BASE}/comments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug, name, comment, website }),
+          });
+          const data = await res.json();
+          if (data.comment) {
+            const emptyMsg = commentsList.querySelector('.comments-empty');
+            if (emptyMsg) emptyMsg.remove();
+            commentsList.insertBefore(renderComment(data.comment), commentsList.firstChild);
+          }
+          commentForm.reset();
+          commentStatus.textContent = 'Comment posted!';
+          commentStatus.classList.add('success');
+        } catch (e) {
+          commentStatus.textContent = 'Something went wrong — please try again.';
+          commentStatus.classList.add('error');
+        }
+        submitBtn.disabled = false;
+      });
+    }
+
+    loadComments();
   }
 </script>
 
