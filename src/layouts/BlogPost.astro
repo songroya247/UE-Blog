@@ -757,9 +757,9 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   }
 
   // --- Engagement: Share, Like, Comments ---
-  // Replace this with your deployed Worker's URL, e.g.
-  // "https://ue-blog-comments.yoursubdomain.workers.dev"
-  const API_BASE = "https://ue-blog-comments.YOUR-SUBDOMAIN.workers.dev";
+  // Same-origin API — no separate Worker or URL needed, this deploys
+  // as part of the blog itself.
+  const API_BASE = "/api";
 
   const engagementEl = document.getElementById('engagement');
   if (engagementEl) {
