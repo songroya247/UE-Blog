@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Untitled"
 category: "JAMB CAPS"
 description: "The Joint Admissions and Matriculation Board established the Central Admissions Processing System (CAPS) to digitize higher education entry in Nigeria. Befor..."
-date: "TBD"
+date: "2026-07-30"
 ---
 
 <nav class="toc">
