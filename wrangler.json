@@ -10,7 +10,7 @@
     {
       "binding": "DB",
       "database_name": "ue-blog-comments",
-      "database_id": "PASTE_YOUR_DATABASE_ID_HERE"
+      "database_id": "c6c57fb3-c278-49b5-b109-05dd485bb7a6"
     }
   ]
 }
