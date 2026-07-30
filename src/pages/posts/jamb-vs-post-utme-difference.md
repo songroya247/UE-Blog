@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB vs. Post-UTME: The Definitive Guide to Nigerian University Admission"
 category: "Post-UTME"
 description: "An authoritative, comprehensive guide to navigating JAMB UTME, Post-UTME screenings, CAPS, and the administrative processes of Nigerian university admissions."
-date: "TBD"
+date: "2026-07-30"
 ---
 
 <nav class="toc">
