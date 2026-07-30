@@ -1,9 +1,16 @@
 {
-  "name": "ue-blog",
+  "name": "school-blog",
   "compatibility_date": "2026-07-26",
   "main": "api-worker.js",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ue-blog-comments",
+      "database_id": "PASTE_YOUR_DATABASE_ID_HERE"
+    }
+  ]
 }
