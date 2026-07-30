@@ -79,6 +79,32 @@ async function handleApi(request, env, url) {
     return json({ ok: true, comment: result });
   }
 
+  // ---- GET /api/moderate/comments?token=X&offset=0&limit=50 ----
+  if (pathname === "/api/moderate/comments" && request.method === "GET") {
+    const token = url.searchParams.get("token");
+    if (token !== env.ADMIN_TOKEN) return json({ error: "Unauthorized" }, 401);
+
+    const limit = Math.min(Math.max(parseInt(url.searchParams.get("limit") || "20", 10) || 20, 1), 100);
+    const offset = Math.max(parseInt(url.searchParams.get("offset") || "0", 10) || 0, 0);
+
+    const { results } = await env.DB.prepare(
+      "SELECT id, post_slug, name, comment, created_at FROM comments ORDER BY created_at DESC LIMIT ? OFFSET ?"
+    )
+      .bind(limit, offset)
+      .all();
+
+    const totalRow = await env.DB.prepare("SELECT COUNT(*) as total FROM comments").first();
+    const total = totalRow ? totalRow.total : 0;
+
+    return json({
+      comments: results,
+      total,
+      offset,
+      limit,
+      hasMore: offset + results.length < total,
+    });
+  }
+
   // ---- POST /api/moderate/delete ----
   if (pathname === "/api/moderate/delete" && request.method === "POST") {
     const body = await request.json().catch(() => null);
