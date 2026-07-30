@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Courses for Low JAMB Score Nigeria: Your Ultimate Guide to Admission in 2027"
 category: "Admissions Strategy"
 description: "Chinedu sat on the edge of his bed in Enugu, staring blankly at his phone. The morning rain beat a steady rhythm against the zinc roof, matching the anxious ..."
-date: "TBD"
+date: "2026-07-30"
 ---
 
 <nav class="toc">
