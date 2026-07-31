@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Skip the Cybercafé: How to Check WAEC Results Instantly on Your Phone (2026)"
 category: "WAEC"
 description: "Check your WAEC/WASSCE result on your phone via the mobile portal, SMS, or the official app — no cybercafé needed. Includes troubleshooting and scam warnings."
-date: "TBD"
+date: "2026-07-31"
 ---
 
 <nav class="toc">
