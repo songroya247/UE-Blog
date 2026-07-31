@@ -777,6 +777,203 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   .footer-links a{color:var(--forest-dim); text-decoration:none;}
   .footer-links a:hover{color:var(--gold); text-decoration:underline;}
   .footer-links span{color:var(--line);}
+
+  /* ===================================================================
+     ARTICLE-BODY COMPONENTS
+     Covers the recurring class names used across content-queue articles
+     so any article using these no longer falls back to unstyled HTML.
+     =================================================================== */
+
+  /* Checklists */
+  ul.checklist{list-style:none; margin:18px 0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  ul.checklist li{
+    position:relative; padding:10px 14px 10px 40px;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+  }
+  ul.checklist li::before{
+    content:"✓"; position:absolute; left:14px; top:10px;
+    color:var(--forest-dim); font-weight:700;
+  }
+  ul.checklist li input[type="checkbox"]{margin-right:8px; accent-color:var(--forest-dim);}
+
+  /* Tables: horizontal-scroll wrapper so wide tables don't break mobile layout */
+  .table-container, .table-wrapper{
+    overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:6px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .table-container table, .table-wrapper table{width:100%; border-collapse:collapse; font-size:.92rem;}
+  .table-container th, .table-wrapper th{
+    background:var(--forest); color:#fbf7ec; text-align:left; padding:10px 14px; white-space:nowrap;
+  }
+  .table-container td, .table-wrapper td{padding:10px 14px; border-top:1px solid var(--line);}
+
+  /* FAQ blocks (question/answer div pairs, distinct from nav.toc's own faq-item) */
+  .faq-question{
+    font-family:'Fraunces', serif; font-weight:600; color:var(--forest);
+    margin:20px 0 6px; font-size:1.05rem;
+  }
+  .faq-answer{color:var(--ink); margin:0 0 6px;}
+
+  /* Alternate in-body table of contents (some articles use this instead of nav.toc) */
+  .toc-container{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:20px 24px; margin:40px 0 48px;
+  }
+  .toc-title{
+    font-size:1rem; text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;
+    font-family:'Fraunces', serif; color:var(--forest); font-weight:600;
+  }
+  .toc-list{margin:0; padding-left:1.1em;}
+  .toc-list li{margin-bottom:8px; font-size:.94rem;}
+
+  /* Key takeaways / summary boxes */
+  .key-takeaways{
+    background:var(--gold-soft); border-left:4px solid var(--gold); border-radius:3px;
+    padding:18px 22px; margin:24px 0;
+  }
+  .key-takeaways h2, .key-takeaways h3, .key-takeaways h4{margin-top:0;}
+
+  /* Breadcrumbs */
+  .breadcrumbs{
+    font-family:'JetBrains Mono', monospace; font-size:.78rem; color:var(--muted);
+    margin:0 0 20px;
+  }
+  .breadcrumbs a{color:var(--forest-dim);}
+
+  /* Math */
+  .math-block, .math-formula{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:16px 20px; margin:18px 0; font-family:'JetBrains Mono', monospace; font-size:.92rem;
+    overflow-x:auto;
+  }
+  .math-expr{font-family:'JetBrains Mono', monospace; background:var(--gold-soft); padding:1px 5px; border-radius:3px;}
+
+  /* Image placeholders / visual aids (used where a screenshot is described but not embedded) */
+  .image-placeholder, .visual-aid{
+    border:1.5px dashed var(--line); border-radius:6px; background:var(--paper-raised);
+    color:var(--muted); font-size:.88rem; font-style:italic;
+    padding:24px; margin:18px 0; text-align:center;
+  }
+
+  /* Generic callouts with modifier classes (tip / warning / info / summary / cta / syntax / rule) */
+  .callout{
+    border-left:4px solid var(--forest); background:var(--paper-raised); border:1px solid var(--line);
+    border-radius:3px; padding:16px 20px; margin:20px 0; font-size:.95rem;
+  }
+  .callout.tip, .callout.callout-info, .callout.callout-summary, .callout.summary{
+    border-left-color:var(--forest); 
+  }
+  .callout.callout-warning, .callout.warning-callout{
+    border-left-color:var(--rust); background:var(--rust-soft);
+  }
+  .callout.callout-cta{border-left-color:var(--gold); background:var(--gold-soft);}
+  .callout.callout-syntax, .callout.callout-rule{font-family:'JetBrains Mono', monospace; font-size:.88rem;}
+
+  /* Badges (e.g. difficulty/demand indicators in tables) */
+  .badge{
+    display:inline-block; font-size:.72rem; font-weight:600; padding:2px 9px;
+    border-radius:999px; font-family:'JetBrains Mono', monospace;
+  }
+  .badge-high{background:var(--rust-soft); color:var(--rust);}
+  .badge-medium{background:var(--gold-soft); color:#8a6314;}
+  .badge-low{background:#e3efe8; color:var(--forest-dim);}
+
+  /* Numbered step / workflow blocks */
+  .workflow-step, .step-content{margin-bottom:16px;}
+  .step-number{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px; border-radius:50%; background:var(--forest); color:#fbf7ec;
+    font-family:'JetBrains Mono', monospace; font-weight:600; font-size:.85rem; margin-bottom:8px;
+  }
+
+  /* Flowcharts / diagrams (simple stacked-step layout, no JS) */
+  .flowchart-container, .chart-container{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:20px; margin:20px 0; display:flex; flex-direction:column; gap:8px; align-items:flex-start;
+  }
+  .flowchart-step, .diagram-step{
+    background:var(--gold-soft); border-radius:4px; padding:8px 14px; font-size:.92rem;
+  }
+  .diagram-arrow{color:var(--gold); font-weight:700; align-self:center;}
+
+  /* Timeline strip */
+  .timeline{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:14px 18px; margin:20px 0; font-size:.9rem; color:var(--forest-dim);
+  }
+
+  /* Case studies / featured snippets */
+  .case-study, .featured-snippet{
+    background:var(--paper-raised); border:1px solid var(--line); border-left:4px solid var(--forest-dim);
+    border-radius:3px; padding:16px 20px; margin:20px 0;
+  }
+
+  /* Trouble / troubleshooting cards */
+  .trouble-card{
+    background:var(--rust-soft); border:1px solid var(--line); border-left:4px solid var(--rust);
+    border-radius:6px; padding:16px 20px; margin:16px 0;
+  }
+
+  /* Small text utilities */
+  .text-center{text-align:center;}
+  .sms-code{
+    display:inline-block; font-family:'JetBrains Mono', monospace; background:var(--gold-soft);
+    padding:6px 12px; border-radius:4px; font-size:.95rem;
+  }
+  .intro-lead{font-size:1.1rem; color:var(--forest-dim); margin:0 0 20px;}
+  .last-updated{font-size:.82rem; color:var(--muted); font-family:'JetBrains Mono', monospace;}
+  .meta-bar{
+    display:flex; gap:16px; flex-wrap:wrap; font-size:.82rem; color:var(--muted);
+    margin:0 0 20px; font-family:'JetBrains Mono', monospace;
+  }
+
+  /* Quick links / quick facts */
+  .quick-links{display:flex; flex-wrap:wrap; gap:10px; margin:20px 0;}
+  .quick-link-btn{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:999px;
+    padding:8px 16px; font-size:.85rem; text-decoration:none; color:var(--forest-dim);
+  }
+  .quick-link-btn:hover{border-color:var(--gold); color:var(--gold);}
+  .quick-facts{
+    background:var(--gold-soft); border-radius:6px; padding:16px 20px; margin:20px 0; font-size:.92rem;
+  }
+
+  /* Profile cards, mockups, time cards */
+  .profile-card, .mockup-container{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:18px 20px; margin:18px 0;
+  }
+  .time-cards{display:flex; gap:12px; flex-wrap:wrap; margin:18px 0;}
+  .time-card{
+    flex:1 1 140px; border:1px solid var(--line); border-radius:6px; padding:14px; font-size:.9rem;
+  }
+
+  /* In-body nav variants some articles include (distinct from the site nav in <header>) */
+  .nav-index, .nav-links{
+    font-family:'JetBrains Mono', monospace; font-size:.82rem; display:flex; gap:14px; flex-wrap:wrap;
+    margin:16px 0;
+  }
+  .nav-index a, .nav-links a{color:var(--forest-dim);}
+
+  /* Small titled labels inside callouts/boxes */
+  .quick-summary{font-size:1.05rem; color:var(--forest-dim); margin:0 0 20px;}
+  .warning-title, .mistakes-title, .resources-title{
+    font-family:'Fraunces', serif; font-weight:600; color:var(--forest); margin-bottom:8px;
+  }
+  .warning-callout{
+    background:var(--rust-soft); border-left:4px solid var(--rust); border-radius:3px;
+    padding:16px 20px; margin:20px 0;
+  }
+
+  /* Practice-question blocks (MCQ with answer + explanation) */
+  .question-title{font-family:'Fraunces', serif; font-weight:600; color:var(--forest); margin:20px 0 8px;}
+  .options-list{list-style:none; margin:10px 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .options-list li{background:var(--paper-raised); border:1px solid var(--line); border-radius:6px; padding:8px 14px;}
+  .correct-answer{color:var(--forest-dim); font-weight:600; margin:10px 0 6px;}
+  .explanation{background:var(--gold-soft); border-radius:6px; padding:14px 18px; margin:0 0 20px; font-size:.92rem;}
+
+  /* Generic page container some articles wrap themselves in */
+  .container{max-width:100%;}
 </style>
 </head>
 <body>
