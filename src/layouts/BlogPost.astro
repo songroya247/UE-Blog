@@ -250,6 +250,167 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   }
   .callout.tip strong.label{color:var(--forest-dim);}
 
+  /* Content-embedded components: ASCII diagrams, info cards, static UI mockups, article sidebar */
+
+  .diagram-container{
+    display:block;
+    overflow-x:auto;
+    margin:20px 0;
+    padding:16px 20px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.82rem;
+    line-height:1.5;
+    white-space:pre;
+    color:var(--ink);
+  }
+
+  .meta{
+    font-size:.85rem;
+    color:var(--muted);
+    margin-bottom:20px;
+  }
+
+  .correction-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:.62rem;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    background:var(--gold-soft);
+    color:var(--rust);
+    padding:3px 8px;
+    border-radius:3px;
+    vertical-align:middle;
+    margin-left:8px;
+  }
+
+  .deadline-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:14px;
+    margin:20px 0;
+  }
+  .deadline-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:16px 18px;
+  }
+  .deadline-card .date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--forest);
+    margin-bottom:4px;
+  }
+  .deadline-card .who{
+    font-size:.88rem;
+    color:var(--muted);
+    line-height:1.4;
+  }
+
+  .disclaimer{
+    font-size:.85rem;
+    color:var(--muted);
+    font-style:italic;
+    border-top:1px solid var(--line);
+    padding-top:14px;
+    margin-top:24px;
+  }
+
+  .faq-item{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item h4{margin:0 0 8px;}
+  .faq-item p{margin:0; color:var(--muted); font-size:.94rem;}
+
+  /* Static, non-interactive UI mockups used for illustration only */
+  .mock-form{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:18px 20px;
+    margin:20px 0;
+  }
+  .mock-form-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.85rem;
+    font-weight:600;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:12px;
+  }
+  .mock-form-row{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:6px 0;
+    font-size:.88rem;
+  }
+  .mock-form-label{color:var(--muted);}
+  .mock-form-value{font-family:'JetBrains Mono', monospace;}
+  .mock-form-actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+  }
+  .mock-btn{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:4px;
+    border:1px solid var(--line);
+    font-size:.85rem;
+    background:var(--paper);
+  }
+  .mock-btn.primary{
+    background:var(--forest);
+    border-color:var(--forest);
+    color:#fff;
+  }
+
+  /* Two-column article layout: main content + sidebar (TOC / related guides) */
+  .main-container{
+    display:grid;
+    grid-template-columns:1fr 280px;
+    gap:36px;
+    align-items:start;
+  }
+  .main-container .content{min-width:0;}
+  .sidebar{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:20px;
+    position:sticky;
+    top:20px;
+  }
+  .sidebar h3{margin-top:0; font-size:1rem;}
+  .sidebar ul{list-style:none; padding:0; margin:0;}
+  .sidebar li{margin-bottom:8px; font-size:.88rem;}
+  .sidebar a{color:var(--forest-dim); text-decoration:none;}
+  .sidebar a:hover{color:var(--gold); text-decoration:underline;}
+
+  .footer{
+    font-size:.82rem;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:16px;
+    margin-top:30px;
+  }
+  .footer a{color:var(--forest-dim);}
+
+  @media (max-width:760px){
+    .main-container{grid-template-columns:1fr;}
+    .sidebar{position:static;}
+  }
+
   /* Status rail */
   .status-rail{
     margin:24px 0 8px;
@@ -371,23 +532,46 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
     margin-bottom:32px;
   }
   .like-btn{
-    display:flex; align-items:center; gap:8px;
+    display:flex; align-items:center; gap:9px;
     background:var(--paper-raised); border:1.5px solid var(--gold-soft);
     color:var(--forest); font-family:'Source Sans 3', sans-serif; font-weight:600; font-size:.92rem;
-    padding:9px 18px; border-radius:999px; cursor:pointer; transition:all .15s ease;
+    padding:9px 20px; border-radius:999px; cursor:pointer; transition:border-color .15s ease, background .15s ease;
   }
   .like-btn:hover{border-color:var(--gold); background:var(--gold-soft);}
+  .like-btn svg{width:19px; height:19px; flex-shrink:0; display:block;}
+  .like-btn svg path{fill:none; stroke:var(--forest); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:fill .15s ease, stroke .15s ease;}
   .like-btn.liked{background:var(--rust-soft); border-color:var(--rust); color:var(--rust);}
-  .like-btn.liked #likeIcon{color:var(--rust);}
-  #likeIcon{font-size:1.1rem;}
-  .share-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-  .share-label{font-size:.85rem; color:var(--muted); margin-right:2px;}
-  .share-btn{
-    font-family:'Source Sans 3', sans-serif; font-size:.82rem; font-weight:600;
-    background:var(--paper-raised); border:1.5px solid var(--line); color:var(--forest-dim);
-    padding:7px 14px; border-radius:999px; cursor:pointer; text-decoration:none; transition:all .15s ease;
+  .like-btn.liked svg path{fill:var(--rust); stroke:var(--rust);}
+  .like-btn.liked svg{animation:like-pop .35s ease;}
+  @keyframes like-pop{
+    0%{transform:scale(1);} 35%{transform:scale(1.3);} 100%{transform:scale(1);}
   }
-  .share-btn:hover{border-color:var(--forest-dim); background:var(--gold-soft); color:var(--forest);}
+  #likeCount{font-variant-numeric:tabular-nums;}
+
+  .share-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .share-label{font-size:.8rem; color:var(--muted); margin-right:4px; font-weight:600; letter-spacing:.02em;}
+  .share-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border-radius:50%; flex-shrink:0;
+    background:var(--paper-raised); border:1.5px solid var(--line); color:var(--forest-dim);
+    cursor:pointer; text-decoration:none; transition:all .15s ease; position:relative;
+  }
+  .share-btn svg{width:17px; height:17px; display:block;}
+  .share-btn:hover{border-color:var(--forest-dim); background:var(--gold-soft); color:var(--forest); transform:translateY(-1px);}
+  #shareWhatsapp:hover{border-color:#25D366; color:#25D366; background:#e9f9ef;}
+  #shareX:hover{border-color:#0f1419; color:#0f1419; background:#eef0f1;}
+  #shareFacebook:hover{border-color:#1877F2; color:#1877F2; background:#eaf2fe;}
+  .share-btn.copied{border-color:var(--forest-dim); background:var(--forest-dim); color:#fff;}
+  .share-btn.copied::after{
+    content:"Copied!";
+    position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+    background:var(--ink); color:#fff; font-size:.72rem; font-weight:600;
+    padding:4px 9px; border-radius:4px; white-space:nowrap; pointer-events:none;
+  }
+  .share-btn.copied::before{
+    content:""; position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%);
+    border:4px solid transparent; border-top-color:var(--ink); pointer-events:none;
+  }
 
   /* --- DYNAMIC RELATED ARTICLES STYLING --- */
   .related-articles-box {
@@ -628,17 +812,25 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   <!-- Engagement: Share & Like -->
   <div id="engagement" class="engagement" data-slug={postSlug} data-title={frontmatter.title}>
     <div class="engagement-bar">
-      <button id="likeBtn" class="like-btn" type="button">
-        <span id="likeIcon">♡</span>
+      <button id="likeBtn" class="like-btn" type="button" aria-label="Like this article">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
         <span id="likeCount">0</span> Likes
       </button>
 
       <div class="share-bar">
-        <span class="share-label">Share:</span>
-        <a id="shareWhatsapp" class="share-btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp">WhatsApp</a>
-        <a id="shareX" class="share-btn" target="_blank" rel="noopener" aria-label="Share on X">X</a>
-        <a id="shareFacebook" class="share-btn" target="_blank" rel="noopener" aria-label="Share on Facebook">Facebook</a>
-        <button id="copyLinkBtn" class="share-btn" type="button">Copy Link</button>
+        <span class="share-label">Share</span>
+        <a id="shareWhatsapp" class="share-btn" target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20l1.2-4A8 8 0 1 1 10 18.6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </a>
+        <a id="shareX" class="share-btn" target="_blank" rel="noopener" aria-label="Share on X" title="Share on X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </a>
+        <a id="shareFacebook" class="share-btn" target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="17" font-size="15" font-weight="700" text-anchor="middle" fill="currentColor" font-family="Georgia, serif">f</text></svg>
+        </a>
+        <button id="copyLinkBtn" class="share-btn" type="button" aria-label="Copy link" title="Copy link">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -782,9 +974,8 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
       copyBtn.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(pageUrl);
-          const original = copyBtn.textContent;
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => { copyBtn.textContent = original; }, 1800);
+          copyBtn.classList.add('copied');
+          setTimeout(() => { copyBtn.classList.remove('copied'); }, 1800);
         } catch (e) {
           // Clipboard API unavailable — silently ignore
         }
@@ -808,7 +999,6 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
 
     if (localStorage.getItem(likedKey)) {
       likeBtn.classList.add('liked');
-      document.getElementById('likeIcon').textContent = '♥';
     }
 
     if (likeBtn) {
@@ -825,7 +1015,6 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
           likeCountEl.textContent = data.count ?? 0;
           localStorage.setItem(likedKey, '1');
           likeBtn.classList.add('liked');
-          document.getElementById('likeIcon').textContent = '♥';
         } catch (e) {
           // network error — leave button enabled for retry
         }
