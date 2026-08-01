@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "The Post-UTME Survival Guide: Free Past Questions, Tactics, and the Path to Admission"
 category: "Post-UTME"
 description: "You cleared the JAMB hurdle. You saw your score, breathed a sigh of relief, and felt the heavy weight lift off your chest. But the race is only half run. The..."
-date: "TBD"
+date: "2026-08-01"
 ---
 
 <nav class="toc">

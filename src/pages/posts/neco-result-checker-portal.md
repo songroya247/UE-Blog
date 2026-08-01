@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "NECO Result Checker Portal: Complete Guide to Checking & Verifying Results"
 category: "WAEC"
 description: "Access the official NECO result checker portal (results.neco.gov.ng) and NERVS (everify.neco.gov.ng). Get step-by-step instructions, troubleshooting, and token usage guides."
-date: "TBD"
+date: "2026-08-01"
 ---
 
 <nav class="toc">
