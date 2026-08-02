@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "How to Calculate Post UTME Screening Score"
 category: "Post-UTME"
 description: "Comprehensive guide on how to calculate Post UTME screening scores across top Nigerian universities with formulas, conversion tables, and worked examples."
-date: "TBD"
+date: "2026-08-02"
 ---
 
 <nav class="toc">

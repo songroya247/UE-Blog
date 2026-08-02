@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "The Real Math of Nigerian University Admissions: Why Your JAMB Score is Only Half the Story"
 category: "Admissions Strategy"
 description: "But a massive, systemic misunderstanding exists within this system."
-date: "TBD"
+date: "2026-08-02"
 ---
 
 <nav class="toc">
