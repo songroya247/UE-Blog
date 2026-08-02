@@ -101,7 +101,7 @@ meta:
   <p>Private candidate examinations (GCE) take place across two separate windows each year: First Series (January/February) and Second Series (November/December). Unlike school candidates, private candidates must purchase result checker tokens independently.</p>
   <p>While registration for private candidates occurs on specialized registration portals (such as <code>reg.waecdirect.org</code>), result checking is handled directly on the standard <code>waecdirect.org</code> page.</p>
 
-  <div class="callout callout-warning">
+  <div class="callout warn">
     <strong class="label">Important Selection Rule</strong>
     When checking GCE results, ensure you select <strong>"PRIVATE CANDIDATE RESULTS"</strong> in the Examination Type menu. Choosing "School Candidate Results" for a GCE index number returns a "Candidate Does Not Exist" error.
   </div>
@@ -142,7 +142,7 @@ meta:
   <h3>"Candidate Does Not Exist"</h3>
   <p>This error occurs when there is a mismatch between the index number, examination year, and exam type. Double-check that a May/June exam is not set to "Private Candidate" in the dropdown selection.</p>
 
-  <div class="callout callout-warning">
+  <div class="callout warn">
     <strong class="label">Only trust official channels</strong>
     If web scripts on the portal time out during high-traffic periods, don't rely on random "WAEC support" emails or third-party domains found in search results — verify any support contact directly against the one listed on <code>waecdirect.org</code> itself before sending any personal details.
   </div>
