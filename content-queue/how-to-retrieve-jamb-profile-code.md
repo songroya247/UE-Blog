@@ -23,25 +23,6 @@ date: "TBD"
 </ol>
 </nav>
 
-
-
-<nav class="nav-index">
-<h2>Quick Navigation Index</h2>
-<ul>
-<li><a href="#sec-1">1. Introduction: Understanding Your JAMB Profile Code</a></li>
-<li><a href="#sec-2">2. The Primary Method: Retrieving Your JAMB Profile Code via SMS</a></li>
-<li><a href="#sec-3">3. Interactive Decision Flowchart for Profile Code Recovery</a></li>
-<li><a href="#sec-4">4. Troubleshooting Common SMS Retrieval Issues</a></li>
-<li><a href="#sec-5">5. Advanced Scenarios: Lost SIM Card, Stolen Lines, and Phone Changes</a></li>
-<li><a href="#sec-6">6. Beyond SMS: Alternative Extraction Pathways</a></li>
-<li><a href="#sec-7">7. Comparison Matrix: Official Channels vs. Third-Party Platforms</a></li>
-<li><a href="#sec-8">8. Deeper Insights: System Architecture, NIN Linkage, and Data Security</a></li>
-<li><a href="#sec-9">9. Frequently Asked Questions (FAQ) About JAMB Profile Retrieval</a></li>
-<li><a href="#sec-10">10. Actionable Summary Blueprint for Candidates</a></li>
-<li><a href="#sec-11">11. Sources &amp; Further Reading</a></li>
-</ul>
-</nav>
-
 <!-- SECTION 1 -->
 <section id="sec-1">
 <h2>1. Introduction: Understanding Your JAMB Profile Code</h2>
@@ -365,7 +346,7 @@ Stay informed on official UTME/DE registration dates, cut-off mark releases, and
 <p>While SMS remains the standard primary recovery route, alternative pathways exist for candidates who have completed previous registrations or created eFacility portal accounts.</p>
 
 <h3>Pathway 1: Extraction via the JAMB eFacility Portal</h3>
-<p>If you previously completed UTME/DE registration or created a profile on the eFacility portal, your profile details are stored within your portal dashboard.</p>
+<p>If you previously completed UTME/DE registration or created a profile on the eFacility portal, your profile details are stored within your profile dashboard.</p>
 
 <h4>Step-by-Step Portal Access Protocol:</h4>
 <ol>
