@@ -78,13 +78,17 @@ date: "TBD"
 <h4>Admission in Progress (and its distinction)</h4>
 <p>"Admission in Progress" (AIP) is a status indicating that your files are currently being processed. The school has submitted your name, and JAMB's system is checking your O'Level and UTME profiles for compliance. The accept or reject options are not yet available during this phase.</p>
 </section>
+
 <section id="step-by-step-guide-accepting-your-admission-on-jamb-caps">
 <h2>Step-by-Step Guide: Accepting Your Admission on JAMB CAPS</h2>
 
 <h3>Step 1: Accessing the JAMB CAPS Portal</h3>
 <p>You can log in using a mobile device or a computer with a stable internet connection.</p>
 
-<img src="jamb-efacility-login-page.webp" alt="A clean view of the official JAMB e-Facility login dashboard page, showing the input fields for the candidate registered email address and password.">
+<div class="image-placeholder">
+[SEO Image Opportunity: JAMB eFacility Login Dashboard]<br>
+Alt Text: A clean view of the official JAMB e-Facility login dashboard page, showing the input fields for candidate registered email address and password.
+</div>
 
 <ol>
 <li>Open your browser and go to the official <a href="https://efacility.jamb.gov.ng/" target="_blank">JAMB e-Facility Portal</a>.</li>
@@ -106,7 +110,10 @@ date: "TBD"
 <li>Click on <strong>Access my CAPS</strong>.</li>
 </ol>
 
-<img src="chrome-desktop-site-option.webp" alt="Close-up of the Google Chrome mobile settings browser menu on a smartphone screen, showing the Desktop Site checkbox enabled.">
+<div class="image-placeholder">
+[SEO Image Opportunity: Mobile Browser Desktop Site Setting]<br>
+Alt Text: Close-up of the Google Chrome mobile settings browser menu on a smartphone screen, showing the Desktop Site checkbox enabled.
+</div>
 
 <div class="callout tip">
 <strong class="label">NOTE</strong>
@@ -130,7 +137,10 @@ date: "TBD"
 <li>A red button: <strong>Reject Admission</strong></li>
 </ul>
 
-<img src="jamb-caps-accept-reject-buttons.webp" alt="JAMB CAPS candidate profile section highlighting the green Accept Admission and red Reject Admission selection buttons below the student credentials.">
+<div class="image-placeholder">
+[SEO Image Opportunity: JAMB CAPS Accept Reject Selection Buttons]<br>
+Alt Text: JAMB CAPS candidate profile section highlighting the green Accept Admission and red Reject Admission selection buttons below student credentials.
+</div>
 
 <h4>What if the Button is Not Visible? (Common Issues)</h4>
 <p>If the buttons do not appear, verify that your browser is in "Desktop Site" mode. If you are using a phone, try using a desktop computer or laptop to ensure the page displays fully.</p>
