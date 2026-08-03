@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB Score Below 180? Your Comprehensive Guide to Admission Options & Opportunities"
 category: "Admissions Strategy"
 description: "You just saw your UTME result. The screen displays a number below 180. Your heart sinks. You think of the months spent reading thick textbooks, the early mor..."
-date: "TBD"
+date: "2026-08-03"
 ---
 
 <nav class="toc">
