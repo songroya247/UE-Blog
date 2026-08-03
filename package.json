@@ -2,6 +2,7 @@
   "name": "my-cloudflare-blog",
   "version": "1.0.0",
   "scripts": {
+    "prebuild": "node scripts/publish-queue.js",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
