@@ -58,8 +58,7 @@ date: "TBD"
 <h2>1. Understanding the LASU Admission List Checker Architecture</h2>
 <p>Lagos State University operates a multi-tiered admission processing system overseen by the University Senate and coordinated through the Central Admissions Clearance Committee. The admission portal does not publish static PDF documents containing thousands of names as was common in past decades. Instead, modern processing relies on database query tools where candidates input individual credentials to generate a personalized status report.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-----------------------------------------------------------------------+
 |                    LASU ADMISSION PROCESSING FLOW                      |
 +-----------------------------------------------------------------------+
@@ -87,7 +86,7 @@ date: "TBD"
 |                                     v                                 |
 |                        [Matriculation Number Issued]                  |
 +-----------------------------------------------------------------------+
-</div>
+</pre>
 
 <p>Official offers stem from strict adherence to regulatory standards established by the National Universities Commission and the Joint Admissions and Matriculation Board. Candidate scores undergo automated compilation based on a total 100-point composite model. This model splits weight equally between your UTME score and your top five relevant O'Level subject grades.</p>
 
@@ -179,8 +178,7 @@ Primary Secondary Information Gateway: <code>https://school.ultimateedge.info</c
 <h2>3. Step-by-Step Guide: How to Use the LASU Admission List Checker</h2>
 <p>Checking your provisional status requires methodical verification across both the university portal and the central regulatory portal. Follow these exact procedures to inspect your file.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-------------------------------------------------------+
 |           PORTAL CHECKING DECISION TREE               |
 +-------------------------------------------------------+
@@ -204,7 +202,7 @@ v                   v             v                   v
 |                   |             |             RECOMMENDED]
 Proceed to LACACA    Check Batch 2   Print Letter           |
 Clearance & Fees     & CAPS Weekly    & Register      Accept Transfer
-</div>
+</pre>
 
 <h3>Method A: Verification via the Official LASU LIDC Screening Portal</h3>
 <ol>
@@ -384,8 +382,7 @@ Total Maximum Aggregate = 50 + 50 = 100 Points.</p>
 <h2>5. Breakdown of Admission Lists: Merit, Catchment, ELDS &amp; Supplementary</h2>
 <p>The admissions office processes candidates across distinct phases throughout the screening window. Checking your status requires understanding which phase current portal updates represent.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-------------------------------------------------------------------------+
 |                    LASU ADMISSION BATCH SEQUENCING                      |
 +-------------------------------------------------------------------------+
@@ -404,7 +401,7 @@ Total Maximum Aggregate = 50 + 50 = 100 Points.</p>
 |        v                                                                |
 |  Phase 5: SUPPLEMENTARY / CHANGE OF COURSE LISTS                        |
 +-------------------------------------------------------------------------+
-</div>
+</pre>
 
 <h3>1. The Merit Admission List (First Batch)</h3>
 <p>The Merit list contains names of candidates who achieve high aggregate scores surpassing baseline departmental cut-off marks. Selection depends entirely on academic performance. State of origin plays no role in this initial phase.</p>
@@ -412,8 +409,7 @@ Total Maximum Aggregate = 50 + 50 = 100 Points.</p>
 <h3>2. The Catchment Area List &amp; Lagos Indigene Verification Scheme (IIVS)</h3>
 <p>As a Lagos State tertiary institution, statutory policy reserves 35% of entry spaces for verified Lagos State indigenes. However, claiming indigene status on your UTME form does not guarantee entry under this quota. Candidates must complete the Independent Indigene Verification Scheme (IIVS) clearance.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-----------------------------------+
 |   IIVS CLEARANCE VERIFICATION     |
 +-----------------------------------+
@@ -430,7 +426,7 @@ v                                 v
 |                                 |
 Pushed to Catchment               Moved to General Non-Indigene
 35% Quota Pool                    Competitive Pool
-</div>
+</pre>
 
 <p>Unverified claims result in automatic disqualification from the catchment quota. The candidate's file then shifts back to the non-indigene general competitive pool.</p>
 
@@ -449,8 +445,7 @@ Pushed to Catchment               Moved to General Non-Indigene
 <h2>6. Structural Distinction: LASU (Ojo) vs. LASUED (Oto/Ijanikin)</h2>
 <p>A frequent point of confusion for applicants in Lagos State is the institutional distinction between <strong>Lagos State University (LASU)</strong> and <strong>Lagos State University of Education (LASUED)</strong>. Entering credentials into the wrong institutional database leads to false "Record Not Found" error screens.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-----------------------------------------------------------+
 |             INSTITUTIONAL PORTAL SEPARATION               |
 +-----------------------------------------------------------+
@@ -464,7 +459,7 @@ Establishment Year: 1983                     Establishment Year: 2022
 Primary Portal:                           (Formerly AOCOED / MOCPED)
 https://www.lasu.edu.ng                          Primary Portal:
 https://services.lidc.lasu.edu.ng                https://admission.lasued.edu.ng
-</div>
+</pre>
 
 <h3>Key Differences Matrix</h3>
 <table>
@@ -582,8 +577,7 @@ https://services.lidc.lasu.edu.ng                https://admission.lasued.edu.ng
 <h2>8. Post-Admission Roadmap: LACACA Clearance &amp; Document Verification</h2>
 <p>Securing a provisional admission notification represents only the first milestone. Admitted candidates must complete the automated <strong>Lagos State University Central Admissions Clearance Application (LACACA)</strong>. Failure to complete LACACA clearance within statutory timelines results in automatic forfeiture of your offer.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 +-----------------------------------------------------------------------+
 |                       LACACA CLEARANCE PIPELINE                       |
 +-----------------------------------------------------------------------+
@@ -611,7 +605,7 @@ https://services.lidc.lasu.edu.ng                https://admission.lasued.edu.ng
 |                                     v                                 |
 |  Step 6: Official Matriculation Number Automatically Issued           |
 +-----------------------------------------------------------------------+
-</div>
+</pre>
 
 <h3>Complete LACACA Clearance Workflow</h3>
 <ol>
@@ -900,8 +894,7 @@ Educational Arts (B.Ed)   : [===============] 50.0% - 53.0%
 <h2>11. Official Contacts, Helpdesks &amp; Verification Desk</h2>
 <p>If you experience portal login errors, payment processing failures, or document upload issues, contact official university helpdesks directly. Do not share payment credentials with unverified individuals or third-party agent accounts.</p>
 
-<div class="callout tip">
-<strong class="label">NOTE</strong>
+<pre class="diagram-container">
 OFFICIAL LASU CONTACT DIRECTORY
 
 [Physical Address]
@@ -918,7 +911,7 @@ IIVS Indigene Portal  : https://www.lasu.edu.ng/iivs
 [Electronic Support Email]
 Clearance & Technical Support: lacaca.support@lasu.edu.ng
 Admissions Desk Enquiries   : admissions@lasu.edu.ng
-</div>
+</pre>
 
 <h3>Statutory Regulatory Bodies &amp; Policy Links</h3>
 <ul>
@@ -949,9 +942,4 @@ Admissions Desk Enquiries   : admissions@lasu.edu.ng
 <li>National Examinations Council (NECO). <em>SSCE Result Verification e-Portal Framework.</em> <a href="https://results.neco.gov.ng">https://results.neco.gov.ng</a></li>
 <li>Ultimate Edge Education. <em>Automated Aggregate Calculators and Tertiary Screening Trackers.</em> <a href="https://school.ultimateedge.info">https://school.ultimateedge.info</a></li>
 </ol>
-</section>
-
-<!-- SECTION 13: AUTHOR BIO BOX -->
-<section id="section-13">
-
 </section>
