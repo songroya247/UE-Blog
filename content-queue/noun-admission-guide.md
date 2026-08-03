@@ -264,7 +264,9 @@ date: "TBD"
 <h3>The Flexible "Pay-As-You-Go" Course Structure</h3>
 <p>Unlike conventional universities that demand full annual tuition upfront, NOUN utilizes a course-based payment system. Students pay a fixed compulsory semester fee, then register and pay per credit unit for individual courses based on personal budget.</p>
 
-<pre>Total Semester Expense = Compulsory Semester Fee + Registered Course Credit Fees + Examination Registration Fees</pre>
+<p class="math-formula" style="text-align: center;">
+Total Semester Expense = Compulsory Semester Fee + Registered Course Credit Fees + Examination Registration Fees
+</p>
 
 <p>If financial constraints prevent registering for a full load in a given semester, an undergraduate can register for fewer credit units. Unregistered courses carry over to subsequent semesters without academic penalty, provided the student completes the degree within allowable university timeframes. Read our <a href="https://school.ultimateedge.info">NOUN Course Registration Guide</a>.</p>
 
@@ -631,10 +633,12 @@ date: "TBD"
 <h2>9. Step-by-Step Application Portal Walkthrough</h2>
 <p>Submitting an application to NOUN is completed online through the university portal. Follow these steps to complete your registration. Read our complete <a href="https://school.ultimateedge.info">NOUN Admission Portal Walkthrough</a>.</p>
 
-<pre>[Access nouonline.net] ──> [Select Faculty & Programme] ──> [Generate Remita RRR Invoice]
+<pre class="diagram-container">
+[Access nouonline.net] ──> [Select Faculty & Programme] ──> [Generate Remita RRR Invoice]
 │
 ▼
-[Submit Application & Print Letter] <── [Upload Docs] <── [Pay Fee Online / at Bank]</pre>
+[Submit Application & Print Letter] <── [Upload Docs] <── [Pay Fee Online / at Bank]
+</pre>
 
 <h3>Step 1: Navigating the Portal</h3>
 <ol>
@@ -976,7 +980,8 @@ date: "TBD"
 <h2>12. NYSC Mobilization Framework for NOUN Graduates</h2>
 <p>Undergraduate degree holders from NOUN are integrated into the <strong>National Youth Service Corps (NYSC)</strong> scheme under standard national guidelines. Read our detailed <a href="https://school.ultimateedge.info">NYSC Mobilization for NOUN Graduates</a> guide.</p>
 
-<pre>       +-------------------------------------------------------+
+<pre class="diagram-container">
++-------------------------------------------------------+
 |             NOUN NYSC MOBILIZATION ELIGIBILITY         |
 +-------------------------------------------------------+
 |
@@ -988,7 +993,8 @@ v                                                   v
 +------------------+                               +------------------+
 | Official Call-Up |                               | NYSC Exemption   |
 | Mobilization     |                               | Certificate      |
-+------------------+                               +------------------+</pre>
++------------------+                               +------------------+
+</pre>
 
 <h3>Document Checklist for NYSC Clearance</h3>
 <ul>
