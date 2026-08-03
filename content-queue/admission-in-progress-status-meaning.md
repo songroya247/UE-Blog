@@ -1,6 +1,6 @@
 ---
 layout: "../../layouts/BlogPost.astro"
-title: "Untitled"
+title: "Admission in Progress Status Meaning on JAMB CAPS: What It Means & Next Steps"
 category: "JAMB CAPS"
 description: "The Joint Admissions and Matriculation Board established the Central Admissions Processing System (CAPS) to digitize higher education entry in Nigeria. Befor..."
 date: "2026-07-30"
