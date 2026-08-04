@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "How to Retrieve JAMB Profile Code: The Ultimate Guide (2024)"
 category: "JAMB CAPS"
 description: "Lost your JAMB Profile Code? Step-by-step instructions, SMS syntax, troubleshooting solutions, and recovery strategies for UTME/DE candidates."
-date: "TBD"
+date: "2026-08-09"
 ---
 
 <nav class="toc">
