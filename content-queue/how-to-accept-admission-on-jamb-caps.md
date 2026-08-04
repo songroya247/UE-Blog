@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "How to Accept Your Admission on JAMB CAPS (2026/2027 Guide)"
 category: "JAMB CAPS"
 description: "Step-by-step guide on how to check and accept your admission on the JAMB CAPS portal. Learn about admission status meanings, troubleshooting, and next steps."
-date: "TBD"
+date: "2026-08-07"
 ---
 
 <nav class="toc">
