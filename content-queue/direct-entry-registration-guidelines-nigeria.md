@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB Direct Entry Registration Guidelines Nigeria: The Ultimate Step-by-Step Guide"
 category: "Alternative Pathways"
 description: "Navigating tertiary education admissions can feel overwhelming, but understanding the official Direct Entry registration guidelines Nigeria sets for prospect..."
-date: "TBD"
+date: "2026-08-05"
 ---
 
 <nav class="toc" id="toc">
