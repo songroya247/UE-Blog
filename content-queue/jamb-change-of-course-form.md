@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB Change of Course and Institution Form: The Ultimate Guide"
 category: "JAMB CAPS"
 description: "Nigerian university admissions are highly competitive. A slight deficit in your UTME score can compromise your prospects of studying highly competitive progr..."
-date: "TBD"
+date: "2026-08-08"
 ---
 
 <nav class="toc">
