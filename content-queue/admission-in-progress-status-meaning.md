@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Admission in Progress Status Meaning on JAMB CAPS: What It Means & Next Steps"
 category: "JAMB CAPS"
 description: "Understanding what Admission in Progress (AIP) status means on JAMB CAPS, typical duration, clearance procedures, and what to do if status remains unchanged."
-date: "TBD"
+date: "2026-08-08"
 ---
 
 <nav class="toc">
