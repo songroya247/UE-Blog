@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "How to Upload Your O'Level Result on the JAMB Portal: Complete 2026 Guide"
 category: "JAMB CAPS"
 description: "Target Audience: Candidates who registered as Awaiting Result, Direct Entry applicants, or candidates updating O'Level grades."
-date: "TBD"
+date: "2026-08-10"
 ---
 
 <nav class="toc">
