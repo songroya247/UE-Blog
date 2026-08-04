@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "State Universities Cut Off Mark 2026/2027: Complete Nigerian Admission Guide"
 category: "Admissions Strategy"
 description: "Comprehensive guide to state university cut-off marks in Nigeria for the 2026/2027 academic session, featuring verified institutional baseline scores, historical departmental admission trends, calculation formulas, and recovery strategies."
-date: "TBD"
+date: "2026-08-04"
 ---
 
 <nav class="toc">
