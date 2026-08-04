@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "How to Check JAMB CAPS Admission Status (Complete 2026/2027 Guide)"
 category: "JAMB CAPS"
 description: "Learn how to check your admission status on JAMB CAPS and Nigerian university portals. Includes troubleshooting fixes, status message explanations, and a step-by-step 2026/2027 guide."
-date: "TBD"
+date: "2026-08-06"
 ---
 
 <nav class="toc">
