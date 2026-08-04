@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB Change of Institution Portal: The Complete 2026/2027 Guide"
 category: "JAMB CAPS"
 description: "Receiving your UTME results marks a clear turning point in your higher education journey. When an aggregate score lands below the historical entry bar for yo..."
-date: "TBD"
+date: "2026-08-09"
 ---
 
 <nav class="toc">
