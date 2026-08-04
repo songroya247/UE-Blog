@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "LASU Admission List Checker: 2026/2027 Status Guide & LACACA Clearance"
 category: "University Guides"
 description: "Exhaustive guide to using the LASU admission list checker for the 2026/2027 academic session. Learn step-by-step checking procedures, JAMB CAPS workflow, aggregate score math, and LACACA clearance."
-date: "TBD"
+date: "2026-08-12"
 ---
 
 <nav class="toc">
