@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "Courses for Low JAMB Score Nigeria: Your Ultimate Guide to Admission in 2027"
 category: "Admissions Strategy"
-description: "Chinedu sat on the edge of his bed in Enugu, staring blankly at his phone. The morning rain beat a steady rhythm against the zinc roof, matching the anxious ..."
+description: "A 2027-cycle guide to courses you can realistically study with a low JAMB score, high-risk fields to avoid, and state-by-state admission opportunities."
 date: "2026-07-30"
 ---
 
