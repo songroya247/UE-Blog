@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "JAMB Score Below 180? Your Comprehensive Guide to Admission Options & Opportunities"
 category: "Admissions Strategy"
-description: "You just saw your UTME result. The screen displays a number below 180. Your heart sinks. You think of the months spent reading thick textbooks, the early mor..."
+description: "JAMB score below 180? See which universities and polytechnics accept it, alternative degree pathways, scholarships, and a step-by-step application plan."
 date: "2026-08-03"
 ---
 
