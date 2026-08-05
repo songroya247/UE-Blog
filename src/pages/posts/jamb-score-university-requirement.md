@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "The Real Math of Nigerian University Admissions: Why Your JAMB Score is Only Half the Story"
 category: "Admissions Strategy"
-description: "But a massive, systemic misunderstanding exists within this system."
+description: "Why your JAMB score is only part of admission: departmental cut-offs, the aggregate scoring formula, O'Level subject traps, and navigating JAMB CAPS."
 date: "2026-08-02"
 ---
 
