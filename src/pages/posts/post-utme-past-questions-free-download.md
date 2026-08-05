@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "The Post-UTME Survival Guide: Free Past Questions, Tactics, and the Path to Admission"
 category: "Post-UTME"
-description: "You cleared the JAMB hurdle. You saw your score, breathed a sigh of relief, and felt the heavy weight lift off your chest. But the race is only half run. The..."
+description: "How aggregate scores are calculated for Post-UTME, subject-by-subject practice questions, CBT exam strategy, and the document checklist for screening day."
 date: "2026-08-01"
 ---
 
