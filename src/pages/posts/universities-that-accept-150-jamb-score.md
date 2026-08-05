@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "Universities That Accept 150 JAMB Score in Nigeria [Current Academic Session]"
 category: "Admissions Strategy"
-description: "[Updated for Current Admission Session]"
+description: "Universities accepting a 150 JAMB score this admission session, how screening aggregates work, courses available, and institutions without physical Post-UTME."
 date: "2026-08-04"
 ---
 
