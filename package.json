@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "prebuild": "node scripts/publish-queue.js && node scripts/generate-llms-txt.js",
+    "check-links": "node scripts/check-links.js",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview"
