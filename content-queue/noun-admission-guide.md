@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "National Open University of Nigeria NOUN Admission: The Complete Step-by-Step Guide"
 category: "Alternative Pathways"
 description: "Complete guide to National Open University of Nigeria NOUN admission. Check requirements, verified fees, application portals, and study centres."
-date: "TBD"
+date: "2026-08-06"
 ---
 
 <nav class="toc">
