@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "Beyond the Red Ink: The Practical Nigerian Guide to Higher Education After a Bad JAMB Score"
 category: "Alternative Pathways"
-description: "Your phone buzzes. The SMS from 55019 contains a number that makes your stomach drop. 148. Or maybe 162. You stare at the screen. The room feels suddenly small..."
+description: "Failed, low, or withheld JAMB score? Immediate steps to take, JAMB re-sit strategy, alternative admission pathways, and how to register for each option."
 date: "2026-07-31"
 meta:
   - label: "Minimum Uni Baseline"
