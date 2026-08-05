@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "What to Do If JAMB CAPS Says Not Admitted: Full Guide"
 category: "JAMB CAPS"
 description: "Status says Not Admitted on JAMB CAPS? Step-by-step guide on aggregate scores, O'Level uploads, transfer approvals, and institutional options."
-date: "TBD"
+date: "2026-08-07"
 ---
 
 <nav class="toc">
