@@ -486,7 +486,7 @@ Check your subject combinations, qualification conversions, and institutional ac
 <strong class="label">📚 HELPFUL EDUCATIONAL GUIDES</strong>
 <p>Learn more about tertiary admission processes in Nigeria:</p>
 <ul>
-<li><a href="/posts/direct-entry-registration-guidelines-nigeria" target="_blank" rel="noopener">JAMB Direct Entry Registration & CAPS Guide</a></li>
+<li><a href="/posts/jamb-direct-entry-registration-guidelines-nigeria-the-ultimate-step-by-step-guide" target="_blank" rel="noopener">JAMB Direct Entry Registration & CAPS Guide</a></li>
 <li><a href="https://school.ultimateedge.info" target="_blank" rel="noopener">JUPEB Requirements & Subject Combinations</a></li>
 <li><a href="https://school.ultimateedge.info" target="_blank" rel="noopener">IJMB Registration & University Acceptance List</a></li>
 <li><a href="/posts/how-to-upload-olevel-result-jamb-portal" target="_blank" rel="noopener">How to Upload O'Level Results on JAMB Portal</a></li>
