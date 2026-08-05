@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "UI Post UTME Cut Off Mark 2027/2028: Full List for All Courses & Admission Projections"
 category: "University Guides"
 description: "Why Trust This Guide: Our editorial process is led by experienced academic consultants who cross-reference all metrics with official circulars released by th..."
-date: "TBD"
+date: "2026-08-10"
 ---
 
 <nav class="toc">
