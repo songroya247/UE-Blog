@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Private Universities in Nigeria Admitting Without JAMB UTME (2026 Guide)"
 category: "Alternative Pathways"
 description: "Discover top private universities in Nigeria admitting without JAMB UTME in 2026. Explore JUPEB, IJMB, Direct Entry pathways, entry requirements, and tuition fees."
-date: "TBD"
+date: "2026-08-05"
 ---
 
 <nav class="toc">
