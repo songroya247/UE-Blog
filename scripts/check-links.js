@@ -25,6 +25,59 @@ const SKIP_SCHEMES = /^(mailto:|tel:|sms:|javascript:)/i;
 
 const origin = new URL(BASE_URL).origin;
 
+// GitHub Actions sets this automatically as "owner/repo" â€” no config needed
+// when running in CI. Locally it'll just be undefined and we skip edit links.
+const GITHUB_REPO = process.env.GITHUB_REPOSITORY || null;
+const DEFAULT_BRANCH = process.env.GITHUB_DEFAULT_BRANCH || 'main';
+
+/**
+ * Maps a live site path (e.g. "/posts/waec-result-checker-guide/") back to
+ * the actual source file in this repo, so a broken link in the report can
+ * be jumped to directly instead of hunting for it.
+ */
+function pathToSourceFile(sitePath) {
+  const p = sitePath.replace(/\/$/, '') || '/';
+  if (p === '/') return 'src/pages/index.astro';
+
+  const staticPages = {
+    '/about': 'src/pages/about.md',
+    '/contact': 'src/pages/contact.md',
+    '/privacy-policy': 'src/pages/privacy-policy.md',
+    '/terms-of-service': 'src/pages/terms-of-service.md',
+  };
+  if (staticPages[p]) return staticPages[p];
+
+  let m = p.match(/^\/posts\/([^/]+)$/);
+  if (m) return `src/pages/posts/${m[1]}.md`;
+
+  m = p.match(/^\/tools\/([^/]+)$/);
+  if (m) return `src/pages/tools/${m[1]}.astro`;
+
+  return null; // unknown pattern (e.g. a generated/dynamic route) â€” no direct mapping
+}
+
+function editUrl(sourceFile) {
+  if (!sourceFile || !GITHUB_REPO) return null;
+  return `https://github.com/${GITHUB_REPO}/edit/${DEFAULT_BRANCH}/${sourceFile}`;
+}
+
+/** Turns a full page URL into a short annotated string with file + edit link. */
+function describeReferrer(fullUrl) {
+  let sitePath;
+  try {
+    sitePath = normalizePath(new URL(fullUrl).pathname);
+  } catch {
+    return fullUrl;
+  }
+  const sourceFile = pathToSourceFile(sitePath);
+  if (!sourceFile) return fullUrl;
+
+  const edit = editUrl(sourceFile);
+  return edit
+    ? `${fullUrl}\n     source file: ${sourceFile}\n     edit directly: ${edit}`
+    : `${fullUrl}\n     source file: ${sourceFile}`;
+}
+
 async function fetchWithTimeout(url, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -96,7 +149,7 @@ async function crawlInternal() {
 
       // Same-page anchor: "#faq"
       if (raw.startsWith('#')) {
-        sameOriginAnchorRefs.push({ page: pathToFetch, targetPath: pathToFetch, hash: raw.slice(1) });
+        sameOriginAnchorRefs.push({ page: fullUrl, targetPath: pathToFetch, hash: raw.slice(1) });
         continue;
       }
 
@@ -176,38 +229,40 @@ async function checkExternalLinks(externalLinks) {
 }
 
 function printReport({ brokenInternal, brokenAnchors, brokenExternal, pagesCrawled, externalCount }) {
-  console.log(`\n🔗 Link check for ${BASE_URL}`);
+  console.log(`\nðŸ”— Link check for ${BASE_URL}`);
   console.log(`   Internal pages crawled: ${pagesCrawled}`);
   console.log(`   Unique external links checked: ${externalCount}\n`);
 
   if (brokenInternal.length === 0 && brokenAnchors.length === 0 && brokenExternal.length === 0) {
-    console.log('✅ No broken links found.\n');
+    console.log('âœ… No broken links found.\n');
     return;
   }
 
   if (brokenInternal.length > 0) {
-    console.log(`❌ Broken internal links/assets (${brokenInternal.length}):`);
+    console.log(`âŒ Broken internal links/assets (${brokenInternal.length}):`);
     for (const b of brokenInternal) {
       console.log(`   - ${b.link}`);
-      console.log(`     found on: ${b.page}  |  reason: ${b.reason}`);
+      console.log(`     found on: ${describeReferrer(b.page)}  |  reason: ${b.reason}`);
     }
     console.log('');
   }
 
   if (brokenAnchors.length > 0) {
-    console.log(`⚠️  Broken anchor links (${brokenAnchors.length}):`);
+    console.log(`âš ï¸  Broken anchor links (${brokenAnchors.length}):`);
     for (const b of brokenAnchors) {
       console.log(`   - ${b.link}`);
-      console.log(`     linked from: ${b.page}  |  reason: ${b.reason}`);
+      console.log(`     linked from: ${describeReferrer(b.page)}  |  reason: ${b.reason}`);
     }
     console.log('');
   }
 
   if (brokenExternal.length > 0) {
-    console.log(`❌ Broken external links (${brokenExternal.length}):`);
+    console.log(`âŒ Broken external links (${brokenExternal.length}):`);
     for (const b of brokenExternal) {
       console.log(`   - ${b.link}  (reason: ${b.reason})`);
-      console.log(`     linked from: ${b.referrers.join(', ')}`);
+      for (const ref of b.referrers) {
+        console.log(`     linked from: ${describeReferrer(ref)}`);
+      }
     }
     console.log('');
     console.log('   Note: some sites (LinkedIn, Instagram, etc.) block automated HEAD/GET');
