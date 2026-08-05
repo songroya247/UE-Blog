@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "Great Benin Calls: UNIBEN Post UTME & Direct Entry Complete Guide (2026/2027)"
 category: "University Guides"
 description: "Content in this guide is cross-referenced with official bulletins from the University of Benin Central Entrance Examination Committee (CEEC), guidelines from..."
-date: "TBD"
+date: "2026-08-11"
 ---
 
 <nav class="toc">
