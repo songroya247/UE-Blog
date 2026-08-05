@@ -2,7 +2,7 @@
 layout: "../../layouts/BlogPost.astro"
 title: "Cracking the 2026 Admission Code: The Strategic Guide to Nigerian University UTME Cut-Off Marks and Aggregate Calculations"
 category: "Admissions Strategy"
-description: "The waiting period following the Unified Tertiary Matriculation Examination (UTME) is a tense time for millions of Nigerian secondary school leavers. In May ..."
+description: "Federal, state, and private university UTME cut-off marks compared, plus aggregate score requirements beyond JAMB and common admission myths debunked."
 date: "2026-07-30"
 ---
 
