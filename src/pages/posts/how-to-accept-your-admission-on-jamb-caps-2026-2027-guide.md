@@ -110,8 +110,10 @@ Alt Text: A clean view of the official JAMB e-Facility login dashboard page, sho
 <li>Click on <strong>Access my CAPS</strong>.</li>
 </ol>
 
-<div class="image-placeholder">
-[SEO Image Opportunity: Mobile Browser Desktop Site Setting]<br>
+<figure>
+  <img src="/images/official-JAMB-e-Facility-Portal.png.png" alt="" loading="lazy" width="800" height="450">
+  <figcaption></figcaption>
+</figure><br>
 Alt Text: Close-up of the Google Chrome mobile settings browser menu on a smartphone screen, showing the Desktop Site checkbox enabled.
 </div>
 
