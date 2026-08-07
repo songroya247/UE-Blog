@@ -137,8 +137,10 @@ Alt Text: Close-up of the Google Chrome mobile settings browser menu on a smartp
 <li>A red button: <strong>Reject Admission</strong></li>
 </ul>
 
-<div class="image-placeholder">
-[SEO Image Opportunity: JAMB CAPS Accept Reject Selection Buttons]<br>
+<figure>
+  <img src="/images/check-admission-status.png.png" alt="" loading="lazy" width="800" height="450">
+  <figcaption></figcaption>
+</figure>JAMB CAPS Accept Reject Selection Buttons]<br>
 Alt Text: JAMB CAPS candidate profile section highlighting the green Accept Admission and red Reject Admission selection buttons below student credentials.
 </div>
 
