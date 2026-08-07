@@ -1,0 +1,421 @@
+---
+const canonicalURL = new URL(Astro.url.pathname, 'https://blog.ultimateedge.info');
+const pageTitle = "JAMB Post-UTME Aggregate Score Calculator (Free, Any University)";
+const pageDescription = "Calculate your Post-UTME aggregate admission score for any Nigerian university. Enter your own institution's JAMB, Post-UTME, and O'Level weights for an accurate result.";
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "JAMB Post-UTME Aggregate Score Calculator",
+  "url": canonicalURL.toString(),
+  "applicationCategory": "EducationApplication",
+  "operatingSystem": "Any",
+  "description": pageDescription,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "NGN" },
+  "publisher": { "@type": "Organization", "name": "Ultimate Edge Education" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do I need to enter my own weights instead of picking my university from a list?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aggregate score formulas differ by institution and can change between admission sessions. Rather than risk showing you an outdated or wrong formula, this calculator asks for the weights your institution has officially published so the result is accurate for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I find my university's aggregate score weighting?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It is usually published on your institution's admissions portal or Post-UTME screening notice, often alongside the JAMB, Post-UTME, and O'Level percentage breakdown for that admission cycle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my university does not use O'Level in the aggregate at all?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Set the O'Level weight to 0% and adjust your JAMB and Post-UTME weights so the three fields sum to 100%. The calculator will simply exclude O'Level from the result."
+      }
+    }
+  ]
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="manifest" href="/site.webmanifest">
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <link rel="canonical" href={canonicalURL} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <style>
+  @font-face{font-family:'Fraunces';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/fraunces-latin-400-normal.woff2') format('woff2');}
+  @font-face{font-family:'Fraunces';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/fraunces-latin-500-normal.woff2') format('woff2');}
+  @font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/fraunces-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/fraunces-latin-700-normal.woff2') format('woff2');}
+  @font-face{font-family:'Source Sans 3';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/source-sans-3-latin-400-normal.woff2') format('woff2');}
+  @font-face{font-family:'Source Sans 3';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/source-sans-3-latin-500-normal.woff2') format('woff2');}
+  @font-face{font-family:'Source Sans 3';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/source-sans-3-latin-600-normal.woff2') format('woff2');}
+  @font-face{font-family:'Source Sans 3';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/source-sans-3-latin-700-normal.woff2') format('woff2');}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');}
+  </style>
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="/" class="logo">Ultimate Edge Blog</a>
+    <a href="/" class="back-link">← All guides</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Free Tool</div>
+    <h1>Post-UTME Aggregate Score Calculator</h1>
+    <p class="lede">Works for any Nigerian university. Enter your own institution's published weighting — because the formula is different everywhere, and changes by session.</p>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <div class="callout tip">
+    <strong class="label">Before you start</strong>
+    Find your institution's official JAMB / Post-UTME / O'Level weighting for the current admission session — usually on their admissions portal or screening notice. This tool does the math; it does not guess your school's formula for you.
+  </div>
+
+  <section id="calculator">
+    <div class="calc-card">
+
+      <div class="calc-group">
+        <h3>1. Your scores</h3>
+
+        <label class="calc-label" for="jambScore">
+          JAMB / UTME score <span class="calc-hint">(out of 400)</span>
+        </label>
+        <input class="calc-input" type="number" id="jambScore" min="0" max="400" placeholder="e.g. 245" />
+
+        <label class="calc-label" for="postUtmeScore">
+          Post-UTME score <span class="calc-hint">(enter as a percentage — see helper below if unsure)</span>
+        </label>
+        <input class="calc-input" type="number" id="postUtmeScore" min="0" max="100" placeholder="e.g. 68" />
+        <details class="mini-helper">
+          <summary>Not scored out of 100? Convert it here</summary>
+          <div class="mini-helper-body">
+            <label class="calc-label small" for="puScoreObtained">Score obtained</label>
+            <input class="calc-input small" type="number" id="puScoreObtained" placeholder="e.g. 34" />
+            <label class="calc-label small" for="puScoreMax">Total obtainable</label>
+            <input class="calc-input small" type="number" id="puScoreMax" placeholder="e.g. 50" />
+            <button type="button" class="mini-btn" id="applyPuConversion">Use this as my Post-UTME %</button>
+          </div>
+        </details>
+
+        <label class="calc-label" for="olevelScore">
+          O'Level score <span class="calc-hint">(as a percentage, if your institution uses one — else leave at 0 and set its weight to 0% below)</span>
+        </label>
+        <input class="calc-input" type="number" id="olevelScore" min="0" max="100" placeholder="e.g. 80" />
+      </div>
+
+      <div class="calc-group">
+        <h3>2. Your institution's weighting</h3>
+        <p class="calc-note">Must add up to 100%. Check your school's admissions/screening notice for these figures.</p>
+
+        <label class="calc-label" for="jambWeight">JAMB weight (%)</label>
+        <input class="calc-input" type="number" id="jambWeight" min="0" max="100" value="50" />
+
+        <label class="calc-label" for="postUtmeWeight">Post-UTME weight (%)</label>
+        <input class="calc-input" type="number" id="postUtmeWeight" min="0" max="100" value="30" />
+
+        <label class="calc-label" for="olevelWeight">O'Level weight (%)</label>
+        <input class="calc-input" type="number" id="olevelWeight" min="0" max="100" value="20" />
+
+        <div id="weightWarning" class="calc-warning" hidden>
+          Weights currently add up to <span id="weightTotal">0</span>%, not 100%. Adjust them for an accurate result.
+        </div>
+      </div>
+
+      <button type="button" id="calculateBtn" class="mock-btn primary calc-submit">Calculate my aggregate score</button>
+
+      <div id="resultBox" class="result-box" hidden>
+        <div class="result-score"><span id="resultValue">0</span><span class="result-unit">/ 100</span></div>
+        <div class="result-breakdown">
+          <div><span>JAMB contribution</span><b id="breakJamb">0</b></div>
+          <div><span>Post-UTME contribution</span><b id="breakPu">0</b></div>
+          <div><span>O'Level contribution</span><b id="breakOl">0</b></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details class="faq">
+      <summary>Why do I need to enter my own weights instead of picking my university from a list?</summary>
+      <p>Aggregate score formulas differ by institution and can change between admission sessions. Rather than risk showing you an outdated or wrong formula, this calculator asks for the weights your institution has officially published so the result is accurate for you.</p>
+    </details>
+    <details class="faq">
+      <summary>Where do I find my university's aggregate score weighting?</summary>
+      <p>It is usually published on your institution's admissions portal or Post-UTME screening notice, often alongside the JAMB, Post-UTME, and O'Level percentage breakdown for that admission cycle.</p>
+    </details>
+    <details class="faq">
+      <summary>What if my university does not use O'Level in the aggregate at all?</summary>
+      <p>Set the O'Level weight to 0% and adjust your JAMB and Post-UTME weights so the three fields sum to 100%. The calculator will simply exclude O'Level from the result.</p>
+    </details>
+  </section>
+
+  <div class="callout warn">
+    <strong class="label">Important</strong>
+    This is a general-purpose calculator, not an official admission tool. Your actual admission decision is made by your institution using their own systems. Use this to estimate and plan, not as a guarantee.
+  </div>
+
+  <section id="related-reading">
+    <h2>Related reading</h2>
+    <ul>
+      <li><a href="/posts/jamb-caps-explained">How JAMB CAPS Works</a></li>
+      <li><a href="/posts/jamb-vs-post-utme-difference">JAMB vs Post-UTME: What's the Difference?</a></li>
+      <li><a href="/posts/top-nigerian-universities-cutoff">University Cut-Off Marks Compared</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/about">About</a>
+    <span>·</span>
+    <a href="/contact">Contact</a>
+    <span>·</span>
+    <a href="/privacy-policy">Privacy Policy</a>
+    <span>·</span>
+    <a href="/terms-of-service">Terms of Service</a>
+  </div>
+  © 2026 Ultimate Edge Blog — All rights reserved.
+</footer>
+
+<style is:inline>
+  :root{
+    --ink:#1f2420;
+    --paper:#faf6ee;
+    --paper-raised:#ffffff;
+    --forest:#0b3d2e;
+    --forest-dim:#12513d;
+    --gold:#c9922e;
+    --gold-soft:#f3e3c2;
+    --rust:#a8452c;
+    --rust-soft:#f7e2da;
+    --line:#e2dccb;
+    --muted:#5f6660;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--forest);
+    line-height:1.15;
+    margin:0 0 .4em 0;
+  }
+  a{color:var(--forest-dim);}
+  a:hover{color:var(--gold);}
+
+  header{
+    background:var(--forest);
+    padding:14px 24px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .nav-inner{
+    max-width:760px; margin:0 auto;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .logo{ color:#fbf7ec; font-family:'Fraunces', serif; font-weight:700; text-decoration:none; font-size:1.1rem; }
+  .back-link{ color:#d9d3bf; text-decoration:none; font-size:.85rem; }
+  .back-link:hover{ color:var(--gold); }
+
+  .hero{
+    background: radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%), var(--forest);
+    color:#f4efe1; padding:56px 24px 48px;
+  }
+  .hero-inner{ max-width:760px; margin:0 auto; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:"●"; font-size:.6rem; color:#7fb89a;}
+  .hero h1{ color:#fbf7ec; font-size:clamp(1.8rem, 5vw, 2.6rem); max-width:20ch; }
+  .hero p.lede{ font-size:1.05rem; max-width:56ch; color:#d9d3bf; margin-top:12px; }
+
+  .wrap{ max-width:760px; margin:0 auto; padding:40px 24px 60px; }
+
+  .callout{ padding:16px 18px; border-radius:6px; margin:24px 0; font-size:.94rem; }
+  .callout.tip{ background:#eef2ec; border-left:4px solid var(--forest-dim); }
+  .callout.warn{ background:var(--rust-soft); border-left:4px solid var(--rust); }
+  .callout strong.label{ display:block; margin-bottom:4px; font-family:'JetBrains Mono', monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; }
+  .callout.tip strong.label{ color:var(--forest-dim); }
+  .callout.warn strong.label{ color:var(--rust); }
+
+  .calc-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:28px;
+    margin-top:32px;
+  }
+  .calc-group{ margin-bottom:28px; }
+  .calc-group h3{ font-size:1.05rem; margin-bottom:6px; }
+  .calc-note{ font-size:.85rem; color:var(--muted); margin:0 0 14px; }
+  .calc-label{ display:block; font-size:.85rem; color:var(--muted); margin:14px 0 6px; }
+  .calc-label.small{ margin:8px 0 4px; }
+  .calc-hint{ font-weight:400; color:var(--muted); }
+  .calc-input{
+    width:100%; padding:10px 12px; font-size:1rem;
+    border:1px solid var(--line); border-radius:5px;
+    background:var(--paper); color:var(--ink);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .calc-input.small{ display:inline-block; width:48%; margin-right:2%; }
+  .calc-input:focus{ outline:2px solid var(--gold); outline-offset:1px; }
+
+  .mini-helper{ margin:6px 0 0; font-size:.85rem; }
+  .mini-helper summary{ color:var(--forest-dim); cursor:pointer; }
+  .mini-helper-body{ padding:10px 0 4px; }
+  .mini-btn{
+    margin-top:8px; padding:8px 14px; font-size:.85rem;
+    background:var(--gold-soft); color:var(--forest);
+    border:1px solid var(--gold); border-radius:5px; cursor:pointer;
+  }
+  .mini-btn:hover{ background:var(--gold); color:#fff; }
+
+  .calc-warning{
+    margin-top:10px; padding:10px 12px; background:var(--rust-soft);
+    border-left:3px solid var(--rust); border-radius:4px; font-size:.85rem; color:var(--rust);
+  }
+
+  .calc-submit{
+    width:100%; padding:14px; font-size:1rem; font-weight:600;
+    background:var(--forest); color:#fbf7ec; border:none; border-radius:6px;
+    cursor:pointer; font-family:'Source Sans 3', sans-serif;
+  }
+  .calc-submit:hover{ background:var(--forest-dim); }
+
+  .result-box{
+    margin-top:24px; padding:24px; text-align:center;
+    background:var(--gold-soft); border-radius:8px;
+  }
+  .result-score{ font-family:'Fraunces', serif; font-size:2.4rem; font-weight:700; color:var(--forest); }
+  .result-unit{ font-size:1rem; color:var(--muted); margin-left:6px; }
+  .result-breakdown{
+    display:flex; justify-content:space-around; flex-wrap:wrap; gap:12px;
+    margin-top:16px; font-size:.85rem; color:var(--muted);
+  }
+  .result-breakdown div{ display:flex; flex-direction:column; gap:4px; }
+  .result-breakdown b{ color:var(--forest); font-size:1.05rem; }
+
+  details.faq{
+    border-bottom:1px solid var(--line); padding:14px 0;
+  }
+  details.faq summary{
+    cursor:pointer; font-weight:600; color:var(--forest); position:relative; padding-right:24px;
+  }
+  details.faq summary::-webkit-details-marker{ display:none; }
+  details.faq summary::after{ content:"+"; position:absolute; right:0; top:0; }
+  details.faq[open] summary::after{ content:"–"; }
+  details.faq p{ margin:10px 0 0; color:var(--muted); }
+
+  #related-reading ul{ padding-left:1.2em; }
+  #related-reading li{ margin-bottom:6px; }
+
+  footer{
+    text-align:center; padding:32px 24px; font-size:.82rem; color:var(--muted);
+    border-top:1px solid var(--line);
+  }
+  .footer-links{ margin-bottom:10px; }
+  .footer-links a{ color:var(--forest-dim); text-decoration:none; }
+  .footer-links a:hover{ color:var(--gold); text-decoration:underline; }
+  .footer-links span{ color:var(--line); margin:0 8px; }
+</style>
+
+<script is:inline>
+  function num(id) {
+    const el = document.getElementById(id);
+    const v = parseFloat(el.value);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function checkWeights() {
+    const total = num('jambWeight') + num('postUtmeWeight') + num('olevelWeight');
+    const warning = document.getElementById('weightWarning');
+    const totalSpan = document.getElementById('weightTotal');
+    totalSpan.textContent = total;
+    warning.hidden = Math.abs(total - 100) < 0.01;
+    return total;
+  }
+
+  ['jambWeight', 'postUtmeWeight', 'olevelWeight'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkWeights);
+  });
+
+  document.getElementById('applyPuConversion').addEventListener('click', function () {
+    const obtained = num('puScoreObtained');
+    const max = num('puScoreMax');
+    if (max > 0) {
+      const pct = Math.round((obtained / max) * 1000) / 10;
+      document.getElementById('postUtmeScore').value = pct;
+    }
+  });
+
+  document.getElementById('calculateBtn').addEventListener('click', function () {
+    const jambRaw = num('jambScore');           // out of 400
+    const postUtmePct = num('postUtmeScore');    // already a %
+    const olevelPct = num('olevelScore');        // already a %
+
+    const jambWeight = num('jambWeight');
+    const postUtmeWeight = num('postUtmeWeight');
+    const olevelWeight = num('olevelWeight');
+
+    const jambNormalized = Math.min(jambRaw, 400) / 400 * 100;
+
+    const jambContribution = jambNormalized * (jambWeight / 100);
+    const puContribution = Math.min(postUtmePct, 100) * (postUtmeWeight / 100);
+    const olContribution = Math.min(olevelPct, 100) * (olevelWeight / 100);
+
+    const aggregate = jambContribution + puContribution + olContribution;
+
+    document.getElementById('resultValue').textContent = aggregate.toFixed(2);
+    document.getElementById('breakJamb').textContent = jambContribution.toFixed(2);
+    document.getElementById('breakPu').textContent = puContribution.toFixed(2);
+    document.getElementById('breakOl').textContent = olContribution.toFixed(2);
+    document.getElementById('resultBox').hidden = false;
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  checkWeights();
+</script>
+
+</body>
+</html>

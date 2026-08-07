@@ -1,0 +1,320 @@
+---
+const allPosts = await Astro.glob('./posts/*.md');
+const now = new Date();
+
+// Only show posts whose publish date is TODAY or in the PAST
+const posts = allPosts
+  .filter(post => new Date(post.frontmatter.date) <= now)
+  .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
+  .map(post => ({
+    ...post,
+    displayDate: new Date(post.frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  }));
+
+const siteURL = 'https://blog.ultimateedge.info';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="manifest" href="/site.webmanifest">
+
+<title>Ultimate Edge Blog — Guides for JAMB, WAEC & Admissions</title>
+<meta name="description" content="Practical, up-to-date guides on JAMB, WAEC, and the Nigerian university admission process." />
+<link rel="canonical" href={siteURL} />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Ultimate Edge Blog" />
+<meta property="og:description" content="Practical, up-to-date guides on JAMB, WAEC, and the Nigerian university admission process." />
+<meta property="og:url" content={siteURL} />
+<meta property="og:site_name" content="Ultimate Edge Blog" />
+<meta property="og:image" content={`${siteURL}/og-default.jpg`} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ultimate Edge Blog" />
+<meta name="twitter:description" content="Practical, up-to-date guides on JAMB, WAEC, and the Nigerian university admission process." />
+<meta name="twitter:image" content={`${siteURL}/og-default.jpg`} />
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ultimate Edge Blog",
+  "url": siteURL,
+  "description": "Practical, up-to-date guides on JAMB, WAEC, and the Nigerian university admission process.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ultimate Edge Education",
+    "logo": { "@type": "ImageObject", "url": `${siteURL}/og-default.jpg` }
+  }
+})}></script>
+
+<style>
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/fraunces-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/fraunces-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/fraunces-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/fraunces-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/source-sans-3-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/source-sans-3-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/source-sans-3-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/source-sans-3-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');}
+</style>
+
+<!-- Google Analytics (GA4) + Cloudflare Web Analytics — deferred until after page load
+     so they don't compete with critical rendering work. Analytics data loss from this
+     delay is negligible (a few hundred ms) compared to the main-thread/LCP benefit. -->
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7W6R0EGRLC');
+
+  function loadDeferredAnalytics(){
+    var ga = document.createElement('script');
+    ga.async = true;
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-7W6R0EGRLC';
+    document.head.appendChild(ga);
+
+    var cf = document.createElement('script');
+    cf.defer = true;
+    cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    cf.setAttribute('data-cf-beacon', '{"token": "YOUR_CF_BEACON_TOKEN"}');
+    document.head.appendChild(cf);
+  }
+  if (document.readyState === 'complete') {
+    loadDeferredAnalytics();
+  } else {
+    window.addEventListener('load', loadDeferredAnalytics);
+  }
+</script>
+
+<style>
+  :root{
+    --ink:#1f2420;
+    --paper:#faf6ee;
+    --paper-raised:#ffffff;
+    --forest:#0b3d2e;
+    --forest-dim:#12513d;
+    --gold:#c9922e;
+    --gold-soft:#f3e3c2;
+    --rust:#a8452c;
+    --rust-soft:#f7e2da;
+    --line:#e2dccb;
+    --muted:#5f6660;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--forest);
+    line-height:1.15;
+    margin:0 0 .4em 0;
+  }
+  a{color:var(--forest-dim);}
+
+  header{
+    background:var(--forest);
+    padding:14px 24px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .nav-inner{max-width:760px; margin:0 auto;}
+  .logo{
+    color:#fbf7ec;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    text-decoration:none;
+    font-size:1.1rem;
+  }
+
+  .hero{
+    background:
+      radial-gradient(1200px 500px at 85% -10%, rgba(201,146,46,0.16), transparent 60%),
+      var(--forest);
+    color:#f4efe1;
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(244,239,225,0.045) 0 1px, transparent 1px 88px);
+    pointer-events:none;
+  }
+  .hero-inner{max-width:760px; margin:0 auto; position:relative;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:"●"; font-size:.6rem; color:#7fb89a;}
+  .hero h1{
+    color:#fbf7ec;
+    font-size:clamp(2rem, 5vw, 2.7rem);
+    max-width:20ch;
+  }
+  .hero p.lede{
+    font-size:1.08rem;
+    max-width:56ch;
+    color:#d9d3bf;
+    margin-top:14px;
+  }
+
+  .wrap{max-width:760px; margin:0 auto; padding:0 24px;}
+
+  .post-grid{display:flex; flex-direction:column; gap:16px; margin:40px 0 60px;}
+  .card{
+    display:block;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:22px 24px;
+    text-decoration:none;
+    color:inherit;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{
+    border-color:var(--gold);
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px -16px rgba(11,61,46,0.35);
+  }
+  .card .eyebrow-sm{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.7rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:8px;
+    display:block;
+  }
+  .card h2{font-size:1.3rem; margin-bottom:8px;}
+  .card:hover h2{color:var(--gold);}
+  .card p{color:var(--muted); font-size:.95rem; margin:0 0 12px;}
+  .card .date-sm{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.75rem;
+    color:var(--muted);
+  }
+
+  .empty-state{text-align:center; padding:60px 24px; color:var(--muted); font-size:1.05rem;}
+
+  .back-to-top{
+    position:fixed;
+    bottom:24px; right:24px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--forest);
+    color:#fbf7ec;
+    border:none;
+    font-size:1.2rem;
+    cursor:pointer;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, background .2s ease;
+    box-shadow:0 8px 20px -8px rgba(11,61,46,0.5);
+    z-index:999;
+  }
+  .back-to-top.visible{opacity:1; pointer-events:auto;}
+  .back-to-top:hover{background:var(--forest-dim);}
+
+  footer{
+    text-align:center;
+    padding:36px 24px 60px;
+    font-size:.82rem;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    margin-top:40px;
+  }
+  .footer-links{
+    display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-bottom:14px; font-size:.85rem;
+  }
+  .footer-links a{color:var(--forest-dim); text-decoration:none;}
+  .footer-links a:hover{color:var(--gold); text-decoration:underline;}
+  .footer-links span{color:var(--line);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="/" class="logo">Ultimate Edge Blog</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Guides & Updates</div>
+    <h1>Guides for JAMB, WAEC & University Admissions</h1>
+    <p class="lede">Practical, up-to-date write-ups on exam results, admission cycles, and the deadlines that matter most.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  {posts.length > 0 ? (
+    <div class="post-grid">
+      {posts.map(post => (
+        <a class="card" href={post.url}>
+          <span class="eyebrow-sm">{post.frontmatter.category}</span>
+          <h2>{post.frontmatter.title}</h2>
+          <p>{post.frontmatter.description}</p>
+          <span class="date-sm">{post.displayDate}</span>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class="empty-state">New guides are on the way — check back soon.</div>
+  )}
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="/about">About</a>
+    <span>·</span>
+    <a href="/contact">Contact</a>
+    <span>·</span>
+    <a href="/privacy-policy">Privacy Policy</a>
+    <span>·</span>
+    <a href="/terms-of-service">Terms of Service</a>
+  </div>
+  © 2026 Ultimate Edge Blog — All rights reserved.
+</footer>
+
+<button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 600);
+    }, { passive: true });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
+
+</body>
+</html>

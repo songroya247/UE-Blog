@@ -1,0 +1,123 @@
+---
+const siteURL = 'https://blog.ultimateedge.info';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="manifest" href="/site.webmanifest">
+<title>Page Not Found — Ultimate Edge Blog</title>
+<meta name="description" content="The page you're looking for doesn't exist. Find JAMB, WAEC, and admission guides on Ultimate Edge Blog." />
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href={`${siteURL}/404/`} />
+
+<style>
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/fraunces-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/fraunces-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/fraunces-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/fraunces-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/source-sans-3-latin-400-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/source-sans-3-latin-500-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/source-sans-3-latin-600-normal.woff2') format('woff2');}
+@font-face{font-family:'Source Sans 3';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/source-sans-3-latin-700-normal.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');}
+</style>
+
+<style>
+  :root{
+    --ink:#1f2420;
+    --paper:#faf6ee;
+    --paper-raised:#ffffff;
+    --forest:#0b3d2e;
+    --forest-dim:#1f6f52;
+    --gold:#c9a24b;
+    --gold-soft:#f6ecd2;
+    --line:#e7e1d3;
+    --muted:#6b6b63;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .card{
+    max-width:520px;
+    text-align:center;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:48px 32px;
+  }
+  .code{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--gold);
+    font-size:.95rem;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-size:1.8rem;
+    color:var(--forest);
+    margin:0 0 12px;
+  }
+  p{
+    color:var(--muted);
+    line-height:1.6;
+    margin:0 0 28px;
+  }
+  .links{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    text-align:left;
+    border-top:1px solid var(--line);
+    padding-top:24px;
+  }
+  .links a{
+    color:var(--forest-dim);
+    text-decoration:none;
+    font-weight:600;
+    font-size:.95rem;
+  }
+  .links a:hover{color:var(--gold);}
+  .home-btn{
+    display:inline-block;
+    background:var(--forest);
+    color:#fbf7ec;
+    text-decoration:none;
+    font-weight:600;
+    padding:12px 28px;
+    border-radius:6px;
+    margin-bottom:28px;
+  }
+  .home-btn:hover{background:var(--forest-dim);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="code">ERROR 404</div>
+  <h1>This page wandered off portal.</h1>
+  <p>The guide you're looking for may have moved, or the link's outdated. Start fresh from the homepage, or jump to one of our most-read guides below.</p>
+  <a href="/" class="home-btn">Back to Ultimate Edge Blog</a>
+  <div class="links">
+    <a href="/posts/jamb-caps-explained">JAMB CAPS Explained: Admission Status & Guide</a>
+    <a href="/posts/how-to-check-jamb-caps-admission-status">How to Check Your JAMB CAPS Admission Status</a>
+    <a href="/posts/waec-result-checker-guide">WAEC Result Checker Guide</a>
+    <a href="/posts/top-nigerian-universities-cutoff">Nigerian University Cut-off Marks</a>
+  </div>
+</div>
+</body>
+</html>
