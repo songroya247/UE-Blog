@@ -114,6 +114,23 @@
   }
   .fmt-btn:hover{border-color:var(--gold); color:var(--forest);}
   .fmt-hint{font-size:.75rem; color:var(--muted); margin:-2px 0 10px;}
+
+  /* Preview modal */
+  .preview-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:100;
+    padding:16px;
+  }
+  .preview-overlay.open{display:flex; flex-direction:column;}
+  .preview-modal{
+    background:var(--paper-raised); border-radius:10px; overflow:hidden;
+    display:flex; flex-direction:column; flex:1; max-height:100%;
+  }
+  .preview-header{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 16px; border-bottom:1px solid var(--line); background:var(--paper);
+  }
+  .preview-header span{font-weight:600; color:var(--forest); font-size:.9rem;}
+  .preview-frame{flex:1; border:none; width:100%; background:#fff;}
 </style>
 </head>
 <body>
@@ -148,6 +165,17 @@
 </div>
 
 <div id="mainApp" style="display:none;">
+
+  <div class="preview-overlay" id="previewOverlay">
+    <div class="preview-modal">
+      <div class="preview-header">
+        <span>Preview</span>
+        <button class="btn-secondary" id="closePreviewBtn">Close</button>
+      </div>
+      <iframe class="preview-frame" id="previewFrame"></iframe>
+    </div>
+  </div>
+
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="posts">Posts</button>
@@ -398,6 +426,19 @@
   }
 
   // ---------- Posts list ----------
+  // Fetch each file's date frontmatter (in parallel) so lists can be sorted meaningfully
+  async function withDates(files){
+    return Promise.all(files.map(async f => {
+      let date = null;
+      try {
+        const { content } = await getFile(f.path);
+        const m = content.match(/^date:\s*"?(.*?)"?\s*$/m);
+        date = m ? m[1].trim() : null;
+      } catch(e){ /* ignore, treat as no date */ }
+      return { ...f, date };
+    }));
+  }
+
   async function loadPosts(){
     const listEl = document.getElementById('postsList');
     listEl.innerHTML = '<p class="empty-state">Loading…</p>';
@@ -406,14 +447,22 @@
       listEl.innerHTML = '<p class="empty-state">No posts found.</p>';
       return;
     }
-    const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+    const mdFiles = files.filter(f => f.name.endsWith('.md'));
+    const withD = await withDates(mdFiles);
+    // Latest published first; undated/invalid dates sink to the bottom
+    withD.sort((a,b) => {
+      const da = /^\d{4}-\d{2}-\d{2}$/.test(a.date||'') ? a.date : '0000-00-00';
+      const db = /^\d{4}-\d{2}-\d{2}$/.test(b.date||'') ? b.date : '0000-00-00';
+      return db.localeCompare(da);
+    });
     listEl.innerHTML = '';
     const ul = document.createElement('ul');
     ul.className = 'file-list';
-    mdFiles.forEach(f => {
+    withD.forEach(f => {
       const li = document.createElement('li');
       li.className = 'file-item';
-      li.innerHTML = `<span class="fname">${f.name}</span><span class="pill">post</span>`;
+      const dateLabel = /^\d{4}-\d{2}-\d{2}$/.test(f.date||'') ? f.date : '—';
+      li.innerHTML = `<span class="fname">${f.name}</span><span class="fdate">${dateLabel} <span class="pill">post</span></span>`;
       li.addEventListener('click', () => openEditor(f.path, 'posts'));
       ul.appendChild(li);
     });
@@ -429,14 +478,22 @@
       listEl.innerHTML = '<p class="empty-state">Queue is empty.</p>';
       return;
     }
-    const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+    const mdFiles = files.filter(f => f.name.endsWith('.md'));
+    const withD = await withDates(mdFiles);
+    // Soonest-to-publish first; TBD / invalid dates sink to the bottom
+    withD.sort((a,b) => {
+      const da = /^\d{4}-\d{2}-\d{2}$/.test(a.date||'') ? a.date : '9999-99-99';
+      const db = /^\d{4}-\d{2}-\d{2}$/.test(b.date||'') ? b.date : '9999-99-99';
+      return da.localeCompare(db);
+    });
     listEl.innerHTML = '';
     const ul = document.createElement('ul');
     ul.className = 'file-list';
-    mdFiles.forEach(f => {
+    withD.forEach(f => {
       const li = document.createElement('li');
       li.className = 'file-item';
-      li.innerHTML = `<span class="fname">${f.name}</span><span class="pill queue">queued</span>`;
+      const dateLabel = /^\d{4}-\d{2}-\d{2}$/.test(f.date||'') ? f.date : 'TBD';
+      li.innerHTML = `<span class="fname">${f.name}</span><span class="fdate">${dateLabel} <span class="pill queue">queued</span></span>`;
       li.addEventListener('click', () => openEditor(f.path, 'queue'));
       ul.appendChild(li);
     });
@@ -450,6 +507,7 @@
       loadQueue();
     }
   }, { once: false });
+
 
   // ---------- Editor (shared by posts + queue, edit + create modes) ----------
   let currentPath = null, currentSha = null, currentSource = null, isNewArticle = false;
@@ -571,6 +629,7 @@
           <textarea id="fld_body" rows="18">${escapeHtml(opts.body||'')}</textarea>
           <div class="btn-row">
             <button class="btn-primary" id="saveBtn">${opts.showSlugAsFilename ? 'Create Article' : 'Save Changes'}</button>
+            <button class="btn-secondary" id="previewBtn">Preview</button>
             <button class="btn-secondary" id="cancelBtn">Cancel</button>
           </div>
           <p id="editorStatus"></p>
@@ -599,6 +658,7 @@
       document.getElementById(`backLink_${source}`).addEventListener('click', () => closeEditor(source));
       document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
       document.getElementById('saveBtn').addEventListener('click', () => saveEditor(fields.layout));
+      document.getElementById('previewBtn').addEventListener('click', () => showPreview());
       wireFormatToolbar();
 
     } catch(e){
@@ -631,6 +691,7 @@
     document.getElementById(`backLink_${source}`).addEventListener('click', () => closeEditor(source));
     document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
     document.getElementById('saveBtn').addEventListener('click', () => saveEditor('../../layouts/BlogPost.astro'));
+    document.getElementById('previewBtn').addEventListener('click', () => showPreview());
     wireFormatToolbar();
   }
   document.getElementById('newPostBtn').addEventListener('click', () => openNewArticleEditor('posts'));
@@ -794,6 +855,73 @@
     });
   }
   document.getElementById('refreshImagesBtn').addEventListener('click', loadImages);
+
+  // ---------- Preview (renders using the site's real BlogPost.astro CSS) ----------
+  let cachedSiteCss = null;
+
+  async function getSiteCss(){
+    if (cachedSiteCss) return cachedSiteCss;
+    try {
+      const { content } = await getFile('src/layouts/BlogPost.astro');
+      const match = content.match(/<style[^>]*>([\s\S]*?)<\/style>/);
+      cachedSiteCss = match ? match[1] : '';
+    } catch(e){
+      cachedSiteCss = '';
+    }
+    return cachedSiteCss;
+  }
+
+  async function showPreview(){
+    const overlay = document.getElementById('previewOverlay');
+    const frame = document.getElementById('previewFrame');
+    overlay.classList.add('open');
+    frame.srcdoc = '<body style="font-family:sans-serif; padding:40px; color:#666;">Loading preview…</body>';
+
+    const css = await getSiteCss();
+    const title = document.getElementById('fld_title').value.trim() || 'Untitled';
+    const category = document.getElementById('fld_category').value.trim() || 'Guide';
+    const description = document.getElementById('fld_description').value.trim();
+    const body = document.getElementById('fld_body').value;
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>${css}</style>
+</head>
+<body>
+<header>
+  <div class="nav-inner">
+    <span class="logo">Ultimate Edge Blog</span>
+    <span style="color:#b9d8c6; font-size:0.9rem;">&larr; All Articles</span>
+  </div>
+</header>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">${category}</div>
+    <h1>${title}</h1>
+    <p class="lede">${description}</p>
+    <div class="hero-meta">
+      <span>Reviewed <b>Preview</b></span>
+      <span>Read time <b>–</b></span>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+${body}
+</div>
+</body>
+</html>`;
+
+    frame.srcdoc = html;
+  }
+
+  document.getElementById('closePreviewBtn').addEventListener('click', () => {
+    document.getElementById('previewOverlay').classList.remove('open');
+  });
 </script>
 </body>
 </html>
