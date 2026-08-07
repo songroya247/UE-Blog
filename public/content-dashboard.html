@@ -102,6 +102,18 @@
 
   .back-link{font-size:.85rem; color:var(--forest-dim); cursor:pointer; display:inline-block; margin-bottom:14px;}
   .hint{font-size:.78rem; color:var(--muted); margin-top:-8px; margin-bottom:14px;}
+
+  /* Formatting toolbar (non-code editing aid) */
+  .fmt-toolbar{
+    display:flex; flex-wrap:wrap; gap:6px; background:var(--paper); border:1px solid var(--line);
+    border-radius:8px; padding:8px; margin-bottom:8px;
+  }
+  .fmt-btn{
+    background:var(--paper-raised); color:var(--forest-dim); border:1px solid var(--line);
+    border-radius:6px; padding:6px 10px; font-size:.78rem; font-weight:600; cursor:pointer;
+  }
+  .fmt-btn:hover{border-color:var(--gold); color:var(--forest);}
+  .fmt-hint{font-size:.75rem; color:var(--muted); margin:-2px 0 10px;}
 </style>
 </head>
 <body>
@@ -149,7 +161,10 @@
       <div class="box">
         <h2>Published Posts</h2>
         <p class="hint">src/pages/posts — these are live on the site.</p>
-        <button class="btn-secondary" id="refreshPostsBtn">Refresh List</button>
+        <div class="btn-row">
+          <button class="btn-secondary" id="refreshPostsBtn">Refresh List</button>
+          <button class="btn-primary" id="newPostBtn">+ New Article</button>
+        </div>
         <div id="postsList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
       </div>
     </div>
@@ -162,7 +177,10 @@
       <div class="box">
         <h2>Content Queue</h2>
         <p class="hint">content-queue — drafts here get auto-published once their <code>date</code> field is today or earlier (handled by your build script automatically).</p>
-        <button class="btn-secondary" id="refreshQueueBtn">Refresh List</button>
+        <div class="btn-row">
+          <button class="btn-secondary" id="refreshQueueBtn">Refresh List</button>
+          <button class="btn-primary" id="newQueueBtn">+ New Article</button>
+        </div>
         <div id="queueList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
       </div>
     </div>
@@ -433,11 +451,135 @@
     }
   }, { once: false });
 
-  // ---------- Editor (shared by posts + queue) ----------
-  let currentPath = null, currentSha = null, currentSource = null;
+  // ---------- Editor (shared by posts + queue, edit + create modes) ----------
+  let currentPath = null, currentSha = null, currentSource = null, isNewArticle = false;
+
+  function slugify(text){
+    return (text||'')
+      .toLowerCase()
+      .replace(/['"]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  const FMT_TOOLBAR_HTML = `
+    <div class="fmt-toolbar">
+      <button type="button" class="fmt-btn" data-fmt="bold">Bold</button>
+      <button type="button" class="fmt-btn" data-fmt="italic">Italic</button>
+      <button type="button" class="fmt-btn" data-fmt="h2">Heading</button>
+      <button type="button" class="fmt-btn" data-fmt="h3">Subheading</button>
+      <button type="button" class="fmt-btn" data-fmt="p">Paragraph</button>
+      <button type="button" class="fmt-btn" data-fmt="ul">Bullet List</button>
+      <button type="button" class="fmt-btn" data-fmt="ol">Numbered List</button>
+      <button type="button" class="fmt-btn" data-fmt="link">Link</button>
+      <button type="button" class="fmt-btn" data-fmt="tip">Tip Box</button>
+      <button type="button" class="fmt-btn" data-fmt="warn">Warning Box</button>
+      <button type="button" class="fmt-btn" data-fmt="table">Table</button>
+      <button type="button" class="fmt-btn" data-fmt="image">Image</button>
+    </div>
+    <p class="fmt-hint">Select text first, then tap a button (Bold/Italic/Link) to wrap it — or just tap a button to insert a starter block at your cursor.</p>
+  `;
+
+  function wireFormatToolbar(){
+    document.querySelectorAll('.fmt-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyFormat(btn.dataset.fmt));
+    });
+  }
+
+  function applyFormat(kind){
+    const ta = document.getElementById('fld_body');
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const selected = ta.value.slice(start, end);
+    let insertText = '', selectAfterStart = null, selectAfterEnd = null;
+
+    switch(kind){
+      case 'bold':
+        insertText = `<strong>${selected || 'bold text'}</strong>`;
+        break;
+      case 'italic':
+        insertText = `<em>${selected || 'italic text'}</em>`;
+        break;
+      case 'h2':
+        insertText = `\n<h2>${selected || 'Section Heading'}</h2>\n`;
+        break;
+      case 'h3':
+        insertText = `\n<h3>${selected || 'Subheading'}</h3>\n`;
+        break;
+      case 'p':
+        insertText = `\n<p>${selected || 'Paragraph text here.'}</p>\n`;
+        break;
+      case 'ul':
+        insertText = selected
+          ? `\n<ul>\n${selected.split('\n').filter(Boolean).map(l => `<li>${l}</li>`).join('\n')}\n</ul>\n`
+          : `\n<ul>\n<li>First point</li>\n<li>Second point</li>\n</ul>\n`;
+        break;
+      case 'ol':
+        insertText = selected
+          ? `\n<ol>\n${selected.split('\n').filter(Boolean).map(l => `<li>${l}</li>`).join('\n')}\n</ol>\n`
+          : `\n<ol>\n<li>First step</li>\n<li>Second step</li>\n</ol>\n`;
+        break;
+      case 'link': {
+        const url = prompt('Link URL:', 'https://');
+        if (!url) return;
+        insertText = `<a href="${url}" target="_blank">${selected || 'link text'}</a>`;
+        break;
+      }
+      case 'tip':
+        insertText = `\n<div class="callout tip">\n<strong class="label">NOTE</strong>\n<strong>💡 Pro Tip:</strong> ${selected || 'Your tip text here.'}\n</div>\n`;
+        break;
+      case 'warn':
+        insertText = `\n<div class="callout warn">\n<strong class="label">NOTE</strong>\n<strong>⚠️ Common Mistake:</strong> ${selected || 'Your warning text here.'}\n</div>\n`;
+        break;
+      case 'table':
+        insertText = `\n<table>\n<thead>\n<tr><th>Column 1</th><th>Column 2</th></tr>\n</thead>\n<tbody>\n<tr><td>Row 1</td><td>Data</td></tr>\n<tr><td>Row 2</td><td>Data</td></tr>\n</tbody>\n</table>\n`;
+        break;
+      case 'image':
+        insertText = `\n<figure>\n  <img src="/images/your-image.jpg" alt="Describe the image" loading="lazy" width="800" height="450">\n  <figcaption>Caption here.</figcaption>\n</figure>\n`;
+        break;
+    }
+
+    ta.value = ta.value.slice(0, start) + insertText + ta.value.slice(end);
+    ta.focus();
+    const cursorPos = start + insertText.length;
+    ta.setSelectionRange(cursorPos, cursorPos);
+  }
+
+  function editorFormHtml(opts){
+    // opts: { headerLabel, fields, body, showSlugAsFilename }
+    return `
+        <span class="back-link" id="backLink_${opts.source}">&larr; Back to list</span>
+        <div class="box">
+          <h2>${opts.headerLabel}</h2>
+          <div class="field-row">
+            <div><label>Title</label><input type="text" id="fld_title" value="${escapeAttr(opts.fields.title||'')}"></div>
+            <div><label>Category</label><input type="text" id="fld_category" value="${escapeAttr(opts.fields.category||'')}"></div>
+          </div>
+          <label>Description</label>
+          <textarea id="fld_description" rows="2">${escapeHtml(opts.fields.description||'')}</textarea>
+          <div class="field-row">
+            <div>
+              <label>Date (YYYY-MM-DD, or "TBD" to keep unpublished)</label>
+              <input type="text" id="fld_date" value="${escapeAttr(opts.fields.date||'')}">
+            </div>
+            <div>
+              <label>${opts.showSlugAsFilename ? 'Filename slug (required — becomes the URL)' : 'Slug (optional — leave blank to auto-derive from title)'}</label>
+              <input type="text" id="fld_slug" value="${escapeAttr(opts.fields.slug||'')}" placeholder="${opts.showSlugAsFilename ? 'e.g. my-new-article' : ''}">
+            </div>
+          </div>
+          <label>Body</label>
+          ${FMT_TOOLBAR_HTML}
+          <textarea id="fld_body" rows="18">${escapeHtml(opts.body||'')}</textarea>
+          <div class="btn-row">
+            <button class="btn-primary" id="saveBtn">${opts.showSlugAsFilename ? 'Create Article' : 'Save Changes'}</button>
+            <button class="btn-secondary" id="cancelBtn">Cancel</button>
+          </div>
+          <p id="editorStatus"></p>
+        </div>
+      `;
+  }
 
   async function openEditor(path, source){
-    currentPath = path; currentSource = source;
+    currentPath = path; currentSource = source; isNewArticle = false;
     const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
     const listViewId = source === 'posts' ? 'postsListView' : 'queueListView';
     const editorView = document.getElementById(viewId);
@@ -450,39 +592,14 @@
       currentSha = sha;
       const { fields, body } = parseFrontmatter(content);
 
-      editorView.innerHTML = `
-        <span class="back-link" id="backLink_${source}">&larr; Back to list</span>
-        <div class="box">
-          <h2>${path.split('/').pop()}</h2>
-          <div class="field-row">
-            <div><label>Title</label><input type="text" id="fld_title" value="${escapeAttr(fields.title||'')}"></div>
-            <div><label>Category</label><input type="text" id="fld_category" value="${escapeAttr(fields.category||'')}"></div>
-          </div>
-          <label>Description</label>
-          <textarea id="fld_description" rows="2">${escapeHtml(fields.description||'')}</textarea>
-          <div class="field-row">
-            <div>
-              <label>Date (YYYY-MM-DD, or "TBD" to keep unpublished)</label>
-              <input type="text" id="fld_date" value="${escapeAttr(fields.date||'')}">
-            </div>
-            <div>
-              <label>Slug (optional — leave blank to auto-derive from title)</label>
-              <input type="text" id="fld_slug" value="${escapeAttr(fields.slug||'')}">
-            </div>
-          </div>
-          <label>Body (HTML content)</label>
-          <textarea id="fld_body" rows="18">${escapeHtml(body)}</textarea>
-          <div class="btn-row">
-            <button class="btn-primary" id="saveBtn">Save Changes</button>
-            <button class="btn-secondary" id="cancelBtn">Cancel</button>
-          </div>
-          <p id="editorStatus"></p>
-        </div>
-      `;
+      editorView.innerHTML = editorFormHtml({
+        source, headerLabel: path.split('/').pop(), fields, body, showSlugAsFilename: false
+      });
 
       document.getElementById(`backLink_${source}`).addEventListener('click', () => closeEditor(source));
       document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
       document.getElementById('saveBtn').addEventListener('click', () => saveEditor(fields.layout));
+      wireFormatToolbar();
 
     } catch(e){
       editorView.innerHTML = `<p class="empty-state">Error loading file: ${e.message}</p>
@@ -490,6 +607,34 @@
       document.getElementById('backLink_err').addEventListener('click', () => closeEditor(source));
     }
   }
+
+  function openNewArticleEditor(source){
+    currentPath = null; currentSha = null; currentSource = source; isNewArticle = true;
+    const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
+    const listViewId = source === 'posts' ? 'postsListView' : 'queueListView';
+    const editorView = document.getElementById(viewId);
+    document.getElementById(listViewId).style.display = 'none';
+    editorView.style.display = 'block';
+
+    const defaultDate = source === 'posts'
+      ? new Date().toISOString().split('T')[0]
+      : 'TBD';
+
+    editorView.innerHTML = editorFormHtml({
+      source,
+      headerLabel: source === 'posts' ? 'New Published Post' : 'New Queued Draft',
+      fields: { title:'', category:'', description:'', date: defaultDate, slug:'' },
+      body: '<p>Start writing here…</p>',
+      showSlugAsFilename: true
+    });
+
+    document.getElementById(`backLink_${source}`).addEventListener('click', () => closeEditor(source));
+    document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
+    document.getElementById('saveBtn').addEventListener('click', () => saveEditor('../../layouts/BlogPost.astro'));
+    wireFormatToolbar();
+  }
+  document.getElementById('newPostBtn').addEventListener('click', () => openNewArticleEditor('posts'));
+  document.getElementById('newQueueBtn').addEventListener('click', () => openNewArticleEditor('queue'));
 
   function closeEditor(source){
     const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
@@ -505,22 +650,54 @@
     statusEl.textContent = 'Saving…';
     statusEl.className = '';
 
+    const title = document.getElementById('fld_title').value.trim();
     const fields = {
       layout: originalLayout || '../../layouts/BlogPost.astro',
-      title: document.getElementById('fld_title').value.trim(),
+      title: title,
       category: document.getElementById('fld_category').value.trim(),
       description: document.getElementById('fld_description').value.trim(),
       date: document.getElementById('fld_date').value.trim(),
     };
-    const slug = document.getElementById('fld_slug').value.trim();
-    if (slug) fields.slug = slug;
-
+    const slugInput = document.getElementById('fld_slug').value.trim();
     const body = document.getElementById('fld_body').value;
-    const newContent = buildFrontmatter(fields) + '\n' + body;
 
     try {
-      const result = await putFile(currentPath, newContent, currentSha, `Edit ${currentPath} via content dashboard`);
+      let targetPath = currentPath;
+
+      if (isNewArticle){
+        const slug = slugify(slugInput || title);
+        if (!slug){
+          statusEl.textContent = 'Enter a title or a filename slug first.';
+          statusEl.className = 'error';
+          saveBtn.disabled = false;
+          return;
+        }
+        fields.slug = slug;
+        targetPath = currentSource === 'posts'
+          ? `src/pages/posts/${slug}.md`
+          : `content-queue/${slug}.md`;
+
+        // Guard against accidentally overwriting an existing file
+        const check = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${targetPath}?ref=${BRANCH}`);
+        if (check.ok){
+          statusEl.textContent = `A file already exists at ${targetPath}. Choose a different slug.`;
+          statusEl.className = 'error';
+          saveBtn.disabled = false;
+          return;
+        }
+      } else {
+        if (slugInput) fields.slug = slugInput;
+      }
+
+      const newContent = buildFrontmatter(fields) + '\n' + body;
+      const message = isNewArticle
+        ? `Create ${targetPath} via content dashboard`
+        : `Edit ${targetPath} via content dashboard`;
+      const result = await putFile(targetPath, newContent, isNewArticle ? null : currentSha, message);
+
+      currentPath = targetPath;
       currentSha = result.content.sha;
+      isNewArticle = false;
       statusEl.textContent = 'Saved. Site will rebuild on next push/action run.';
       statusEl.className = 'success';
     } catch(e){
