@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Content Dashboard — Ultimate Edge Blog</title>
+<style>
+  :root{
+    --ink:#1f2420;
+    --paper:#faf6ee;
+    --paper-raised:#ffffff;
+    --forest:#0b3d2e;
+    --forest-dim:#12513d;
+    --gold:#c9922e;
+    --gold-soft:#f3e3c2;
+    --rust:#a8452c;
+    --rust-soft:#f7e2da;
+    --line:#e4ded0;
+    --muted:#6b6459;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Source Sans 3', -apple-system, sans-serif; line-height:1.5;
+    padding:20px 16px 80px;
+  }
+  h1{font-family:'Fraunces', Georgia, serif; color:var(--forest); font-size:1.6rem; margin:0 0 6px;}
+  h2{font-family:'Fraunces', Georgia, serif; color:var(--forest); font-size:1.2rem; margin:0 0 12px;}
+  .sub{color:var(--muted); font-size:.9rem; margin:0 0 24px;}
+
+  .box{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:18px; margin-bottom:20px;
+  }
+  label{font-weight:600; font-size:.85rem; color:var(--forest); display:block; margin-bottom:5px;}
+  input[type=text], input[type=password], input[type=date], textarea, select{
+    width:100%; font-size:1rem; padding:10px 12px; border:1.5px solid var(--line); border-radius:8px;
+    background:var(--paper); font-family:inherit; color:var(--ink); margin-bottom:14px;
+  }
+  input:focus, textarea:focus, select:focus{outline:none; border-color:var(--gold);}
+  textarea{resize:vertical; font-family:'JetBrains Mono', monospace; font-size:.85rem;}
+  .field-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .field-row > div{flex:1; min-width:140px;}
+
+  button{
+    font-family:inherit; font-weight:600; font-size:.9rem; cursor:pointer;
+    border:none; border-radius:999px; padding:10px 20px; transition:background .15s ease;
+  }
+  .btn-primary{background:var(--forest); color:#fbf7ec;}
+  .btn-primary:hover{background:var(--forest-dim);}
+  .btn-primary:disabled{background:var(--line); color:var(--muted); cursor:not-allowed;}
+  .btn-danger{background:var(--rust-soft); color:var(--rust); border:1.5px solid var(--rust);}
+  .btn-danger:hover{background:var(--rust); color:#fff;}
+  .btn-secondary{background:var(--paper); color:var(--forest-dim); border:1.5px solid var(--line);}
+  .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+
+  #status{font-size:.85rem; margin-top:8px; min-height:1.2em;}
+  #status.error{color:var(--rust);}
+  #status.success{color:var(--forest-dim);}
+
+  /* Tabs */
+  .tabs{display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;}
+  .tab-btn{
+    background:var(--paper-raised); color:var(--muted); border:1.5px solid var(--line);
+    border-radius:999px; padding:8px 16px; font-size:.88rem; font-weight:600;
+  }
+  .tab-btn.active{background:var(--forest); color:#fbf7ec; border-color:var(--forest);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* File lists */
+  ul.file-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .file-item{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:8px;
+    padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    cursor:pointer; font-size:.9rem;
+  }
+  .file-item:hover{border-color:var(--gold);}
+  .file-item .fname{font-weight:600; color:var(--forest); word-break:break-all;}
+  .file-item .fdate{font-size:.75rem; color:var(--muted); white-space:nowrap;}
+  .empty-state{color:var(--muted); font-size:.9rem; text-align:center; padding:24px 0;}
+
+  .pill{
+    font-size:.72rem; color:var(--gold); background:var(--gold-soft);
+    padding:2px 8px; border-radius:999px; font-weight:600; display:inline-block;
+  }
+  .pill.queue{color:var(--rust); background:var(--rust-soft);}
+
+  /* Image gallery */
+  .img-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; margin-top:10px;}
+  .img-grid .thumb{
+    border:1px solid var(--line); border-radius:8px; overflow:hidden; cursor:pointer;
+    aspect-ratio:1; background:#eee;
+  }
+  .img-grid img{width:100%; height:100%; object-fit:cover; display:block;}
+  code.snippet{
+    display:block; background:var(--paper); border:1px solid var(--line); border-radius:6px;
+    padding:10px 12px; font-size:.8rem; font-family:'JetBrains Mono', monospace;
+    white-space:pre-wrap; word-break:break-all; margin:8px 0;
+  }
+
+  .back-link{font-size:.85rem; color:var(--forest-dim); cursor:pointer; display:inline-block; margin-bottom:14px;}
+  .hint{font-size:.78rem; color:var(--muted); margin-top:-8px; margin-bottom:14px;}
+</style>
+</head>
+<body>
+
+<h1>Content Dashboard</h1>
+<p class="sub">Not linked from the site, not indexed — edit posts, manage the queue, and upload images straight from your phone.</p>
+<p class="sub" style="margin-top:-14px;"><a href="/admin.html" style="color:var(--forest-dim); font-weight:600;">&rarr; Go to Comment Moderation</a></p>
+
+<div class="box" id="authBox">
+  <label for="tokenInput">GitHub Personal Access Token</label>
+  <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" />
+  <p class="hint">Needs "repo" scope. Generate at github.com → Settings → Developer settings → Personal access tokens. Stored only in this browser.</p>
+  <div class="field-row">
+    <div>
+      <label for="ownerInput">Repo owner</label>
+      <input type="text" id="ownerInput" placeholder="e.g. femi-username" />
+    </div>
+    <div>
+      <label for="repoInput">Repo name</label>
+      <input type="text" id="repoInput" placeholder="e.g. UE-Blog" />
+    </div>
+    <div>
+      <label for="branchInput">Branch</label>
+      <input type="text" id="branchInput" placeholder="main" value="main" />
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-primary" id="connectBtn">Connect</button>
+    <button class="btn-secondary" id="forgetBtn">Forget & Reset</button>
+  </div>
+  <p id="authStatus"></p>
+</div>
+
+<div id="mainApp" style="display:none;">
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="posts">Posts</button>
+    <button class="tab-btn" data-tab="queue">Queue</button>
+    <button class="tab-btn" data-tab="images">Images</button>
+  </div>
+
+  <!-- POSTS TAB -->
+  <div class="tab-panel active" id="tab-posts">
+    <div id="postsListView">
+      <div class="box">
+        <h2>Published Posts</h2>
+        <p class="hint">src/pages/posts — these are live on the site.</p>
+        <button class="btn-secondary" id="refreshPostsBtn">Refresh List</button>
+        <div id="postsList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
+      </div>
+    </div>
+    <div id="postEditorView" style="display:none;"></div>
+  </div>
+
+  <!-- QUEUE TAB -->
+  <div class="tab-panel" id="tab-queue">
+    <div id="queueListView">
+      <div class="box">
+        <h2>Content Queue</h2>
+        <p class="hint">content-queue — drafts here get auto-published once their <code>date</code> field is today or earlier (handled by your build script automatically).</p>
+        <button class="btn-secondary" id="refreshQueueBtn">Refresh List</button>
+        <div id="queueList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
+      </div>
+    </div>
+    <div id="queueEditorView" style="display:none;"></div>
+  </div>
+
+  <!-- IMAGES TAB -->
+  <div class="tab-panel" id="tab-images">
+    <div class="box">
+      <h2>Upload Image</h2>
+      <label for="imageFileInput">Choose image</label>
+      <input type="file" id="imageFileInput" accept="image/*" style="margin-bottom:14px;" />
+      <label for="imageNameInput">File name (used in URL — lowercase, hyphens)</label>
+      <input type="text" id="imageNameInput" placeholder="e.g. jamb-caps-login-dashboard.jpg" />
+      <div class="btn-row">
+        <button class="btn-primary" id="uploadImageBtn">Upload to public/images/</button>
+      </div>
+      <p id="uploadStatus"></p>
+      <div id="uploadResult" style="display:none;">
+        <label>Ready-to-paste snippet</label>
+        <code class="snippet" id="snippetOutput"></code>
+        <button class="btn-secondary" id="copySnippetBtn">Copy Snippet</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Existing Images</h2>
+      <button class="btn-secondary" id="refreshImagesBtn">Refresh</button>
+      <div class="img-grid" id="imageGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const GITHUB_API = "https://api.github.com";
+  let TOKEN = "", OWNER = "", REPO = "", BRANCH = "main";
+
+  // ---------- Auth / connection persistence ----------
+  const tokenInput = document.getElementById('tokenInput');
+  const ownerInput = document.getElementById('ownerInput');
+  const repoInput = document.getElementById('repoInput');
+  const branchInput = document.getElementById('branchInput');
+  const authStatus = document.getElementById('authStatus');
+  const authBox = document.getElementById('authBox');
+  const mainApp = document.getElementById('mainApp');
+
+  function loadSaved(){
+    const t = localStorage.getItem('dash_token');
+    const o = localStorage.getItem('dash_owner');
+    const r = localStorage.getItem('dash_repo');
+    const b = localStorage.getItem('dash_branch');
+    if (t) tokenInput.value = t;
+    if (o) ownerInput.value = o;
+    if (r) repoInput.value = r;
+    if (b) branchInput.value = b;
+  }
+  loadSaved();
+
+  function setAuthStatus(msg, cls){
+    authStatus.textContent = msg;
+    authStatus.className = cls || '';
+  }
+
+  document.getElementById('connectBtn').addEventListener('click', async () => {
+    TOKEN = tokenInput.value.trim();
+    OWNER = ownerInput.value.trim();
+    REPO = repoInput.value.trim();
+    BRANCH = branchInput.value.trim() || 'main';
+
+    if (!TOKEN || !OWNER || !REPO){
+      setAuthStatus('Fill in token, owner, and repo name.', 'error');
+      return;
+    }
+    setAuthStatus('Checking access…');
+    try {
+      const res = await ghFetch(`/repos/${OWNER}/${REPO}`);
+      if (!res.ok){
+        setAuthStatus(`Could not access repo (${res.status}). Check token permissions and repo name.`, 'error');
+        return;
+      }
+      localStorage.setItem('dash_token', TOKEN);
+      localStorage.setItem('dash_owner', OWNER);
+      localStorage.setItem('dash_repo', REPO);
+      localStorage.setItem('dash_branch', BRANCH);
+      setAuthStatus('Connected.', 'success');
+      authBox.style.display = 'none';
+      mainApp.style.display = 'block';
+      loadPosts();
+    } catch(e){
+      setAuthStatus('Network error: ' + e.message, 'error');
+    }
+  });
+
+  document.getElementById('forgetBtn').addEventListener('click', () => {
+    localStorage.removeItem('dash_token');
+    localStorage.removeItem('dash_owner');
+    localStorage.removeItem('dash_repo');
+    localStorage.removeItem('dash_branch');
+    tokenInput.value = ''; ownerInput.value = ''; repoInput.value = '';
+    mainApp.style.display = 'none';
+    authBox.style.display = 'block';
+    setAuthStatus('Forgotten. Enter details again to reconnect.', '');
+  });
+
+  // Auto-connect if saved
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('dash_token') && localStorage.getItem('dash_owner') && localStorage.getItem('dash_repo')){
+      document.getElementById('connectBtn').click();
+    }
+  });
+
+  // ---------- GitHub API helpers ----------
+  function ghFetch(path, opts){
+    opts = opts || {};
+    opts.headers = Object.assign({
+      'Authorization': 'token ' + TOKEN,
+      'Accept': 'application/vnd.github+json'
+    }, opts.headers || {});
+    return fetch(GITHUB_API + path, opts);
+  }
+
+  function b64EncodeUnicode(str){
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m, p1) => String.fromCharCode('0x' + p1)));
+  }
+  function b64DecodeUnicode(b64){
+    return decodeURIComponent(Array.prototype.map.call(atob(b64), c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+  }
+
+  async function listDir(path){
+    const res = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`);
+    if (!res.ok) return [];
+    return res.json();
+  }
+  async function getFile(path){
+    const res = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`);
+    if (!res.ok) throw new Error(`Fetch failed (${res.status})`);
+    const data = await res.json();
+    return { content: b64DecodeUnicode(data.content.replace(/\n/g, '')), sha: data.sha };
+  }
+  async function putFile(path, contentStr, sha, message){
+    const body = {
+      message: message || `Update ${path} via content dashboard`,
+      content: b64EncodeUnicode(contentStr),
+      branch: BRANCH
+    };
+    if (sha) body.sha = sha;
+    const res = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok){
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Save failed (${res.status})`);
+    }
+    return res.json();
+  }
+  async function putBinaryFile(path, base64Data, message){
+    const body = {
+      message: message || `Upload ${path} via content dashboard`,
+      content: base64Data,
+      branch: BRANCH
+    };
+    const res = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${path}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok){
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Upload failed (${res.status})`);
+    }
+    return res.json();
+  }
+
+  // ---------- Tabs ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      if (btn.dataset.tab === 'images') loadImages();
+    });
+  });
+
+  // ---------- Frontmatter parsing ----------
+  function parseFrontmatter(raw){
+    const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+    if (!m) return { fields: {}, body: raw };
+    const fmBlock = m[1];
+    const body = m[2];
+    const fields = {};
+    fmBlock.split('\n').forEach(line => {
+      const fm = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
+      if (fm) fields[fm[1]] = fm[2];
+    });
+    return { fields, body };
+  }
+  function buildFrontmatter(fields){
+    const order = ['layout', 'title', 'category', 'description', 'date', 'slug'];
+    let out = '---\n';
+    order.forEach(k => {
+      if (fields[k] !== undefined) out += `${k}: "${fields[k]}"\n`;
+    });
+    // include any extra fields not in the standard order
+    Object.keys(fields).forEach(k => {
+      if (!order.includes(k)) out += `${k}: "${fields[k]}"\n`;
+    });
+    out += '---\n';
+    return out;
+  }
+
+  // ---------- Posts list ----------
+  async function loadPosts(){
+    const listEl = document.getElementById('postsList');
+    listEl.innerHTML = '<p class="empty-state">Loading…</p>';
+    const files = await listDir('src/pages/posts');
+    if (!Array.isArray(files) || files.length === 0){
+      listEl.innerHTML = '<p class="empty-state">No posts found.</p>';
+      return;
+    }
+    const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+    listEl.innerHTML = '';
+    const ul = document.createElement('ul');
+    ul.className = 'file-list';
+    mdFiles.forEach(f => {
+      const li = document.createElement('li');
+      li.className = 'file-item';
+      li.innerHTML = `<span class="fname">${f.name}</span><span class="pill">post</span>`;
+      li.addEventListener('click', () => openEditor(f.path, 'posts'));
+      ul.appendChild(li);
+    });
+    listEl.appendChild(ul);
+  }
+  document.getElementById('refreshPostsBtn').addEventListener('click', loadPosts);
+
+  async function loadQueue(){
+    const listEl = document.getElementById('queueList');
+    listEl.innerHTML = '<p class="empty-state">Loading…</p>';
+    const files = await listDir('content-queue');
+    if (!Array.isArray(files) || files.length === 0){
+      listEl.innerHTML = '<p class="empty-state">Queue is empty.</p>';
+      return;
+    }
+    const mdFiles = files.filter(f => f.name.endsWith('.md')).sort((a,b) => a.name.localeCompare(b.name));
+    listEl.innerHTML = '';
+    const ul = document.createElement('ul');
+    ul.className = 'file-list';
+    mdFiles.forEach(f => {
+      const li = document.createElement('li');
+      li.className = 'file-item';
+      li.innerHTML = `<span class="fname">${f.name}</span><span class="pill queue">queued</span>`;
+      li.addEventListener('click', () => openEditor(f.path, 'queue'));
+      ul.appendChild(li);
+    });
+    listEl.appendChild(ul);
+  }
+  document.getElementById('refreshQueueBtn').addEventListener('click', loadQueue);
+
+  // Load queue when tab first clicked
+  document.querySelector('[data-tab="queue"]').addEventListener('click', () => {
+    if (document.getElementById('queueList').querySelector('.empty-state')?.textContent === 'Not loaded yet.'){
+      loadQueue();
+    }
+  }, { once: false });
+
+  // ---------- Editor (shared by posts + queue) ----------
+  let currentPath = null, currentSha = null, currentSource = null;
+
+  async function openEditor(path, source){
+    currentPath = path; currentSource = source;
+    const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
+    const listViewId = source === 'posts' ? 'postsListView' : 'queueListView';
+    const editorView = document.getElementById(viewId);
+    document.getElementById(listViewId).style.display = 'none';
+    editorView.style.display = 'block';
+    editorView.innerHTML = '<p class="empty-state">Loading…</p>';
+
+    try {
+      const { content, sha } = await getFile(path);
+      currentSha = sha;
+      const { fields, body } = parseFrontmatter(content);
+
+      editorView.innerHTML = `
+        <span class="back-link" id="backLink_${source}">&larr; Back to list</span>
+        <div class="box">
+          <h2>${path.split('/').pop()}</h2>
+          <div class="field-row">
+            <div><label>Title</label><input type="text" id="fld_title" value="${escapeAttr(fields.title||'')}"></div>
+            <div><label>Category</label><input type="text" id="fld_category" value="${escapeAttr(fields.category||'')}"></div>
+          </div>
+          <label>Description</label>
+          <textarea id="fld_description" rows="2">${escapeHtml(fields.description||'')}</textarea>
+          <div class="field-row">
+            <div>
+              <label>Date (YYYY-MM-DD, or "TBD" to keep unpublished)</label>
+              <input type="text" id="fld_date" value="${escapeAttr(fields.date||'')}">
+            </div>
+            <div>
+              <label>Slug (optional — leave blank to auto-derive from title)</label>
+              <input type="text" id="fld_slug" value="${escapeAttr(fields.slug||'')}">
+            </div>
+          </div>
+          <label>Body (HTML content)</label>
+          <textarea id="fld_body" rows="18">${escapeHtml(body)}</textarea>
+          <div class="btn-row">
+            <button class="btn-primary" id="saveBtn">Save Changes</button>
+            <button class="btn-secondary" id="cancelBtn">Cancel</button>
+          </div>
+          <p id="editorStatus"></p>
+        </div>
+      `;
+
+      document.getElementById(`backLink_${source}`).addEventListener('click', () => closeEditor(source));
+      document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
+      document.getElementById('saveBtn').addEventListener('click', () => saveEditor(fields.layout));
+
+    } catch(e){
+      editorView.innerHTML = `<p class="empty-state">Error loading file: ${e.message}</p>
+        <span class="back-link" id="backLink_err">&larr; Back to list</span>`;
+      document.getElementById('backLink_err').addEventListener('click', () => closeEditor(source));
+    }
+  }
+
+  function closeEditor(source){
+    const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
+    const listViewId = source === 'posts' ? 'postsListView' : 'queueListView';
+    document.getElementById(viewId).style.display = 'none';
+    document.getElementById(listViewId).style.display = 'block';
+  }
+
+  async function saveEditor(originalLayout){
+    const statusEl = document.getElementById('editorStatus');
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = true;
+    statusEl.textContent = 'Saving…';
+    statusEl.className = '';
+
+    const fields = {
+      layout: originalLayout || '../../layouts/BlogPost.astro',
+      title: document.getElementById('fld_title').value.trim(),
+      category: document.getElementById('fld_category').value.trim(),
+      description: document.getElementById('fld_description').value.trim(),
+      date: document.getElementById('fld_date').value.trim(),
+    };
+    const slug = document.getElementById('fld_slug').value.trim();
+    if (slug) fields.slug = slug;
+
+    const body = document.getElementById('fld_body').value;
+    const newContent = buildFrontmatter(fields) + '\n' + body;
+
+    try {
+      const result = await putFile(currentPath, newContent, currentSha, `Edit ${currentPath} via content dashboard`);
+      currentSha = result.content.sha;
+      statusEl.textContent = 'Saved. Site will rebuild on next push/action run.';
+      statusEl.className = 'success';
+    } catch(e){
+      statusEl.textContent = 'Save failed: ' + e.message;
+      statusEl.className = 'error';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  }
+
+  function escapeHtml(str){
+    return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function escapeAttr(str){
+    return (str||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  }
+
+  // ---------- Images ----------
+  document.getElementById('uploadImageBtn').addEventListener('click', async () => {
+    const fileInput = document.getElementById('imageFileInput');
+    const nameInput = document.getElementById('imageNameInput');
+    const statusEl = document.getElementById('uploadStatus');
+    const resultBox = document.getElementById('uploadResult');
+    resultBox.style.display = 'none';
+
+    const file = fileInput.files[0];
+    if (!file){ statusEl.textContent = 'Choose a file first.'; statusEl.className = 'error'; return; }
+    let filename = nameInput.value.trim();
+    if (!filename){
+      statusEl.textContent = 'Enter a file name.'; statusEl.className = 'error'; return;
+    }
+    if (!/\.(jpg|jpeg|png|webp|gif|svg)$/i.test(filename)){
+      const ext = file.name.split('.').pop();
+      filename += '.' + ext;
+    }
+
+    statusEl.textContent = 'Uploading…'; statusEl.className = '';
+
+    try {
+      const base64 = await fileToBase64(file);
+      const path = `public/images/${filename}`;
+      await putBinaryFile(path, base64, `Upload image ${filename} via content dashboard`);
+      statusEl.textContent = 'Uploaded successfully.'; statusEl.className = 'success';
+
+      const snippet = `<figure>\n  <img src="/images/${filename}" alt="" loading="lazy" width="800" height="450">\n  <figcaption></figcaption>\n</figure>`;
+      document.getElementById('snippetOutput').textContent = snippet;
+      resultBox.style.display = 'block';
+
+      loadImages();
+    } catch(e){
+      statusEl.textContent = 'Upload failed: ' + e.message; statusEl.className = 'error';
+    }
+  });
+
+  document.getElementById('copySnippetBtn').addEventListener('click', () => {
+    const text = document.getElementById('snippetOutput').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      document.getElementById('copySnippetBtn').textContent = 'Copied!';
+      setTimeout(() => { document.getElementById('copySnippetBtn').textContent = 'Copy Snippet'; }, 1500);
+    });
+  });
+
+  function fileToBase64(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function loadImages(){
+    const grid = document.getElementById('imageGrid');
+    grid.innerHTML = '<p class="empty-state">Loading…</p>';
+    const files = await listDir('public/images');
+    if (!Array.isArray(files) || files.length === 0){
+      grid.innerHTML = '<p class="empty-state">No images uploaded yet.</p>';
+      return;
+    }
+    grid.innerHTML = '';
+    files.filter(f => f.type === 'file').forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      div.title = f.name;
+      const img = document.createElement('img');
+      img.src = f.download_url;
+      img.loading = 'lazy';
+      div.appendChild(img);
+      div.addEventListener('click', () => {
+        const snippet = `<figure>\n  <img src="/images/${f.name}" alt="" loading="lazy" width="800" height="450">\n  <figcaption></figcaption>\n</figure>`;
+        navigator.clipboard.writeText(snippet).then(() => alert('Snippet copied for ' + f.name));
+      });
+      grid.appendChild(div);
+    });
+  }
+  document.getElementById('refreshImagesBtn').addEventListener('click', loadImages);
+</script>
+</body>
+</html>
