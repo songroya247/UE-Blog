@@ -967,6 +967,26 @@ const breadcrumbSchema = {
     padding:24px; margin:18px 0; text-align:center;
   }
 
+  /* In-article images */
+  section img, .article-body img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    border:1px solid var(--line);
+    border-radius:6px;
+    margin:18px auto;
+    box-shadow:0 8px 24px -18px rgba(11,61,46,0.4);
+  }
+  figure{margin:22px 0;}
+  figure img{margin:0 auto 10px;}
+  figcaption{
+    text-align:center;
+    font-size:.85rem;
+    color:var(--muted);
+    font-style:italic;
+    line-height:1.5;
+  }
+
   /* Generic callouts with modifier classes (tip / warning / info / summary / cta / syntax / rule) */
   .callout{
     border-left:4px solid var(--forest); background:var(--paper-raised); border:1px solid var(--line);
