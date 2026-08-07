@@ -632,6 +632,7 @@
             <button class="btn-secondary" id="previewBtn">Preview</button>
             <button class="btn-secondary" id="cancelBtn">Cancel</button>
           </div>
+          <p class="fmt-hint">Tip: in Preview, tap any paragraph, heading, or box to jump straight to that spot below.</p>
           <p id="editorStatus"></p>
         </div>
       `;
@@ -871,6 +872,17 @@
     return cachedSiteCss;
   }
 
+  // Tags worth making click-jumpable in the preview
+  const JUMPABLE_TAGS = ['h2','h3','h4','p','li','div','figcaption','td','th','blockquote'];
+
+  function annotateBodyWithPositions(body){
+    const tagPattern = new RegExp(`<(${JUMPABLE_TAGS.join('|')})(\\s[^>]*)?>`, 'g');
+    return body.replace(tagPattern, (match, tag, attrs, offset) => {
+      const safeAttrs = attrs || '';
+      return `<${tag}${safeAttrs} data-src-pos="${offset}">`;
+    });
+  }
+
   async function showPreview(){
     const overlay = document.getElementById('previewOverlay');
     const frame = document.getElementById('previewFrame');
@@ -882,6 +894,7 @@
     const category = document.getElementById('fld_category').value.trim() || 'Guide';
     const description = document.getElementById('fld_description').value.trim();
     const body = document.getElementById('fld_body').value;
+    const annotatedBody = annotateBodyWithPositions(body);
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -891,6 +904,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 <style>${css}</style>
+<style>
+  [data-src-pos]{ cursor:pointer; }
+  [data-src-pos]:hover{ outline:2px dashed #c9922e; outline-offset:2px; background:rgba(201,146,46,0.08); }
+</style>
 </head>
 <body>
 <header>
@@ -911,13 +928,42 @@
   </div>
 </div>
 <div class="wrap">
-${body}
+${annotatedBody}
 </div>
+<script>
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-src-pos]');
+    if (!el) return;
+    var pos = parseInt(el.getAttribute('data-src-pos'), 10);
+    window.parent.postMessage({ ueDashboardJump: true, pos: pos }, '*');
+  });
+<\/script>
 </body>
 </html>`;
 
     frame.srcdoc = html;
   }
+
+  function scrollTextareaToPos(ta, pos){
+    const before = ta.value.slice(0, pos);
+    const lineNum = (before.match(/\n/g) || []).length;
+    const cs = window.getComputedStyle(ta);
+    const lineHeight = parseFloat(cs.lineHeight) || (parseFloat(cs.fontSize) * 1.4);
+    const target = Math.max(0, lineNum * lineHeight - ta.clientHeight / 3);
+    ta.scrollTop = target;
+  }
+
+  window.addEventListener('message', (e) => {
+    if (!e.data || !e.data.ueDashboardJump) return;
+    const ta = document.getElementById('fld_body');
+    if (!ta) return;
+    const pos = e.data.pos;
+    document.getElementById('previewOverlay').classList.remove('open');
+    ta.focus();
+    const selEnd = Math.min(pos + 60, ta.value.length);
+    ta.setSelectionRange(pos, selEnd);
+    scrollTextareaToPos(ta, pos);
+  });
 
   document.getElementById('closePreviewBtn').addEventListener('click', () => {
     document.getElementById('previewOverlay').classList.remove('open');
