@@ -85,8 +85,10 @@ date: "2026-08-07"
 <h3>Step 1: Accessing the JAMB CAPS Portal</h3>
 <p>You can log in using a mobile device or a computer with a stable internet connection.</p>
 
-<div class="image-placeholder">
-[SEO Image Opportunity: JAMB eFacility Login Dashboard]<br>
+<figure>
+  <img src="/images/jamb-caps-login-dashboard.jpg.png" alt="" loading="lazy" width="800" height="450">
+  <figcaption></figcaption>
+</figure><br>
 Alt Text: A clean view of the official JAMB e-Facility login dashboard page, showing the input fields for candidate registered email address and password.
 </div>
 
