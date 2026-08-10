@@ -58,10 +58,12 @@ date: "2026-08-10"
 <section id="step-by-step-guide-uploading-olevel-results-at-an-accredited-cbt-centre">
 <h2>STEP-BY-STEP GUIDE: UPLOADING O'LEVEL RESULTS AT AN ACCREDITED CBT CENTRE</h2>
 
-<div class><figure>
-  <img src="/images/step-by-step-oLevel-result-upload-and-verification-workflow].png" alt="" loading="lazy" width="800" height="450">
-  <figcaption></figcaption>
-</figure></div>
+<figure>
+  <a href="/images/step-by-step-olevel-result-upload-verification-workflow.png" target="_blank">
+    <img src="/images/step-by-step-olevel-result-upload-verification-workflow.png" alt="Step-by-step O'Level result upload and verification workflow" loading="lazy" width="1122" height="1402">
+  </a>
+  <figcaption>Tap to view full size — the 7-step process for uploading your O'Level result at a JAMB CBT centre.</figcaption>
+</figure>
 
 <h3>Where Uploads Take Place</h3>
 <p>Candidates cannot upload O'Level results themselves through the JAMB eFacility or CAPS portal. Official policy mandates that all initial uploads and updates take place at an accredited JAMB CBT Centre or a JAMB State Office. This measure ensures data integrity and prevents fraudulent entries.</p>
