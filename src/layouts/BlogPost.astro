@@ -45,6 +45,18 @@ const finalRelatedPosts = relatedCategoryPosts.length >= 3
   ? relatedCategoryPosts
   : [...relatedCategoryPosts, ...publishedPosts.filter(p => !relatedCategoryPosts.includes(p))].slice(0, 3);
 
+// --- UE SCHOOL CTA COPY (varies by category so it reads as relevant, not generic) ---
+const ueSchoolCtaCopy = {
+  "WAEC": "Prep for WAEC objectives with instant feedback on UE School.",
+  "NECO": "Practice NECO-style questions with instant feedback on UE School.",
+  "JAMB CAPS": "Get ready for your next exam with adaptive CBT practice on UE School.",
+  "Post-UTME": "Practice real Post-UTME CBT questions with instant feedback on UE School.",
+  "Admissions": "Get ready for your next exam with adaptive CBT practice on UE School.",
+  "Admissions Strategy": "Sharpen your exam prep with adaptive CBT practice on UE School.",
+  "Alternative Pathways": "Whichever path you take, practice smarter with UE School's CBT prep.",
+  "Education": "Practice real exam-style CBT questions with instant feedback on UE School.",
+}[frontmatter.category] || "Practice real CBT-style questions with instant feedback on UE School.";
+
 // --- STRUCTURED DATA: ARTICLE SCHEMA ---
 const ogImageURL = 'https://blog.ultimateedge.info/og-default.jpg';
 const isoDate = !isNaN(rawDate.getTime()) ? rawDate.toISOString() : new Date().toISOString();
@@ -710,6 +722,26 @@ const breadcrumbSchema = {
     border:4px solid transparent; border-top-color:var(--ink); pointer-events:none;
   }
 
+  /* --- UE SCHOOL CTA BANNER (static, no JS, no tracking) --- */
+  .ue-school-cta{
+    display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    background:var(--forest); color:#fbf7ec;
+    border-radius:10px; padding:22px 26px; margin:36px 0 30px;
+  }
+  .ue-school-cta-text{display:flex; flex-direction:column; gap:4px;}
+  .ue-school-cta-text strong{font-family:'Fraunces', serif; font-size:1.08rem; font-weight:600; line-height:1.3;}
+  .ue-school-cta-text span{font-size:.86rem; color:#c9d9cf;}
+  .ue-school-cta-btn{
+    flex-shrink:0; background:var(--gold); color:var(--ink); font-weight:700; font-size:.9rem;
+    padding:11px 22px; border-radius:999px; text-decoration:none; white-space:nowrap;
+    transition:background .15s ease;
+  }
+  .ue-school-cta-btn:hover{background:#e0ac4c;}
+  @media (max-width:560px){
+    .ue-school-cta{flex-direction:column; align-items:flex-start; text-align:left;}
+    .ue-school-cta-btn{width:100%; text-align:center;}
+  }
+
   /* --- DYNAMIC RELATED ARTICLES STYLING --- */
   .related-articles-box {
     background: var(--paper-raised);
@@ -1162,6 +1194,15 @@ const breadcrumbSchema = {
 <div class="wrap">
   <!-- Article Content Renders Here -->
   <slot />
+
+  <!-- UE School CTA — one quiet banner, no JS, no tracking pixel -->
+  <div class="ue-school-cta">
+    <div class="ue-school-cta-text">
+      <strong>{ueSchoolCtaCopy}</strong>
+      <span>Adaptive practice, instant scoring, real past questions.</span>
+    </div>
+    <a href="https://school.ultimateedge.info" target="_blank" rel="noopener" class="ue-school-cta-btn">Try UE School</a>
+  </div>
 
   <!-- Engagement: Share & Like -->
   <div id="engagement" class="engagement" data-slug={postSlug} data-title={frontmatter.title}>
