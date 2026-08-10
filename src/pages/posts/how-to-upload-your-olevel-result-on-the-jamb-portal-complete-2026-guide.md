@@ -96,7 +96,11 @@ date: "2026-08-10"
 <p>Candidates verify their uploaded records directly on their mobile phones or computers.</p>
 
 <p><strong>Step 1: Access the eFacility Portal</strong><br>Open your web browser and navigate to efacility.jamb.gov.ng.</p>
-<div class="visual-aid">[Screenshot: JAMB eFacility login page showing candidate portal login fields]</div>
+
+<figure>
+  <img src="/images/candidates-portal.jpg" alt="" loading="lazy" width="800" height="450">
+  <figcaption></figcaption>
+</figure>
 
 <p><strong>Step 2: Log In</strong><br>Enter your registered email address and password to open your personal dashboard.</p>
 
