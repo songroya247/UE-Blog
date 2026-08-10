@@ -107,7 +107,10 @@ date: "2026-08-10"
 <p><strong>Step 3: Enable Desktop View on Mobile Browsers</strong><br>If you are using a smartphone, open Chrome or Safari settings and select Desktop Site. This step ensures that all CAPS menu options render properly on smaller screens.</p>
 
 <p><strong>Step 4: Navigate to CAPS</strong><br>Click on Check Admission Status on your main dashboard. Select your examination year, enter your registration number, and click Access my CAPS.</p>
-<div class="visual-aid">[Screenshot: CAPS dashboard with My O'Level tab highlighted on left menu]</div>
+<figure>
+  <img src="/images/illustration-imagr.pbg.png" alt="" loading="lazy" width="800" height="450">
+  <figcaption></figcaption>
+</figure>
 
 <p><strong>Step 5: Check the O'Level Section</strong><br>Click on My O'Level Result on the left side menu.</p>
 <div class="visual-aid">[Screenshot: O'Level result display screen on CAPS showing verified grades and subject list]</div>
