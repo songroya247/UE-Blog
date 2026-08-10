@@ -873,7 +873,7 @@
   }
 
   // Tags worth making click-jumpable in the preview
-  const JUMPABLE_TAGS = ['h2','h3','h4','p','li','div','figcaption','td','th','blockquote'];
+  const JUMPABLE_TAGS = ['h2','h3','h4','p','li','div','figure','figcaption','td','th','blockquote'];
 
   function annotateBodyWithPositions(body){
     const tagPattern = new RegExp(`<(${JUMPABLE_TAGS.join('|')})(\\s[^>]*)?>`, 'g');
@@ -935,6 +935,7 @@ ${annotatedBody}
     var el = e.target.closest('[data-src-pos]');
     if (!el) return;
     var pos = parseInt(el.getAttribute('data-src-pos'), 10);
+    if (isNaN(pos) || pos < 0) return;
     window.parent.postMessage({ ueDashboardJump: true, pos: pos }, '*');
   });
 <\/script>
@@ -958,6 +959,9 @@ ${annotatedBody}
     const ta = document.getElementById('fld_body');
     if (!ta) return;
     const pos = e.data.pos;
+    // Guard: if the clicked preview element had no valid position (e.g. it
+    // wasn't inside a jumpable tag), do nothing rather than falsely landing at 0.
+    if (typeof pos !== 'number' || isNaN(pos) || pos < 0) return;
     document.getElementById('previewOverlay').classList.remove('open');
     ta.focus();
     const selEnd = Math.min(pos + 60, ta.value.length);
