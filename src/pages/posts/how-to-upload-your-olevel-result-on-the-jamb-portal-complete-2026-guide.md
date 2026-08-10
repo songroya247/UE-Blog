@@ -58,7 +58,7 @@ date: "2026-08-10"
 <section id="step-by-step-guide-uploading-olevel-results-at-an-accredited-cbt-centre">
 <h2>STEP-BY-STEP GUIDE: UPLOADING O'LEVEL RESULTS AT AN ACCREDITED CBT CENTRE</h2>
 
-<div><figure>
+<div class><figure>
   <img src="/images/step-by-step-oLevel-result-upload-and-verification-workflow].png" alt="" loading="lazy" width="800" height="450">
   <figcaption></figcaption>
 </figure></div>
