@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "UNN Post UTME Screening Guide: Portal, Form & Cut-Off"
 category: "University Guides"
 description: "Complete UNN Post UTME screening guide. Learn eligibility, portal registration at unnportal.unn.edu.ng, fees, aggregate score formulas, and CBT formats."
-date: "2026-08-13"
+date: "2026-08-14"
 ---
 
 <nav class="toc">
