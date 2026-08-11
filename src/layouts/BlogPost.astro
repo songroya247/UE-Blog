@@ -1024,8 +1024,10 @@ const breadcrumbSchema = {
     padding:24px; margin:18px 0; text-align:center;
   }
 
-  /* In-article images */
-  section img, .article-body img{
+  /* In-article images — scoped to .wrap (the whole article body container) rather than
+     just <section>, so ANY image pasted anywhere in the content always gets sized safely
+     for mobile, regardless of what tag it happens to be nested inside. */
+  .wrap img{
     display:block;
     max-width:100%;
     height:auto;
@@ -1033,6 +1035,7 @@ const breadcrumbSchema = {
     border-radius:6px;
     margin:18px auto;
     box-shadow:0 8px 24px -18px rgba(11,61,46,0.4);
+    cursor:zoom-in;
   }
   figure{margin:22px 0;}
   figure img{margin:0 auto 10px;}
@@ -1042,6 +1045,23 @@ const breadcrumbSchema = {
     color:var(--muted);
     font-style:italic;
     line-height:1.5;
+  }
+
+  /* Click-to-enlarge lightbox overlay (applies automatically to every in-article image) */
+  .ue-lightbox-overlay{
+    display:none; position:fixed; inset:0; background:rgba(15,20,17,0.92);
+    z-index:200; align-items:center; justify-content:center; padding:24px;
+    cursor:zoom-out;
+  }
+  .ue-lightbox-overlay.open{display:flex;}
+  .ue-lightbox-overlay img{
+    max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    cursor:default;
+  }
+  .ue-lightbox-close{
+    position:fixed; top:18px; right:18px; background:rgba(255,255,255,0.12); color:#fff;
+    border:none; border-radius:999px; width:38px; height:38px; font-size:1.2rem; line-height:1;
+    cursor:pointer; z-index:201;
   }
 
   /* Generic callouts with modifier classes (tip / warning / info / summary / cta / syntax / rule) */
@@ -1278,6 +1298,13 @@ const breadcrumbSchema = {
   </section>
 </div>
 
+<!-- Click-to-enlarge lightbox — one shared overlay, outside .wrap so it's never
+     affected by in-article image styling. Populated by JS for whichever image was tapped. -->
+<div class="ue-lightbox-overlay" id="ueLightboxOverlay">
+  <button class="ue-lightbox-close" id="ueLightboxClose" aria-label="Close">&times;</button>
+  <img id="ueLightboxImg" src="" alt="">
+</div>
+
 <footer>
   <div class="footer-links">
     <a href="/about">About</a>
@@ -1294,6 +1321,35 @@ const breadcrumbSchema = {
 <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
 <script>
+  // Click-to-enlarge lightbox — applies automatically to every image inside the
+  // article body. No per-image markup needed; just paste a normal <img>/<figure>.
+  (function(){
+    const overlay = document.getElementById('ueLightboxOverlay');
+    const lightboxImg = document.getElementById('ueLightboxImg');
+    const closeBtn = document.getElementById('ueLightboxClose');
+    if (!overlay || !lightboxImg || !closeBtn) return;
+
+    const wrap = document.querySelector('.wrap');
+    if (wrap) {
+      wrap.addEventListener('click', function(e){
+        const img = e.target.closest('img');
+        if (!img || img.id === 'ueLightboxImg') return;
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt || '';
+        overlay.classList.add('open');
+      });
+    }
+    function closeLightbox(){
+      overlay.classList.remove('open');
+      lightboxImg.src = '';
+    }
+    overlay.addEventListener('click', closeLightbox);
+    closeBtn.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+
   // Reading progress bar
   const progressBar = document.getElementById('progressBar');
   function updateProgress() {
