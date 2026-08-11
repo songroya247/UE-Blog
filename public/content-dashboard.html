@@ -875,11 +875,23 @@
   // Tags worth making click-jumpable in the preview
   const JUMPABLE_TAGS = ['h2','h3','h4','p','li','div','figure','figcaption','td','th','blockquote'];
 
-  function annotateBodyWithPositions(body){
+  function escapeForAttr(str){
+    return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+  }
+  function unescapeFromAttr(str){
+    return str.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+  }
+
+  // Anchor each jumpable element to a verbatim 70-char raw-markup chunk starting
+  // at its own opening tag. Because this is sliced directly from the same body
+  // string the textarea holds, it's guaranteed to exist there — no offset math
+  // to get subtly wrong, and no reliance on it staying in sync.
+  function annotateBodyWithAnchors(body){
     const tagPattern = new RegExp(`<(${JUMPABLE_TAGS.join('|')})(\\s[^>]*)?>`, 'g');
     return body.replace(tagPattern, (match, tag, attrs, offset) => {
       const safeAttrs = attrs || '';
-      return `<${tag}${safeAttrs} data-src-pos="${offset}">`;
+      const anchor = body.slice(offset, offset + 70);
+      return `<${tag}${safeAttrs} data-src-anchor="${escapeForAttr(anchor)}">`;
     });
   }
 
@@ -894,7 +906,7 @@
     const category = document.getElementById('fld_category').value.trim() || 'Guide';
     const description = document.getElementById('fld_description').value.trim();
     const body = document.getElementById('fld_body').value;
-    const annotatedBody = annotateBodyWithPositions(body);
+    const annotatedBody = annotateBodyWithAnchors(body);
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -905,8 +917,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 <style>${css}</style>
 <style>
-  [data-src-pos]{ cursor:pointer; }
-  [data-src-pos]:hover{ outline:2px dashed #c9922e; outline-offset:2px; background:rgba(201,146,46,0.08); }
+  [data-src-anchor]{ cursor:pointer; }
+  [data-src-anchor]:hover{ outline:2px dashed #c9922e; outline-offset:2px; background:rgba(201,146,46,0.08); }
 </style>
 </head>
 <body>
@@ -932,11 +944,11 @@ ${annotatedBody}
 </div>
 <script>
   document.addEventListener('click', function(e){
-    var el = e.target.closest('[data-src-pos]');
+    var el = e.target.closest('[data-src-anchor]');
     if (!el) return;
-    var pos = parseInt(el.getAttribute('data-src-pos'), 10);
-    if (isNaN(pos) || pos < 0) return;
-    window.parent.postMessage({ ueDashboardJump: true, pos: pos }, '*');
+    var anchor = el.getAttribute('data-src-anchor');
+    if (!anchor) return;
+    window.parent.postMessage({ ueDashboardJump: true, anchor: anchor }, '*');
   });
 <\/script>
 </body>
@@ -958,15 +970,19 @@ ${annotatedBody}
     if (!e.data || !e.data.ueDashboardJump) return;
     const ta = document.getElementById('fld_body');
     if (!ta) return;
-    const pos = e.data.pos;
-    // Guard: if the clicked preview element had no valid position (e.g. it
-    // wasn't inside a jumpable tag), do nothing rather than falsely landing at 0.
-    if (typeof pos !== 'number' || isNaN(pos) || pos < 0) return;
+    const rawAnchor = e.data.anchor;
+    if (!rawAnchor) return;
+    const anchor = unescapeFromAttr(rawAnchor);
+    const idx = ta.value.indexOf(anchor);
+    // Guard: if the anchor text can't actually be found (shouldn't normally
+    // happen since it's sliced straight from this same body), do nothing
+    // rather than falling back to some misleading default position.
+    if (idx === -1) return;
     document.getElementById('previewOverlay').classList.remove('open');
     ta.focus();
-    const selEnd = Math.min(pos + 60, ta.value.length);
-    ta.setSelectionRange(pos, selEnd);
-    scrollTextareaToPos(ta, pos);
+    const selEnd = Math.min(idx + anchor.length, ta.value.length);
+    ta.setSelectionRange(idx, selEnd);
+    scrollTextareaToPos(ta, idx);
   });
 
   document.getElementById('closePreviewBtn').addEventListener('click', () => {
