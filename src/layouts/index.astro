@@ -24,6 +24,7 @@ const siteURL = 'https://blog.ultimateedge.info';
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="alternate" type="application/rss+xml" title="Ultimate Edge Blog RSS Feed" href="/rss.xml">
 
 <title>Ultimate Edge Blog — Guides for JAMB, WAEC & Admissions</title>
 <meta name="description" content="Practical, up-to-date guides on JAMB, WAEC, and the Nigerian university admission process." />
@@ -254,6 +255,30 @@ const siteURL = 'https://blog.ultimateedge.info';
   .footer-links a{color:var(--forest-dim); text-decoration:none;}
   .footer-links a:hover{color:var(--gold); text-decoration:underline;}
   .footer-links span{color:var(--line);}
+
+  /* Email signup box */
+  .ue-email-signup{
+    max-width:760px; margin:0 auto; padding:28px 24px; text-align:center;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+  }
+  .ue-email-signup h3{
+    font-family:'Fraunces', serif; font-size:1.15rem; color:var(--forest); margin:0 0 6px;
+  }
+  .ue-email-signup p{font-size:.88rem; color:var(--muted); margin:0 0 16px;}
+  .ue-email-form{
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap; max-width:420px; margin:0 auto;
+  }
+  .ue-email-form input[type=email]{
+    flex:1; min-width:200px; padding:11px 14px; border:1.5px solid var(--line); border-radius:8px;
+    font-size:.92rem; font-family:inherit; background:var(--paper); color:var(--ink);
+  }
+  .ue-email-form input[type=email]:focus{outline:none; border-color:var(--gold);}
+  .ue-email-form button{
+    background:var(--forest); color:#fbf7ec; font-weight:700; font-size:.9rem; border:none;
+    border-radius:8px; padding:11px 22px; cursor:pointer; white-space:nowrap;
+  }
+  .ue-email-form button:hover{background:var(--forest-dim);}
+  .ue-email-note{font-size:.75rem; color:var(--muted); margin-top:10px;}
 </style>
 </head>
 <body>
@@ -289,6 +314,17 @@ const siteURL = 'https://blog.ultimateedge.info';
   )}
 </div>
 
+<!-- Email signup — wired to Formspree (formspree.io/f/xyegwrpd) -->
+<div class="ue-email-signup">
+  <h3>Never miss a JAMB/WAEC update</h3>
+  <p>Get new guides and result-day alerts straight to your inbox.</p>
+  <form class="ue-email-form" action="https://formspree.io/f/xyegwrpd" method="POST">
+    <input type="email" name="email" placeholder="you@email.com" required>
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="ue-email-note">No spam. Unsubscribe anytime.</p>
+</div>
+
 <footer>
   <div class="footer-links">
     <a href="/about">About</a>
@@ -298,6 +334,8 @@ const siteURL = 'https://blog.ultimateedge.info';
     <a href="/privacy-policy">Privacy Policy</a>
     <span>·</span>
     <a href="/terms-of-service">Terms of Service</a>
+    <span>·</span>
+    <a href="/rss.xml">RSS</a>
   </div>
   © 2026 Ultimate Edge Blog — All rights reserved.
 </footer>
