@@ -9,6 +9,14 @@ const displayDate = !isNaN(rawDate.getTime())
   ? rawDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   : 'Recently updated';
 
+// "Last updated" badge — uses dateModified if the article has been revised since
+// publishing, otherwise just shows the publish date (no badge needed if they're the same)
+const rawModifiedDate = frontmatter.dateModified ? new Date(frontmatter.dateModified) : null;
+const displayModifiedDate = rawModifiedDate && !isNaN(rawModifiedDate.getTime())
+  ? rawModifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  : null;
+const showUpdatedBadge = displayModifiedDate && displayModifiedDate !== displayDate;
+
 // --- DYNAMIC AUTHOR LOGIC (DEFAULT SOLOMON OBAFEMI vs GUEST AUTHOR) ---
 const isGuestPost = Boolean(frontmatter.author);
 const authorName = frontmatter.author || "Solomon Obafemi";
@@ -148,6 +156,7 @@ const breadcrumbSchema = {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="alternate" type="application/rss+xml" title="Ultimate Edge Blog RSS Feed" href="/rss.xml">
 
 <!-- SEO Meta Tags -->
 <title>{frontmatter.title}</title>
@@ -947,6 +956,31 @@ const breadcrumbSchema = {
   .footer-links a:hover{color:var(--gold); text-decoration:underline;}
   .footer-links span{color:var(--line);}
 
+  /* Email signup box — sits above the footer, its own quiet moment separate from
+     the UE School CTA earlier so the two asks don't stack on top of each other */
+  .ue-email-signup{
+    max-width:760px; margin:0 auto; padding:28px 24px; text-align:center;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+  }
+  .ue-email-signup h3{
+    font-family:'Fraunces', serif; font-size:1.15rem; color:var(--forest); margin:0 0 6px;
+  }
+  .ue-email-signup p{font-size:.88rem; color:var(--muted); margin:0 0 16px;}
+  .ue-email-form{
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap; max-width:420px; margin:0 auto;
+  }
+  .ue-email-form input[type=email]{
+    flex:1; min-width:200px; padding:11px 14px; border:1.5px solid var(--line); border-radius:8px;
+    font-size:.92rem; font-family:inherit; background:var(--paper); color:var(--ink);
+  }
+  .ue-email-form input[type=email]:focus{outline:none; border-color:var(--gold);}
+  .ue-email-form button{
+    background:var(--forest); color:#fbf7ec; font-weight:700; font-size:.9rem; border:none;
+    border-radius:8px; padding:11px 22px; cursor:pointer; white-space:nowrap;
+  }
+  .ue-email-form button:hover{background:var(--forest-dim);}
+  .ue-email-note{font-size:.75rem; color:var(--muted); margin-top:10px;}
+
   /* ===================================================================
      ARTICLE-BODY COMPONENTS
      Covers the recurring class names used across content-queue articles
@@ -1203,6 +1237,7 @@ const breadcrumbSchema = {
     <p class="lede">{frontmatter.description}</p>
     <div class="hero-meta">
       <span>Reviewed <b>{displayDate}</b></span>
+      {showUpdatedBadge && <span>Updated <b>{displayModifiedDate}</b></span>}
       <span>Read time <b id="readingTime">–</b></span>
       {frontmatter.meta && frontmatter.meta.map((item) => (
         <span>{item.label} <b>{item.value}</b></span>
@@ -1305,6 +1340,17 @@ const breadcrumbSchema = {
   <img id="ueLightboxImg" src="" alt="">
 </div>
 
+<!-- Email signup — wired to Formspree (formspree.io/f/xyegwrpd) -->
+<div class="ue-email-signup">
+  <h3>Never miss a JAMB/WAEC update</h3>
+  <p>Get new guides and result-day alerts straight to your inbox.</p>
+  <form class="ue-email-form" action="https://formspree.io/f/xyegwrpd" method="POST">
+    <input type="email" name="email" placeholder="you@email.com" required>
+    <button type="submit">Subscribe</button>
+  </form>
+  <p class="ue-email-note">No spam. Unsubscribe anytime.</p>
+</div>
+
 <footer>
   <div class="footer-links">
     <a href="/about">About</a>
@@ -1314,6 +1360,8 @@ const breadcrumbSchema = {
     <a href="/privacy-policy">Privacy Policy</a>
     <span>·</span>
     <a href="/terms-of-service">Terms of Service</a>
+    <span>·</span>
+    <a href="/rss.xml">RSS</a>
   </div>
   © 2026 Ultimate Edge Blog — All rights reserved.
 </footer>
