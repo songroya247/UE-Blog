@@ -369,6 +369,23 @@
     }
     return res.json();
   }
+  async function deleteFile(path, sha, message){
+    const body = {
+      message: message || `Delete ${path} via content dashboard`,
+      sha: sha,
+      branch: BRANCH
+    };
+    const res = await ghFetch(`/repos/${OWNER}/${REPO}/contents/${path}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok){
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `Delete failed (${res.status})`);
+    }
+    return res.json();
+  }
   async function putBinaryFile(path, base64Data, message){
     const body = {
       message: message || `Upload ${path} via content dashboard`,
@@ -631,6 +648,7 @@
             <button class="btn-primary" id="saveBtn">${opts.showSlugAsFilename ? 'Create Article' : 'Save Changes'}</button>
             <button class="btn-secondary" id="previewBtn">Preview</button>
             <button class="btn-secondary" id="cancelBtn">Cancel</button>
+            ${opts.showSlugAsFilename ? '' : '<button class="btn-danger" id="deleteBtn">Delete Article</button>'}
           </div>
           <p class="fmt-hint">Tip: in Preview, tap any paragraph, heading, or box to jump straight to that spot below.</p>
           <p id="editorStatus"></p>
@@ -660,12 +678,33 @@
       document.getElementById('cancelBtn').addEventListener('click', () => closeEditor(source));
       document.getElementById('saveBtn').addEventListener('click', () => saveEditor(fields.layout));
       document.getElementById('previewBtn').addEventListener('click', () => showPreview());
+      document.getElementById('deleteBtn').addEventListener('click', () => deleteCurrentArticle(fields.title || path));
       wireFormatToolbar();
 
     } catch(e){
       editorView.innerHTML = `<p class="empty-state">Error loading file: ${e.message}</p>
         <span class="back-link" id="backLink_err">&larr; Back to list</span>`;
       document.getElementById('backLink_err').addEventListener('click', () => closeEditor(source));
+    }
+  }
+
+  async function deleteCurrentArticle(displayName){
+    const confirmed = confirm(`Delete "${displayName}"?\n\nThis removes the file from GitHub immediately and cannot be undone from here.`);
+    if (!confirmed) return;
+
+    const statusEl = document.getElementById('editorStatus');
+    const deleteBtn = document.getElementById('deleteBtn');
+    if (deleteBtn) deleteBtn.disabled = true;
+    if (statusEl) { statusEl.textContent = 'Deleting…'; statusEl.className = ''; }
+
+    try {
+      await deleteFile(currentPath, currentSha, `Delete ${currentPath} via content dashboard`);
+      const source = currentSource;
+      closeEditor(source);
+      if (source === 'posts') loadPosts(); else loadQueue();
+    } catch(e){
+      if (statusEl) { statusEl.textContent = 'Delete failed: ' + e.message; statusEl.className = 'error'; }
+      if (deleteBtn) deleteBtn.disabled = false;
     }
   }
 
