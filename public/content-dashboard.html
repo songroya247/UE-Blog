@@ -131,9 +131,22 @@
   }
   .preview-header span{font-weight:600; color:var(--forest); font-size:.9rem;}
   .preview-frame{flex:1; border:none; width:100%; background:#fff;}
+
+  /* Toast notification — for actions like delete where the view changes
+     immediately after, so inline status text would flash and disappear unseen */
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:var(--forest); color:#fbf7ec; padding:12px 20px; border-radius:999px;
+    font-size:.88rem; font-weight:600; box-shadow:0 8px 24px rgba(0,0,0,0.25);
+    z-index:300; opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast.error{background:var(--rust);}
 </style>
 </head>
 <body>
+
+<div class="toast" id="toast"></div>
 
 <h1>Content Dashboard</h1>
 <p class="sub">Not linked from the site, not indexed — edit posts, manage the queue, and upload images straight from your phone.</p>
@@ -688,6 +701,17 @@
     }
   }
 
+  function showToast(message, isError){
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(() => {
+      toast.className = 'toast';
+    }, 3000);
+  }
+
   async function deleteCurrentArticle(displayName){
     const confirmed = confirm(`Delete "${displayName}"?\n\nThis removes the file from GitHub immediately and cannot be undone from here.`);
     if (!confirmed) return;
@@ -702,9 +726,11 @@
       const source = currentSource;
       closeEditor(source);
       if (source === 'posts') loadPosts(); else loadQueue();
+      showToast(`Deleted "${displayName}"`);
     } catch(e){
       if (statusEl) { statusEl.textContent = 'Delete failed: ' + e.message; statusEl.className = 'error'; }
       if (deleteBtn) deleteBtn.disabled = false;
+      showToast(`Delete failed: ${e.message}`, true);
     }
   }
 
