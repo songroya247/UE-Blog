@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "JAMB Maths Past Questions: Full Breakdown, Solutions & Practice"
 category: "JAMB"
 description: "Master UTME Mathematics with our comprehensive breakdown of JAMB maths past questions, step-by-step solutions, topic trends, and CBT speed hacks."
-date: "2026-08-019"
+date: "2026-08-19"
 slug: "jamb-maths-past-questions-and-answers"
 meta:
   - label: "Total Questions"
