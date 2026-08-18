@@ -205,7 +205,10 @@
         <div class="btn-row">
           <button class="btn-secondary" id="refreshPostsBtn">Refresh List</button>
           <button class="btn-primary" id="newPostBtn">+ New Article</button>
+          <button class="btn-secondary" id="uploadPostBtn">Upload File</button>
         </div>
+        <input type="file" id="uploadPostFile" accept=".md,.txt" style="display:none;">
+        <p class="hint" style="margin-top:8px;">Upload a .md/.txt file with frontmatter (title, category, description, date, slug) — it'll pre-fill the editor automatically.</p>
         <div id="postsList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
       </div>
     </div>
@@ -221,7 +224,10 @@
         <div class="btn-row">
           <button class="btn-secondary" id="refreshQueueBtn">Refresh List</button>
           <button class="btn-primary" id="newQueueBtn">+ New Article</button>
+          <button class="btn-secondary" id="uploadQueueBtn">Upload File</button>
         </div>
+        <input type="file" id="uploadQueueFile" accept=".md,.txt" style="display:none;">
+        <p class="hint" style="margin-top:8px;">Upload a .md/.txt file with frontmatter (title, category, description, date, slug) — it'll pre-fill the editor automatically.</p>
         <div id="queueList" style="margin-top:14px;"><p class="empty-state">Not loaded yet.</p></div>
       </div>
     </div>
@@ -429,27 +435,56 @@
   });
 
   // ---------- Frontmatter parsing ----------
+  // Handles both simple `key: "value"` lines AND multi-line YAML blocks
+  // (e.g. `meta:` followed by an indented list) — the latter are preserved
+  // verbatim rather than dropped, since they can't be represented as a
+  // single string value.
   function parseFrontmatter(raw){
     const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
     if (!m) return { fields: {}, body: raw };
     const fmBlock = m[1];
     const body = m[2];
     const fields = {};
-    fmBlock.split('\n').forEach(line => {
-      const fm = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
-      if (fm) fields[fm[1]] = fm[2];
-    });
+    const lines = fmBlock.split('\n');
+    let i = 0;
+    while (i < lines.length){
+      const line = lines[i];
+      const simpleMatch = line.match(/^(\w+):\s*"?(.*?)"?\s*$/);
+      const blockStartMatch = line.match(/^(\w+):\s*$/);
+      if (blockStartMatch){
+        // Multi-line block: consume all following indented/list lines verbatim
+        const key = blockStartMatch[1];
+        const blockLines = [];
+        i++;
+        while (i < lines.length && /^(\s|-)/.test(lines[i]) && lines[i].trim() !== ''){
+          blockLines.push(lines[i]);
+          i++;
+        }
+        fields[key] = blockLines.join('\n'); // multi-line value, marks it as a raw block
+        continue;
+      } else if (simpleMatch){
+        fields[simpleMatch[1]] = simpleMatch[2];
+      }
+      i++;
+    }
     return { fields, body };
   }
   function buildFrontmatter(fields){
     const order = ['layout', 'title', 'category', 'description', 'date', 'slug'];
+    function writeField(out, k, v){
+      if (v.indexOf('\n') !== -1){
+        // Multi-line block (e.g. a meta list) — write back verbatim, no quotes
+        return out + `${k}:\n${v}\n`;
+      }
+      return out + `${k}: "${v}"\n`;
+    }
     let out = '---\n';
     order.forEach(k => {
-      if (fields[k] !== undefined) out += `${k}: "${fields[k]}"\n`;
+      if (fields[k] !== undefined) out = writeField(out, k, fields[k]);
     });
-    // include any extra fields not in the standard order
+    // include any extra fields not in the standard order (e.g. preserved meta blocks)
     Object.keys(fields).forEach(k => {
-      if (!order.includes(k)) out += `${k}: "${fields[k]}"\n`;
+      if (!order.includes(k)) out = writeField(out, k, fields[k]);
     });
     out += '---\n';
     return out;
@@ -541,6 +576,10 @@
 
   // ---------- Editor (shared by posts + queue, edit + create modes) ----------
   let currentPath = null, currentSha = null, currentSource = null, isNewArticle = false;
+  // Holds any frontmatter fields the structured form has no dedicated input for
+  // (e.g. a multi-line `meta:` stat-badge list) so they aren't silently dropped on save.
+  let currentExtraFields = {};
+  const STANDARD_FIELDS = ['layout', 'title', 'category', 'description', 'date', 'slug'];
 
   function slugify(text){
     return (text||'')
@@ -683,6 +722,12 @@
       currentSha = sha;
       const { fields, body } = parseFrontmatter(content);
 
+      // Preserve any fields the form has no input for (e.g. a meta stat-badge list)
+      currentExtraFields = {};
+      Object.keys(fields).forEach(k => {
+        if (!STANDARD_FIELDS.includes(k)) currentExtraFields[k] = fields[k];
+      });
+
       editorView.innerHTML = editorFormHtml({
         source, headerLabel: path.split('/').pop(), fields, body, showSlugAsFilename: false
       });
@@ -734,8 +779,9 @@
     }
   }
 
-  function openNewArticleEditor(source){
+  function openNewArticleEditor(source, prefill){
     currentPath = null; currentSha = null; currentSource = source; isNewArticle = true;
+    currentExtraFields = (prefill && prefill.extraFields) ? prefill.extraFields : {};
     const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
     const listViewId = source === 'posts' ? 'postsListView' : 'queueListView';
     const editorView = document.getElementById(viewId);
@@ -746,11 +792,22 @@
       ? new Date().toISOString().split('T')[0]
       : 'TBD';
 
+    const fields = prefill ? {
+      title: prefill.title || '',
+      category: prefill.category || '',
+      description: prefill.description || '',
+      date: prefill.date || defaultDate,
+      slug: prefill.slug || ''
+    } : { title:'', category:'', description:'', date: defaultDate, slug:'' };
+    const body = prefill ? (prefill.body || '<p>Start writing here…</p>') : '<p>Start writing here…</p>';
+
     editorView.innerHTML = editorFormHtml({
       source,
-      headerLabel: source === 'posts' ? 'New Published Post' : 'New Queued Draft',
-      fields: { title:'', category:'', description:'', date: defaultDate, slug:'' },
-      body: '<p>Start writing here…</p>',
+      headerLabel: prefill
+        ? 'New Article (from uploaded file)'
+        : (source === 'posts' ? 'New Published Post' : 'New Queued Draft'),
+      fields,
+      body,
       showSlugAsFilename: true
     });
 
@@ -759,9 +816,46 @@
     document.getElementById('saveBtn').addEventListener('click', () => saveEditor('../../layouts/BlogPost.astro'));
     document.getElementById('previewBtn').addEventListener('click', () => showPreview());
     wireFormatToolbar();
+    if (prefill) showToast('File loaded — review the fields, then save.');
   }
   document.getElementById('newPostBtn').addEventListener('click', () => openNewArticleEditor('posts'));
   document.getElementById('newQueueBtn').addEventListener('click', () => openNewArticleEditor('queue'));
+
+  // --- Upload File: reads a .md/.txt file, parses its frontmatter (same format
+  // your other posts already use), and opens the New Article editor pre-filled ---
+  function wireUploadButton(buttonId, fileInputId, source){
+    const btn = document.getElementById(buttonId);
+    const fileInput = document.getElementById(fileInputId);
+    if (!btn || !fileInput) return;
+    btn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const raw = reader.result;
+        const { fields, body } = parseFrontmatter(raw);
+        const extraFields = {};
+        Object.keys(fields).forEach(k => {
+          if (!STANDARD_FIELDS.includes(k)) extraFields[k] = fields[k];
+        });
+        openNewArticleEditor(source, {
+          title: fields.title,
+          category: fields.category,
+          description: fields.description,
+          date: fields.date,
+          slug: fields.slug,
+          body: body.trim(),
+          extraFields
+        });
+      };
+      reader.onerror = () => showToast('Could not read that file.', true);
+      reader.readAsText(file);
+      fileInput.value = ''; // reset so the same file can be re-selected later if needed
+    });
+  }
+  wireUploadButton('uploadPostBtn', 'uploadPostFile', 'posts');
+  wireUploadButton('uploadQueueBtn', 'uploadQueueFile', 'queue');
 
   function closeEditor(source){
     const viewId = source === 'posts' ? 'postEditorView' : 'queueEditorView';
@@ -784,6 +878,7 @@
       category: document.getElementById('fld_category').value.trim(),
       description: document.getElementById('fld_description').value.trim(),
       date: document.getElementById('fld_date').value.trim(),
+      ...currentExtraFields, // preserves fields with no dedicated form input (e.g. meta list)
     };
     const slugInput = document.getElementById('fld_slug').value.trim();
     const body = document.getElementById('fld_body').value;
