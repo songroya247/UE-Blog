@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "WAEC Digital Certificate Platform 2026"
 category: "WAEC"
 description: "Complete guide to accessing, sharing, and verifying your WASSCE digital certificate online via the official WAEC digital certificate platform 2026."
-date: "TBD"
+date: "2026-08-22"
 slug: "waec-digital-certificate-platform-2026"
 meta:
   - label: "Official Portal"
