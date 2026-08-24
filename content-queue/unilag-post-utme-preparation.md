@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "The Ultimate UNILAG Post UTME Preparation Guide"
 category: "University Guides"
 description: "Last Updated: June 2026 Editorial Review Board: Academic Admissions Unit, Prep Division Fact-Check Notice: This resource has been fully verified against the ..."
-date: "TBD"
+date: "2026-08-28"
 ---
 
 <nav class="toc">
