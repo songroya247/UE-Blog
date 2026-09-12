@@ -3,7 +3,7 @@ layout: "../../layouts/BlogPost.astro"
 title: "DELSU Admission Portal: Complete Login, Apply & Check Status Guide"
 category: "Admissions"
 description: "Your complete guide to the DELSU Admission Portal. Find login links, step-by-step application instructions, status updates, and important deadlines."
-date: "TBD"
+date: "2026-09-12"
 slug: "delsu-admission-portal-guide"
 meta:
   - label: "Official Portal"
